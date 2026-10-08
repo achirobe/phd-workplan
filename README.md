@@ -8,3 +8,7 @@ Day-by-day workplan for my PhD, "Digital twin validation: physics-based model, A
 Open the site: https://achirobe.github.io/phd-workplan/
 
 Progress ticks and notes are stored in your own browser (localStorage).
+
+## Calendar
+
+Subscribe in Apple Calendar (File > New Calendar Subscription): https://achirobe.github.io/phd-workplan/phd-plan.ics

@@ -1411,7 +1411,7 @@ const MILESTONES = [
   {w:208,d:1, t:"Funded period ends (31 Dec 2030)", k:"admin"}
 ];
 
-/* ===== Head start: self-study from Mon 12 Oct 2026, about 3 hours per weekday ===== */
+/* ===== Head start: self-study from Mon 12 Oct 2026, 2 hours per weekday, 7 to 9 pm ===== */
 Object.assign(LIB, {
   "uv":          {g:"Research skills and tools", k:"Tool", t:"uv: fast Python environments and packages", u:"https://docs.astral.sh/uv/"},
   "sci-py":      {g:"Research skills and tools", k:"Course (free)", t:"Scientific Python Lectures: NumPy, SciPy, Matplotlib, optimisation", u:"https://lectures.scientific-python.org/"},
@@ -2005,7 +2005,7 @@ function renderToday(){
   const hol=HOL[ymd(d)];
   const month=Math.floor(daysBetween(MAIN_START,d)/30.44)+1;
   let main="";
-  const head=`<div class="dayhead"><div class="eyebrow">${i<MAIN0?"Head start week "+(i+1)+" of "+MAIN0+" · self-study, about 3 hours a day":"Week "+(i-MAIN0+1)+" of "+(NWEEKS-MAIN0)+" · PhD month "+Math.max(1,month)}</div>
+  const head=`<div class="dayhead"><div class="eyebrow">${i<MAIN0?"Head start week "+(i+1)+" of "+MAIN0+" · self-study, 7 to 9 pm on weekdays":"Week "+(i-MAIN0+1)+" of "+(NWEEKS-MAIN0)+" · PhD month "+Math.max(1,month)}</div>
     <h1>${esc(fmt(d))}</h1>
     <div class="meta"><span class="chip ph" style="background:${PH_COLORS[pi]}">Phase ${ph.id} · ${esc(ph.n)}</span>${hol?`<span class="chip">${esc(hol)}</span>`:""}</div>
     <p class="weekgoal"><b>${esc(w.t)}.</b> ${esc(w.g)}</p></div>`;
@@ -2059,7 +2059,7 @@ function railHtml(d,i){
    <p class="muted" style="font-size:13px;margin:12px 0 0">${daysLeft>0?daysLeft.toLocaleString("en-GB")+" days until the funded period ends (31 Dec 2030).":"Funded period finished."}</p></div>
    <div class="card"><div class="eyebrow">Next milestones</div><ul class="mslist" style="margin-top:10px">${up.map(m=>`<li><span class="d">${esc(short(m.date))}<br>${m.date.getFullYear()}</span><span>${esc(m.t)}<br><span class="muted" style="font-size:12.5px">in ${daysBetween(d,m.date)} days</span></span></li>`).join("")||'<li class="muted">All milestones passed.</li>'}</ul>
    <button class="btn" style="margin-top:12px" id="toMs">All milestones</button></div>
-   ${i<MAIN0?preCard():""}<div class="card"><div class="eyebrow">Phase</div><p style="margin:6px 0 0">${esc(PHASES[phaseOf(i)].n)}: ${esc(wShort(PHASES[phaseOf(i)].s))} to ${esc(wShort(PHASES[phaseOf(i)].e))}, ${esc(short(weekStart(PHASES[phaseOf(i)].s)))} ${weekStart(PHASES[phaseOf(i)].s).getFullYear()} to ${esc(short(addDays(weekStart(PHASES[phaseOf(i)].e),4)))} ${addDays(weekStart(PHASES[phaseOf(i)].e),4).getFullYear()}.</p></div>`;
+   ${i<MAIN0?preCard():""}${calCard()}<div class="card"><div class="eyebrow">Phase</div><p style="margin:6px 0 0">${esc(PHASES[phaseOf(i)].n)}: ${esc(wShort(PHASES[phaseOf(i)].s))} to ${esc(wShort(PHASES[phaseOf(i)].e))}, ${esc(short(weekStart(PHASES[phaseOf(i)].s)))} ${weekStart(PHASES[phaseOf(i)].s).getFullYear()} to ${esc(short(addDays(weekStart(PHASES[phaseOf(i)].e),4)))} ${addDays(weekStart(PHASES[phaseOf(i)].e),4).getFullYear()}.</p></div>`;
 }
 function refreshCounts(){
   const tp=totalProgress(), pct=tp.t?Math.round(100*tp.n/tp.t):0;
@@ -2083,13 +2083,15 @@ const PRE_ITEMS=[
     ["Accept the scholarship in the Learner Gateway","As well as the signed letter you emailed"],
     ["Book accommodation and a flight arriving by 31 Dec 2026",""]
   ];
+const ICS_URL="https://achirobe.github.io/phd-workplan/phd-plan.ics";
+function calCard(){return `<div class="card" style="margin-top:16px"><div class="eyebrow">Apple Calendar</div><p style="margin:6px 0 0;font-size:14px">Subscribe once and every study session, work day, leave week and milestone appears in your calendar, and updates when the plan changes.</p><p style="margin:8px 0 0;font-size:13.5px"><a href="webcal://achirobe.github.io/phd-workplan/phd-plan.ics">Subscribe in Apple Calendar</a> · <a href="${ICS_URL}">Download the .ics file</a></p><p class="muted" style="margin:6px 0 0;font-size:12.5px">On Mac: Calendar > File > New Calendar Subscription, paste <span class="mono">${ICS_URL}</span></p></div>`}
 function preCard(){return `<div class="card"><div class="eyebrow">Admin before you travel</div><ul class="tasks" style="margin-top:10px">${PRE_ITEMS.map((x,j)=>{const k="pre"+j,on=!!state.done[k];return `<li class="task${on?" done":""}" style="padding:8px 10px"><input type="checkbox" id="cb-${k}" data-key="${k}" ${on?"checked":""}><label for="cb-${k}"><span style="font-size:13.5px">${esc(x[0])}</span>${x[1]?`<small>${esc(x[1])}</small>`:""}</label></li>`}).join("")}</ul></div>`}
 function renderPrestart(d){
   const n=daysBetween(d,START);
   return `<div class="dayhead"><div class="eyebrow">Before the head start</div><h1>${esc(fmt(d))}</h1><p class="weekgoal"><b>${n} day${n===1?"":"s"}</b> until Monday 12 October 2026, when your 12-week head start begins. The PhD itself starts Monday 4 January 2027 (if the deferral is approved).</p></div>
   <div class="today-grid" style="margin-top:16px"><div><div class="blockttl"><h2>Get ready this week</h2></div><ul class="tasks">
-  ${[["Install Git, VS Code and uv; create a GitHub account if you don't have one","pc0"],["Clear 3 hours a day on your calendar, Monday to Friday, for the next 11 weeks","pc1"],["Look through the Plan tab to see where the head start leads","pc2"]].map(([t,k])=>{const on=!!state.done[k];return `<li class="task${on?" done":""}"><input type="checkbox" id="cb-${k}" data-key="${k}" ${on?"checked":""}><label for="cb-${k}"><span>${esc(t)}</span></label></li>`}).join("")}
-  </ul><p class="muted" style="margin-top:16px">Use "Week →" or "Jump to" to look ahead.</p></div><aside class="rail">${preCard()}</aside></div>`;
+  ${[["Install Git, VS Code and uv; create a GitHub account if you don't have one","pc0"],["Add the plan to Apple Calendar (link below) so 7 to 9 pm, Monday to Friday, is blocked for the next 11 weeks","pc1"],["Look through the Plan tab to see where the head start leads","pc2"]].map(([t,k])=>{const on=!!state.done[k];return `<li class="task${on?" done":""}"><input type="checkbox" id="cb-${k}" data-key="${k}" ${on?"checked":""}><label for="cb-${k}"><span>${esc(t)}</span></label></li>`}).join("")}
+  </ul><p class="muted" style="margin-top:16px">Use "Week →" or "Jump to" to look ahead.</p>${calCard()}</div><aside class="rail">${preCard()}</aside></div>`;
 }
 
 /* ---- PLAN ---- */
