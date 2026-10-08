@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Day-by-day PhD workplan: digital twin validation for fusion components (Swansea University and UKAEA), October 2026 to December 2030.">
+<meta name="description" content="Day-by-day PhD workplan: validating digital twins of fusion breeding blankets (Swansea University and UKAEA), October 2026 to December 2030.">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -136,6 +136,7 @@ details.week .wbody{padding:14px;display:flex;flex-direction:column;gap:10px}
 /* lectures */
 .lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .lec h3{font-size:19px;font-weight:700;margin-top:6px}
+.lec .chip{white-space:normal;max-width:100%}
 .lec ul{margin:8px 0 0;padding-left:18px}
 .lec .stamps{margin-top:10px;font-size:13.5px}
 .lec .stamps div{display:grid;grid-template-columns:58px 1fr;gap:8px}
@@ -170,7 +171,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
       <button role="tab" data-tab="today" aria-selected="true">Today</button>
       <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
       <button role="tab" data-tab="milestones" aria-selected="false">Milestones</button>
-      <button role="tab" data-tab="conferences" aria-selected="false">Conferences</button>
+      <button role="tab" data-tab="conferences" aria-selected="false">Events</button>
       <button role="tab" data-tab="lectures" aria-selected="false">Lectures</button>
       <button role="tab" data-tab="library" aria-selected="false">Library</button>
       <button role="tab" data-tab="project" aria-selected="false">Project</button>
@@ -194,7 +195,20 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 const LIB = {
   // Fusion context
   "iter":        {g:"Fusion context", k:"Website", t:"ITER Organization: what ITER is and how a tokamak works", u:"https://www.iter.org/"},
-  "iter-div":    {g:"Fusion context", k:"Website", t:"ITER divertor: the component that takes the highest heat loads", u:"https://www.iter.org/machine/divertor"},
+  "iter-div":    {g:"Fusion context", k:"Website", t:"ITER divertor (background: the other high-heat-flux component)", u:"https://www.iter.org/machine/divertor"},
+  "iter-bb":     {g:"Breeding blankets", k:"Website", t:"ITER blanket: first wall and shield modules", u:"https://www.iter.org/machine/blanket"},
+  "iter-tb":     {g:"Breeding blankets", k:"Website", t:"ITER tritium breeding and the Test Blanket Module programme", u:"https://www.iter.org/machine/supporting-systems/tritium-breeding"},
+  "eu-hcll":     {g:"Breeding blankets", k:"Paper (free)", t:"Aubert et al.: Status of the EU DEMO HCLL breeding blanket design and R&D (EUROfusion preprint)", u:"https://scipub.euro-fusion.org/wp-content/uploads/eurofusion/WPBBCPR17_17516_submitted-4.pdf"},
+  "step-bb":     {g:"Breeding blankets", k:"Paper", t:"UKAEA: Encapsulated fuel breeder blanket concept for STEP", u:"https://scientific-publications.ukaea.uk/papers/encapsulated-fuel-breeder-blanket/"},
+  "step-tbr":    {g:"Breeding blankets", k:"Paper (free)", t:"Fusing together an outline design for sustained fuelling and tritium self-sufficiency (STEP)", u:"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11423675/"},
+  "mhd":         {g:"Breeding blankets", k:"Paper", t:"Smolentsev et al.: MHD flow in liquid metal blankets, major design issues", u:"https://impact.ornl.gov/en/publications/mhd-flow-in-liquid-metal-blankets-major-design-issues-mhd-guideli/"},
+  "chimera-fac": {g:"Breeding blankets", k:"Facility", t:"CHIMERA: UKAEA rig for blanket-size modules under heat + magnetic field (EUROfusion news)", u:"https://euro-fusion.org/member-news/chimera-to-transform-fusion-component-testing/"},
+  "chimera-vr":  {g:"Breeding blankets", k:"Paper", t:"CHIMERA facility development programme and virtual results (UKAEA)", u:"https://scientific-publications.ukaea.uk/papers/chimera-facility-development-programme-and-virtual-results/"},
+  "librti":      {g:"Breeding blankets", k:"News", t:"UKAEA LIBRTI: £200m tritium breeding testbed with a 14 MeV neutron source", u:"https://www.ukaea.org/news/multi-million-pound-investment-to-fast-track-fusion-fuel-development/"},
+  "openmc":      {g:"Breeding blankets", k:"Software", t:"OpenMC: Monte Carlo neutronics (nuclear heating and tritium breeding ratio)", u:"https://docs.openmc.org/en/stable/"},
+  "nwork":       {g:"Breeding blankets", k:"Tutorial", t:"Fusion neutronics workshop (OpenMC tasks: heating, TBR, shielding)", u:"https://github.com/fusion-energy/neutronics-workshop"},
+  "cardinal":    {g:"Breeding blankets", k:"Software", t:"Cardinal (ANL): couples OpenMC and NekRS CFD to MOOSE; has fusion blanket examples", u:"https://cardinal.cels.anl.gov/"},
+  "moose-ns":    {g:"Breeding blankets", k:"Docs", t:"MOOSE Navier-Stokes module (coolant and breeder flow)", u:"https://mooseframework.inl.gov/modules/navier_stokes/index.html"},
   "step":        {g:"Fusion context", k:"Website", t:"UKAEA STEP: the UK prototype fusion power plant", u:"https://www.ukaea.org/work/step/"},
   "euro":        {g:"Fusion context", k:"Website", t:"EUROfusion: European fusion roadmap and materials", u:"https://www.euro-fusion.org/"},
   "plasma-ocw":  {g:"Fusion context", k:"Course", t:"MIT OCW 22.611J Introduction to Plasma Physics I (lecture notes)", u:"https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2006/"},
@@ -202,7 +216,7 @@ const LIB = {
   "hive-paper":  {g:"Fusion context", k:"Paper", t:"Testing advanced divertor concepts using a small high heat flux facility (UKAEA)", u:"https://scientific-publications.ukaea.uk/papers/testing-advanced-divertor-concepts-for-fusion-power-plants-using-a-small-high-heat-flux-facility/"},
   "hive-castell":{g:"Fusion context", k:"Paper", t:"Impact of first-wall armour castellations on induction heating efficiency in HIVE", u:"https://scientific-publications.ukaea.uk/papers/characterising-the-impact-of-first-wall-armor-castellations-on-the-efficiency-of-induction-heating-during-high-heat-flux-testing-in-the-hive-facility/"},
   "chimera":     {g:"Fusion context", k:"Paper", t:"Towards a fusion component digital twin: virtual test and monitoring in CHIMERA", u:"https://scientific-publications.ukaea.uk/papers/towards-a-fusion-component-digital-twin-virtual-test-and-monitoring-of-components-in-chimera-by-systems-simulation/"},
-  "ukaea-pubs":  {g:"Fusion context", k:"Database", t:"UKAEA scientific publications (search: HIVE, monoblock, digital twin, validation)", u:"https://scientific-publications.ukaea.uk/"},
+  "ukaea-pubs":  {g:"Fusion context", k:"Database", t:"UKAEA scientific publications (search: breeding blanket, HIVE, CHIMERA, digital twin, validation)", u:"https://scientific-publications.ukaea.uk/"},
   "flf":         {g:"Fusion context", k:"News", t:"Lloyd Fletcher's Future Leaders Fellowship: Computer Aided Validation (CAV)", u:"https://www.ukaea.org/news/future-leaders-fellowship-awarded-to-ukaeas-dr-lloyd-fletcher/"},
 
   // FEM and simulation
@@ -372,21 +386,21 @@ wk("Tools and first UKAEA contact", "Get every tool and account working, and mee
 ], ["scw","missing","git","flf","pyvale","vitae"], "Accounts working; first pyvale example runs");
 
 /* ---------- PHASE B: Foundations (Jan to Jul 2027) ---------- */
-wk("Fusion engineering context I", "Understand why fusion components need validated digital twins.", [
-  "Read the ITER pages on how a tokamak works and where heat ends up",
-  "Read about the divertor: heat fluxes of 10-20 MW/m², tungsten monoblocks on CuCrZr pipes",
-  "Read about STEP and what UKAEA needs from simulation and testing",
-  "Read the two HIVE papers: how induction heating tests components, what is measured",
-  "Write 2 pages: 'Thermal and mechanical problems in fusion components' + start a glossary"
-], ["iter","iter-div","step","hive","hive-paper","hive-castell"], "2-page fusion context note + glossary");
+wk("Fusion engineering context I: breeding blankets", "Understand what a breeding blanket does and why it needs a validated digital twin.", [
+  "Read the ITER pages on the tokamak, the blanket and tritium breeding: the three jobs of a blanket (breed tritium, extract heat, shield)",
+  "Read the EU DEMO HCLL status paper: EUROFER structure, PbLi breeder, coolant, first wall; note the main loads and failure modes",
+  "Read the STEP blanket and tritium self-sufficiency papers: what UKAEA is designing now",
+  "Read about HIVE and CHIMERA: how blanket and first-wall mock-ups are tested with heat (and magnetic field), what is measured",
+  "Write 2 pages: 'Thermal, mechanical and flow problems in breeding blankets' + start a glossary (TBR, WCLL, HCPB, EUROFER, MHD)"
+], ["iter-bb","iter-tb","eu-hcll","step-bb","step-tbr","hive","chimera-fac","chimera-vr"], "2-page blanket context note + glossary");
 
 wk("Fusion context II and digital twins", "Learn the digital-twin vocabulary and UKAEA's direction.", [
-  "Skim MIT 22.611J notes, lectures 1-2 (only the physical picture, skip heavy derivations)",
+  "Neutronics basics: run the first tasks of the fusion neutronics workshop (OpenMC) to see how nuclear heating and TBR are computed",
   "Read the CHIMERA digital-twin paper; list what it validates and how",
   "Read the NASEM 2024 digital twin report summary and the VVUQ chapter",
   "Read Thelen et al. Part 1 (digital twin review): definitions and architecture",
   "Supervision: present a 10-slide summary of what you learned and 3 open questions"
-], ["plasma-ocw","chimera","nas-dt","thelen"], "10-slide context talk given");
+], ["nwork","openmc","chimera","nas-dt","thelen","librti"], "10-slide context talk given");
 
 wk("FEM for heat transfer I", "Rebuild FEM basics from your supervisor's own book.", [
   "Lewis, Nithiarasu & Seetharamu ch. 1-2: weighted residuals, weak form",
@@ -420,13 +434,13 @@ wk("MOOSE I", "Get productive in the code UKAEA uses.", [
   "Weekly log; push inputs and plots to GitHub"
 ], ["moose","moose-ws","moose-ht","moose-gh"], "Same problem solved in MOOSE and FEniCSx, results match");
 
-wk("MOOSE II: monoblock model", "Build the first fusion-relevant model.", [
+wk("MOOSE II: blanket unit-cell model", "Build the first blanket-relevant model.", [
   "Solid mechanics module: thermal expansion example",
   "Thermo-mechanical coupling in MOOSE; run a coupled example from the test folder",
-  "Build a simple tungsten monoblock + CuCrZr pipe geometry in Gmsh",
-  "Run steady heat flux (10 MW/m²) with coolant convection; check energy balance",
+  "Build a simple first-wall / breeding-zone unit cell in Gmsh: EUROFER structure, cooling channels, breeder region",
+  "Run surface heat flux on the first wall (about 0.5 MW/m²) plus volumetric nuclear heating, with coolant convection; check energy balance",
   "Use mooseherder to sweep heat flux and coolant HTC; plot peak temperature"
-], ["moose-sm","herder","moose-gh"], "Monoblock thermo-mechanical model runs");
+], ["moose-sm","herder","moose-gh","eu-hcll"], "Blanket unit-cell thermo-mechanical model runs");
 
 wk("Verification and validation I", "Learn the language of V&V properly.", [
   "Oberkampf & Roy ch. 1-2: terms, the V&V framework",
@@ -445,9 +459,9 @@ wk("Confirmation of candidature: drafting", "Turn what you know into a research 
 ], ["sw-cand","fse-pgr","oberkampf"], "Confirmation draft sent");
 
 wk("Verification II and confirmation submission", "Code and solution verification; submit confirmation.", [
-  "Code verification of your MOOSE monoblock with MMS",
+  "Code verification of your MOOSE blanket unit cell with MMS",
   "Solution verification: Richardson extrapolation and the Grid Convergence Index (GCI)",
-  "Apply GCI to monoblock peak temperature and peak stress",
+  "Apply GCI to peak EUROFER temperature and peak stress in the unit cell",
   "Make supervisor edits; submit confirmation of candidature in e:Vision",
   "Weekly log"
 ], ["oberkampf","asme-vv20","moose"], "Confirmation submitted");
@@ -462,13 +476,13 @@ wk("Uncertainty quantification I", "Separate aleatoric and epistemic uncertainty
   "Weekly log"
 ], ["sullivan","hull-w"], "Monte Carlo propagation notebook");
 
-wk("Uncertainty quantification II", "Surrogates and sensitivity on the monoblock.", [
+wk("Uncertainty quantification II", "Surrogates and sensitivity on the blanket unit cell.", [
   "chaospy tutorial: polynomial chaos expansion on a toy model",
   "SALib tutorial: Sobol indices",
-  "Sobol analysis on the monoblock via mooseherder (k, HTC, heat flux, emissivity)",
+  "Sobol analysis on the unit cell via mooseherder (conductivity, coolant HTC, surface flux, nuclear heating scale)",
   "Interpret first-order and total indices; which inputs matter",
   "Supervision: show the Sobol results"
-], ["chaospy","salib","herder"], "Sobol sensitivity of monoblock");
+], ["chaospy","salib","herder"], "Sobol sensitivity of blanket unit cell");
 
 wk("Bayesian inference", "Learn to infer model parameters from noisy data.", [
   "Murphy (PML book 1): Bayesian statistics chapter",
@@ -497,10 +511,10 @@ wk("Gaussian processes I", "Your main surrogate and uncertainty tool.", [
 wk("Gaussian processes II and probabilistic prediction", "Kernels, model selection, scoring.", [
   "GPML ch. 4-5: kernels and model selection",
   "Watch Lecture L2 (Hüllermeier part 2: scoring rules, GPs, conformal prediction)",
-  "Build a GP surrogate of the MOOSE monoblock (inputs: k, HTC, flux; output: peak T)",
+  "Build a GP surrogate of the MOOSE unit cell (inputs: k, HTC, surface flux, nuclear heating; output: peak EUROFER temperature)",
   "Try gpCAM to choose the next simulation where uncertainty is highest",
   "Supervision: GP surrogate accuracy and uncertainty plots"
-], ["gpml","gpcam-gh","gpytorch"], "GP surrogate of monoblock with active learning");
+], ["gpml","gpcam-gh","gpytorch"], "GP surrogate of blanket unit cell with active learning");
 
 wk("Experimental data and sensors", "Learn what real measurements look like and how they mislead.", [
   "pyvale SensorSim user guide",
@@ -560,28 +574,28 @@ wk("6-month review", "Show solid progress at the interim review.", [
 
 /* ---------- PHASE C: Study 1, physics model + experimental data (Jul 2027 to Dec 2027) ---------- */
 wk("Study 1 plan and UKAEA data", "Fix the benchmark and get real data.", [
-  "Write the Study 1 specification: HIVE-type test article, outputs, metrics",
+  "Write the Study 1 specification: a blanket / first-wall mock-up tested in HIVE (or CHIMERA when available), outputs, metrics",
   "Write a data management plan (folders, formats, versioning, backups)",
-  "Meeting or visit with Lloyd Fletcher: which HIVE datasets exist (thermocouples, IR, DIC), geometry, materials",
+  "Meeting or visit with Lloyd Fletcher: which blanket or first-wall mock-up datasets exist (HIVE, CHIMERA commissioning, LIBRTI), sensors, geometry, materials",
   "Sort data-sharing agreement / NDA with UKAEA through supervisors",
   "Finalise the Study 1 plan with supervisors"
-], ["hive","hive-paper","pyvale"], "Study 1 plan + data request agreed");
+], ["hive","chimera-fac","librti","pyvale"], "Study 1 plan + data request agreed");
 
 wk("Study 1: geometry and materials", "Build the model of the real test article.", [
   "Build geometry from UKAEA drawings in Gmsh; check dimensions",
-  "Collect temperature-dependent properties for tungsten and CuCrZr with their uncertainty ranges",
+  "Collect temperature-dependent properties for EUROFER97, the breeder (PbLi or ceramic pebble bed) and any armour, with uncertainty ranges",
   "Mesh study set-up: 3 mesh levels",
   "First steady run; check energy balance",
   "Weekly log"
 ], ["moose","herder","lewis"], "Test-article model built");
 
 wk("Study 1: boundary conditions", "Model induction heating and coolant correctly.", [
-  "Represent induction heating as a heat flux map; read the HIVE castellation paper again",
+  "Represent the test heating (induction in HIVE, infrared heaters in CHIMERA) as a heat flux map; note that tests cannot reproduce nuclear volumetric heating",
   "Coolant convection: Gnielinski / Sieder-Tate correlations and their scatter",
   "List every boundary condition with its uncertainty (value + range + source)",
   "Run the transient heating pulse case",
   "Supervision: review the uncertainty list"
-], ["hive-castell","lewis","moose-ht"], "Input uncertainty table");
+], ["hive-castell","chimera-vr","lewis","moose-ht"], "Input uncertainty table");
 
 wk("Study 1: verification", "Show numerical error is small and known.", [
   "Run transient thermal + thermo-mechanical on 3 meshes",
@@ -646,7 +660,7 @@ wk("Study 1: sensor design study", "How do the sensors change what we learn?", [
   "Use pyvale to vary sensor count, position error and noise",
   "Repeat the calibration for each sensor set-up (emulator makes it cheap)",
   "Plot posterior width versus sensor configuration",
-  "Write recommendations for HIVE instrumentation",
+  "Write recommendations for instrumenting blanket mock-ups (HIVE/CHIMERA)",
   "Share findings with Lloyd Fletcher"
 ], ["pyvale","pyvale-gh"], "Sensor design results");
 
@@ -658,8 +672,8 @@ wk("Study 1: predictive validation", "Test the calibrated model on new condition
   "Supervision"
 ], ["koh","conformal"], "Predictive validation done");
 
-wk("Study 1: uncertainty to stress and lifetime", "Carry input and calibration uncertainty through to the quantities engineers care about.", [
-  "Propagate the posterior through the thermo-mechanical model (stress, strain range)",
+wk("Study 1: from test to reactor conditions", "Carry calibrated uncertainty to reactor conditions: add nuclear heating the test could not reproduce.", [
+  "Add OpenMC nuclear heating to the calibrated model (test conditions to reactor conditions); propagate the posterior to stress and strain range",
   "Rank uncertainty sources by their effect on peak stress (variance decomposition)",
   "Compare prior-only versus calibrated predictions: how much did the experiment help?",
   "Make a figure: uncertainty budget before and after calibration",
@@ -667,7 +681,7 @@ wk("Study 1: uncertainty to stress and lifetime", "Carry input and calibration u
 ], ["koh","salib","moose-sm"], "Uncertainty budget for stress");
 
 wk("Study 1: repeatability and a second test", "Check the conclusions hold on another experiment.", [
-  "Repeat the pipeline on a second HIVE test (different sample or pulse)",
+  "Repeat the pipeline on a second test (different mock-up, heat load or coolant condition)",
   "Compare posteriors: are calibrated values consistent between tests?",
   "If not consistent, find the cause (boundary conditions, sensors, physics)",
   "Write a short note on what changed",
@@ -757,8 +771,8 @@ wk("FNO surrogate", "Compare with Fourier Neural Operator.", [
   "Weekly log"
 ], ["fno","neuralop"], "FNO results");
 
-wk("PINN for the monoblock", "Physics inside the network.", [
-  "Transient heat PINN on the monoblock cross-section",
+wk("PINN for the blanket unit cell", "Physics inside the network.", [
+  "Transient heat PINN on the unit-cell cross-section (surface flux + volumetric heating)",
   "Data-free versus data-assisted PINN",
   "Inverse PINN: infer HTC from sensor data",
   "Compare cost and accuracy to FEM",
@@ -790,7 +804,7 @@ wk("Calibration of AI uncertainty", "Are the error bars right?", [
 ], ["guo","conformal"], "Calibration results");
 
 wk("Synthetic-to-real test", "The core question: do synthetic-trained models work on real data?", [
-  "Evaluate every synthetic-trained model on HIVE measurements",
+  "Evaluate every synthetic-trained model on the blanket mock-up measurements",
   "Quantify the gap (error, coverage, calibration)",
   "Find where and why each model fails",
   "Compare with the calibrated physics model from Study 1",
@@ -825,19 +839,19 @@ wk("Unified comparison", "Physics vs AI on one scoreboard.", [
 
 wk("Out-of-distribution tests", "Where does AI break?", [
   "Extrapolate to higher heat flux",
-  "Change geometry (castellation size)",
+  "Change geometry (channel pitch or first-wall thickness) and nuclear heating level",
   "Change material property",
   "Summarise failure modes and warning signs",
   "Supervision"
 ], ["hull-w","abdar"], "OOD study");
 
-wk("UKAEA visit: data campaign I", "Collect targeted validation data, if a HIVE slot is available.", [
+wk("UKAEA visit: data campaign I", "Collect targeted validation data on a blanket mock-up, if a HIVE or CHIMERA slot is available.", [
   "Travel to UKAEA; safety induction",
   "Use the Study 1 posterior to choose the most informative test conditions",
   "Help set up sensors (thermocouples, IR camera, DIC)",
   "Run tests; keep a lab notebook",
   "Back up all raw data the same day"
-], ["hive","pyvale","idics"], "New HIVE data collected");
+], ["hive","chimera-fac","pyvale","idics"], "New test data collected");
 
 wk("UKAEA visit: data campaign II", "Finish tests and process data.", [
   "Finish testing",
@@ -912,7 +926,7 @@ wk("Study 3 scoping", "When is physics essential, when is data enough, and how t
   "Write Study 3 questions and hypotheses",
   "List hybrid methods: KOH discrepancy, residual NN, multi-fidelity, physics-constrained NN",
   "Define the decision criteria (data amount, extrapolation, cost, confidence needed)",
-  "Plan two case studies: the monoblock (thermo-mechanical) and a coolant channel (thermofluid)",
+  "Plan two case studies: the blanket unit cell (thermo-mechanical) and blanket cooling / breeder flow (thermofluid, with MHD if PbLi)",
   "Supervision"
 ], ["willard","kapteyn"], "Study 3 plan");
 
@@ -983,7 +997,7 @@ wk("Active learning and experiment design", "Choose the next test or sensor for 
 wk("Active learning results", "How much data does smart selection save?", [
   "Run active learning campaigns",
   "Plot error versus number of experiments",
-  "Recommend a strategy for HIVE testing",
+  "Recommend a test strategy for blanket mock-ups (HIVE, CHIMERA, LIBRTI)",
   "Share with Lloyd Fletcher",
   "Weekly log"
 ], ["gpcam"], "Active learning results");
@@ -991,18 +1005,18 @@ wk("Active learning results", "How much data does smart selection save?", [
 wk("Decision framework draft", "Guidance for engineers: physics, data, or hybrid?", [
   "Write the decision criteria with evidence from Studies 1-3",
   "Make a flowchart",
-  "Test it on the monoblock case",
+  "Test it on the blanket unit-cell case",
   "Ask supervisors and Lloyd to challenge it",
   "Supervision"
 ], ["nas-dt","kapteyn"], "Framework draft");
 
 wk("Thermofluid case: set-up", "Second case to test the framework.", [
-  "Define a coolant channel / pipe case with heating",
-  "Set up MOOSE thermal-hydraulics or Navier-Stokes model",
+  "Define the thermofluid case: water or helium cooling channels in the breeding zone, or PbLi breeder flow (read the MHD design-issues paper)",
+  "Set up the MOOSE Navier-Stokes model (Cardinal/NekRS if high-fidelity CFD is needed); conjugate heat transfer with EUROFER",
   "Verification (mesh, time step)",
   "Collect validation data (UKAEA or literature)",
   "Weekly log"
-], ["moose","zienk"], "Thermofluid model");
+], ["moose-ns","cardinal","mhd","zienk"], "Thermofluid blanket model");
 
 wk("Thermofluid case: runs", "Generate data.", [
   "Run the sampling campaign on HPC",
@@ -1113,7 +1127,7 @@ wk("Software release", "Make your work reusable.", [
 leave("Easter leave");
 
 wk("Integrated digital-twin demo I", "Show physics + AI + data working together.", [
-  "Design an end-to-end demo on the HIVE case",
+  "Design an end-to-end demo on the blanket mock-up case",
   "Connect calibrated model, surrogate and sensor stream",
   "Bayesian updating as new data arrives",
   "Test",
@@ -1374,7 +1388,7 @@ const MILESTONES = [
   {w:49, d:2, t:"Paper 1 submitted", k:"paper"},
   {w:54, d:4, t:"Synthetic dataset (about 2,000 runs) complete", k:"research"},
   {w:63, d:4, t:"Synthetic-to-real gap measured", k:"research"},
-  {w:69, d:1, t:"UKAEA HIVE data campaign", k:"research"},
+  {w:69, d:1, t:"UKAEA blanket mock-up data campaign (HIVE/CHIMERA)", k:"research"},
   {w:77, d:3, t:"18-month review", k:"review"},
   {w:81, d:2, t:"Paper 2 submitted", k:"paper"},
   {w:87, d:1, t:"Conference talk (Paper 2)", k:"paper"},
@@ -1509,10 +1523,10 @@ wk("Head start 10: PINNs hands-on", "Physics-informed neural networks from scrat
 wk("Head start 11: Gaussian processes and wrap-up", "The surrogate you will use most, then a light Christmas week.", [
   "scikit-learn GP regression guide; build a GP surrogate of your heat solver",
   "Compare GP and deep-ensemble uncertainty: where is each one confident or not?",
-  "Read the two HIVE papers: a preview of your project's experiments",
+  "Read the EU DEMO HCLL blanket paper and the CHIMERA facility paper: a preview of your component and its tests",
   "Write a 2-page 'what I learned this autumn'; push the repo; this is your first meeting material in January",
   "Rest"
-], ["sk-gp","gpml","hive-paper","hive-castell"], "GP surrogate + 2-page autumn summary");
+], ["sk-gp","gpml","eu-hcll","chimera-vr"], "GP surrogate + 2-page autumn summary");
 
 wk("Travel and arrival", "Get to Swansea calm and prepared. Your PhD starts Monday 4 January.", [
   "Document check: passport, eVisa share code, CAS, offer and scholarship letters, ATAS certificate",
@@ -1538,17 +1552,17 @@ const PROJECT_HTML = `
 <p>Funded by FOSTER (UKAEA's Fusion Opportunities in Skills, Training, Education and Research programme) and the Faculty of Science and Engineering. Based at Bay Campus in the Zienkiewicz Institute for Modelling, Data and AI.</p>
 
 <h2>The project in plain words</h2>
-<p>A fusion power plant has parts, such as the divertor, that take heat loads of 10 to 20 MW/m². Engineers want "digital twins" of these parts: computer models that stay in step with the real part and can be trusted to predict its temperature, stress and lifetime. There are three ways to build the model inside a twin:</p>
+<p>Your component is the <b>breeding blanket</b>: the layer around the plasma that breeds tritium from lithium, removes the heat for electricity, and shields the magnets. It carries a surface heat flux on its first wall, strong volumetric nuclear heating, coolant (water or helium) and, in some designs, liquid lithium-lead flowing in a magnetic field. Engineers want "digital twins" of blankets: computer models that stay in step with the real part and can be trusted to predict its temperature, stress and lifetime. There are three ways to build the model inside a twin:</p>
 <ul>
 <li><b>Physics-based models</b> (finite elements in MOOSE): reliable when the inputs are right, but slow, and the inputs (material data, boundary conditions) are uncertain.</li>
-<li><b>Experimental data</b> (thermocouples, infrared cameras, digital image correlation in rigs like HIVE): real, but noisy, sparse and expensive.</li>
+<li><b>Experimental data</b> (thermocouples, infrared cameras, digital image correlation in rigs like HIVE and CHIMERA, and LIBRTI for breeding): real, but noisy, sparse and expensive. No test can fully reproduce reactor conditions, which is exactly why validated models matter.</li>
 <li><b>AI models</b>: fast, but most are trained on synthetic simulation data, and nobody has properly tested how well they hold up on real measurements.</li>
 </ul>
 <p>Your job is to measure, with honest uncertainty, what each approach can and cannot do, and to show when physics is essential, when data is enough, and how to combine them.</p>
 
 <h2>Research questions</h2>
 <div class="rq">
-<div class="card"><div class="eyebrow">RQ1 · Study 1 · 2027</div><h3>What uncertainty comes from bringing experimental data into a physics-based model?</h3><p class="muted" style="margin:6px 0 0">Bayesian calibration (Kennedy-O'Hagan) of a MOOSE thermo-mechanical model of a HIVE test article against thermocouple, IR and DIC data. Verification (GCI), ASME V&V 20 validation, Sobol sensitivity, sensor design with pyvale. Output: Paper 1, thesis Chapter 4.</p></div>
+<div class="card"><div class="eyebrow">RQ1 · Study 1 · 2027</div><h3>What uncertainty comes from bringing experimental data into a physics-based model?</h3><p class="muted" style="margin:6px 0 0">Bayesian calibration (Kennedy-O'Hagan) of a MOOSE thermo-mechanical model of a blanket / first-wall mock-up tested at UKAEA against thermocouple, IR and DIC data. Verification (GCI), ASME V&V 20 validation, Sobol sensitivity, sensor design with pyvale. Output: Paper 1, thesis Chapter 4.</p></div>
 <div class="card"><div class="eyebrow">RQ2 · Study 2 · 2028</div><h3>Can AI replace the physics model, when trained on synthetic data or on experimental data?</h3><p class="muted" style="margin:6px 0 0">GPs, deep ensembles, DeepONet, FNO and PINNs, trained on about 2,000 MOOSE runs and on real HIVE data. Test the synthetic-to-real gap, calibration (NLL, CRPS, coverage, conformal), out-of-distribution failure and transfer learning. Output: Paper 2, Chapter 5.</p></div>
 <div class="card"><div class="eyebrow">RQ3 · Study 3 · late 2028 to 2029</div><h3>When is physics essential, when is data enough, and how should they be combined?</h3><p class="muted" style="margin:6px 0 0">Hybrid methods (GP discrepancy, residual networks, multi-fidelity, PINNs with real data), active learning for tests and sensors (gpCAM, pyvale), a decision framework tested on a thermo-mechanical and a thermofluid case, and an integrated twin demo. Output: Paper 3, Chapters 6 and 7.</p></div>
 </div>
@@ -1573,7 +1587,7 @@ const PROJECT_HTML = `
 <tbody>
 <tr><td><a href="https://www.swansea.ac.uk/staff/engineering/nithiarasu-p/" target="_blank" rel="noopener">Prof. Perumal Nithiarasu</a></td><td>Primary supervisor; Associate Dean (Research, Innovation and Impact)</td><td>Direction, FEM and modelling, big decisions. Short, clear emails with one question.</td></tr>
 <tr><td><a href="https://www.swansea.ac.uk/staff/alberto.coccarelli/" target="_blank" rel="noopener">Dr Alberto Coccarelli</a></td><td>Second supervisor</td><td>Day-to-day modelling questions, code, drafts.</td></tr>
-<tr><td>Dr Lloyd Fletcher (UKAEA)</td><td>Industrial supervisor; leads Computer Aided Validation (Future Leaders Fellowship)</td><td>HIVE data, pyvale, sensors, what UKAEA needs.</td></tr>
+<tr><td>Dr Lloyd Fletcher (UKAEA)</td><td>Industrial supervisor; leads Computer Aided Validation (Future Leaders Fellowship)</td><td>Blanket test data (HIVE, CHIMERA, LIBRTI), pyvale, sensors, what UKAEA needs.</td></tr>
 <tr><td>Zoë Perry</td><td>FSE PGR Support Manager</td><td>Reviews, forms, leave, admin (pgr-scienceengineering@swansea.ac.uk).</td></tr>
 </tbody></table></div>
 
@@ -1590,8 +1604,8 @@ const PROJECT_HTML = `
 <div class="table-wrap"><table>
 <thead><tr><th>Risk</th><th>Early sign</th><th>Plan B</th></tr></thead>
 <tbody>
-<tr><td>HIVE data is late or limited</td><td>No data agreement by Aug 2027</td><td>Start Study 1 with published UKAEA cases and pyvale synthetic "experiments"; ask Lloyd for any past test data.</td></tr>
-<tr><td>MOOSE learning curve</td><td>Monoblock model not running by mid-March 2027</td><td>Keep FEniCSx as a backup solver; ask the MOOSE discussion forum; pair with someone in the CAV team.</td></tr>
+<tr><td>Blanket mock-up test data is late or limited (CHIMERA and LIBRTI are new facilities)</td><td>No data agreement by Aug 2027</td><td>Start Study 1 with published UKAEA cases and pyvale synthetic "experiments"; ask Lloyd for any past test data.</td></tr>
+<tr><td>MOOSE learning curve</td><td>Blanket unit-cell model not running by mid-March 2027</td><td>Keep FEniCSx as a backup solver; ask the MOOSE discussion forum; pair with someone in the CAV team.</td></tr>
 <tr><td>HPC queue or quota</td><td>Synthetic campaign behind by 2 weeks</td><td>Use the GP emulator earlier; reduce the design with active learning.</td></tr>
 <tr><td>Slow supervisor feedback</td><td>No reply in 10 working days</td><td>One short follow-up, then ask for a 15-minute call; send drafts to Dr Coccarelli first.</td></tr>
 <tr><td>Paper rejection</td><td>Reviews ask for major new work</td><td>Use the buffer weeks; keep the thesis timeline independent of acceptance.</td></tr>
@@ -1671,9 +1685,9 @@ const CONF = [
    u:"https://www.fz-juelich.de/de/ifn/ifn-1/aktuelles/tagungen/34th-symposium-on-fusion-technology-soft-2026",
    why:"Europe's main fusion engineering meeting, and where UKAEA and EUROfusion engineers present component testing, HIVE-type work and digital twins. Your best audience for Papers 1 and 2.",
    ed:[{y:2026,w:"21-25 Sep 2026",at:"Aix-en-Provence, France",s:"confirmed",note:"Before your start: follow the programme online"},{y:2028,w:"September 2028",at:"Europe (to be announced)",s:"expected"},{y:2030,w:"September 2030",at:"Europe (to be announced)",s:"expected"}]},
-  {id:"isfnt", f:"Fusion engineering", p:"Strong", n:"ISFNT: International Symposium on Fusion Nuclear Technology", cyc:"Every odd year, autumn, rotates Europe / Americas / Asia",
+  {id:"isfnt", f:"Fusion engineering", p:"Core", n:"ISFNT: International Symposium on Fusion Nuclear Technology", cyc:"Every odd year, autumn, rotates Europe / Americas / Asia",
    u:"https://isfnt-16.ornl.gov/",
-   why:"Blanket, divertor and plasma-facing component engineering; strong on thermo-mechanics and qualification, which is exactly your validation story.",
+   why:"The main meeting for breeding blankets: blanket design, tritium breeding, thermal-hydraulics, MHD and component qualification. For a blanket PhD this is a must.",
    ed:[{y:2027,w:"Autumn 2027",at:"To be announced (ISFNT-17)",s:"expected"},{y:2029,w:"Autumn 2029",at:"To be announced (ISFNT-18)",s:"expected"}]},
   {id:"sofe", f:"Fusion engineering", p:"Strong", n:"IEEE SOFE: Symposium on Fusion Engineering", cyc:"Every odd year, June, mostly USA",
    u:"https://ieee-npss.org/conferences/",
@@ -1685,7 +1699,7 @@ const CONF = [
    ed:[{y:2027,w:"4-9 Oct 2027",at:"Seoul, Republic of Korea",s:"confirmed"},{y:2029,w:"About autumn 2029",at:"To be announced",s:"expected"}]},
   {id:"psi", f:"Fusion engineering", p:"Optional", n:"PSI: Plasma-Surface Interactions in Controlled Fusion Devices", cyc:"Every even year, May/June",
    u:"https://ipp.mpg.de/psi27",
-   why:"Heat loads and materials at the plasma-facing surface: the source of the boundary conditions in your models. Useful reading of the proceedings even if you don't attend.",
+   why:"Plasma-facing surfaces and first-wall heat loads: where your blanket's surface boundary condition comes from. Read the proceedings; attending is optional for a blanket topic.",
    ed:[{y:2028,w:"May/June 2028",at:"To be announced (PSI-28)",s:"expected"},{y:2030,w:"May/June 2030",at:"To be announced",s:"expected"}]},
 
   // Computational mechanics
@@ -1754,9 +1768,9 @@ const CONF = [
 /* Recommended path: what to attend, and with what */
 const CONF_PLAN = [
   {y:2027, items:[
-    ["April", "ukacm", "Attend (poster if possible): first contact with the UK community; show your verified monoblock model"],
+    ["April", "ukacm", "Attend (poster if possible): first contact with the UK community; show your verified blanket unit-cell model"],
     ["May", "vvuq", "Optional: attend only if travel money allows; otherwise watch recorded talks"],
-    ["September", "bssm", "Present: first Study 1 validation results with HIVE data (Bristol, a short train ride)"],
+    ["September", "bssm", "Present: first Study 1 validation results on blanket mock-up data (Bristol, a short train ride)"],
     ["December", "ml4ps", "Optional: a 4-page workshop paper if early surrogate results are ready"]
   ]},
   {y:2028, items:[
@@ -1776,6 +1790,91 @@ const CONF_PLAN = [
     ["September", "soft", "After submission: present final results and meet employers for postdoc or industry roles"]
   ]}
 ];
+
+/* ===== US conferences (added to CONF) ===== */
+["sofe","vvuq","sem"].forEach(id=>{const c=CONF.find(x=>x.id===id); if(c) c.r="USA";});
+CONF.push(
+  {id:"tofe", r:"USA", f:"Fusion engineering", p:"Strong", n:"ANS TOFE: Technology of Fusion Energy", cyc:"Every 2 years, USA (sometimes inside the ANS Annual or Winter Meeting)",
+   u:"https://www.ans.org/meetings/",
+   why:"The American Nuclear Society's fusion technology meeting, with many blanket, tritium and neutronics sessions. A good US stage for your blanket validation work.",
+   ed:[{y:2028,w:"2028",at:"USA (to be announced)",s:"expected"},{y:2030,w:"2030",at:"USA (to be announced)",s:"expected"}]},
+  {id:"siamcse", r:"USA", f:"Computational mechanics", p:"Strong", n:"SIAM Conference on Computational Science and Engineering (CSE)", cyc:"Every odd year, February/March, USA or Europe",
+   u:"https://www.siam.org/conferences-events/",
+   why:"The biggest computational science meeting: scientific ML, UQ, surrogates, HPC. Many SciML and digital-twin mini-symposia.",
+   ed:[{y:2027,w:"22-26 Feb 2027",at:"Pittsburgh, USA",s:"confirmed",note:"Too early to present (your 8th week); watch recorded plenaries"},{y:2029,w:"Feb/Mar 2029",at:"To be announced",s:"expected"}]},
+  {id:"usnccm", r:"USA", f:"Computational mechanics", p:"Optional", n:"USNCCM: US National Congress on Computational Mechanics", cyc:"Every odd year, summer, USA",
+   u:"https://www.usacm.org/",
+   why:"The US computational mechanics congress, with strong UQ and scientific ML tracks. An alternative to UNCECOMP in 2029.",
+   ed:[{y:2027,w:"Summer 2027",at:"USA (to be announced)",s:"expected"},{y:2029,w:"Summer 2029",at:"USA (to be announced)",s:"expected"}]},
+  {id:"apsdpp", r:"USA", f:"Fusion engineering", p:"Optional", n:"APS Division of Plasma Physics Annual Meeting", cyc:"Every year, October/November, USA",
+   u:"https://www.aps.org/events",
+   why:"The US plasma physics meeting. Mostly physics, but useful for the fusion big picture and US fusion careers.",
+   ed:[{y:2027,w:"Oct/Nov 2027",at:"USA",s:"expected"},{y:2028,w:"Oct/Nov 2028",at:"USA",s:"expected"},{y:2029,w:"Oct/Nov 2029",at:"USA",s:"expected"}]},
+  {id:"imece", r:"USA", f:"Heat transfer and thermofluids", p:"Optional", n:"ASME IMECE: International Mechanical Engineering Congress", cyc:"Every year, November, USA",
+   u:"https://event.asme.org/IMECE",
+   why:"Large mechanical engineering congress with heat transfer and V&V tracks; easy to get a talk accepted.",
+   ed:[{y:2028,w:"November 2028",at:"USA",s:"expected"},{y:2029,w:"November 2029",at:"USA",s:"expected"}]}
+);
+
+/* ===== Summer schools, training courses and US talk series ===== */
+const SCHOOLS = [
+  // Summer schools
+  {t:"school", p:"Core", n:"Gaussian Process and Uncertainty Quantification Summer School", where:"Manchester or Sheffield, UK", when:"Every September (2026 edition: 14-16 Sep, Manchester)", u:"https://gpss.cc/",
+   why:"Three days of GP theory and practice with exercises. Exactly the surrogate and calibration methods of Studies 1 and 2.", go:"September 2027"},
+  {t:"school", p:"Core", n:"Karlsruhe International School on Fusion Technologies (KIT)", where:"Karlsruhe, Germany", when:"Every year, late Sep/early Oct (2026: 28 Sep to 2 Oct)", u:"https://summerschool.fusion.kit.edu",
+   why:"Fusion technology for early-career researchers, with lab visits. KIT leads EU blanket work (HCPB), so this is the best blanket school for you.", go:"Autumn 2027"},
+  {t:"school", p:"Strong", n:"Culham Plasma Physics Summer School (UKAEA)", where:"Culham, UK", when:"Every July, two weeks", u:"https://www.ukaea.org/service/culham-plasma-physics-summer-school/",
+   why:"Plasma physics basics and tours of UKAEA facilities, for first-year PhD students. Gives you the physics behind your blanket's heat and neutron loads.", go:"July 2027, if supervisors agree"},
+  {t:"school", p:"Strong", n:"Deep Learning Indaba", where:"An African host country", when:"Every August (2027 expected 15-20 Aug)", u:"https://deeplearningindaba.com/",
+   why:"Africa's leading ML school, with strong lecturers and travel support. Great for ML skills and for your network at home in Ghana and across Africa.", go:"August 2027 or 2028"},
+  {t:"school", p:"Strong", n:"Argonne Training Program on Extreme-Scale Computing (ATPESC)", where:"Chicago area, USA", when:"Every summer, two weeks; apply early in the year", u:"https://extremecomputingtraining.anl.gov/", us:true,
+   why:"Intensive HPC, numerical software and ML training at a US national lab; competitive, with most costs covered for those accepted (check eligibility for non-US students).", go:"Summer 2028 (apply around Feb 2028)"},
+  {t:"school", p:"Optional", n:"Gene Golub SIAM Summer School", where:"Changes every year", when:"Every summer, two weeks; topic changes", u:"https://www.siam.org/programs-initiatives/programs/gene-golub-siam-summer-school/",
+   why:"Funded school for PhD students; apply in a year when the topic is UQ, scientific ML or numerical PDEs.", go:"Check the topic each year"},
+  {t:"school", p:"Optional", n:"Oxford Machine Learning Summer School (OxML)", where:"Oxford, UK", when:"Every summer", u:"https://www.oxfordml.school/",
+   why:"Broad ML school close to home; useful if you want more deep learning depth before Study 2.", go:"Summer 2027"},
+  {t:"school", p:"Optional", n:"CISM Advanced Courses (e.g. Machine Learning for Solid Mechanics)", where:"Udine, Italy", when:"Several one-week courses a year", u:"https://cism.it/",
+   why:"Short advanced courses in mechanics by leading researchers; watch for ones on ML, UQ or thermo-mechanics.", go:"Any year with a matching course"},
+
+  // Training courses
+  {t:"course", p:"Core", n:"MOOSE workshop and tutorials (INL)", where:"Online materials; occasional in-person workshops", when:"Any time (self-paced)", u:"https://mooseframework.inl.gov/workshop/index.html",
+   why:"MOOSE is UKAEA's main code and your main solver. Do the workshop properly in your first two months.", go:"Feb to Mar 2027"},
+  {t:"course", p:"Core", n:"Supercomputing Wales training", where:"Swansea / online", when:"Throughout the year", u:"https://www.supercomputing.wales/",
+   why:"How to use the HPC you will run thousands of MOOSE jobs on.", go:"Jan to Mar 2027"},
+  {t:"course", p:"Core", n:"Swansea FSE PGR skills training", where:"Swansea", when:"Throughout the year", u:"https://hwb.swansea.ac.uk/fse/pgr/",
+   why:"Required and useful courses: research integrity, writing, presenting, teaching (for demonstrator work).", go:"Year 1, then as needed"},
+  {t:"course", p:"Strong", n:"ARCHER2 training (UK national HPC)", where:"Online, free", when:"Many short courses each month", u:"https://www.archer2.ac.uk/training/",
+   why:"Free, high-quality courses on parallel programming, Python performance and data management.", go:"Year 1 and 2"},
+  {t:"course", p:"Strong", n:"FuseNet (European Fusion Education Network)", where:"Europe", when:"PhD events and travel support through the year", u:"https://fusenet.eu/",
+   why:"PhD events, fusion education and support for travel to fusion schools; register as a member early.", go:"Register January 2027"},
+  {t:"course", p:"Optional", n:"NAFEMS training: simulation V&V and credibility", where:"Online / UK", when:"Throughout the year (paid)", u:"https://www.nafems.org/training/",
+   why:"Industry courses on V&V and simulation governance; useful when writing the decision framework.", go:"Year 3"},
+  {t:"course", p:"Optional", n:"OpenFOAM training (CFD Direct)", where:"Online / UK", when:"Throughout the year (paid)", u:"https://www.cfd.direct/openfoam/training/",
+   why:"Only if your thermofluid case in Study 3 moves to OpenFOAM instead of MOOSE.", go:"Late 2028 if needed"},
+  {t:"course", p:"Optional", n:"Alan Turing Institute Data Study Groups", where:"UK", when:"A few times a year, one week", u:"https://www.turing.ac.uk/collaborate-turing/data-study-groups",
+   why:"Work in a team on a real industry data problem for a week; good ML practice and CV value.", go:"Year 2"},
+
+  // US talk series (online, free)
+  {t:"talks", p:"Core", n:"Brown CRUNCH group: Machine Learning + X seminars", where:"Online (Brown University, Karniadakis group)", when:"Regular seminars; past talks on YouTube", u:"https://sites.brown.edu/crunch-group/", us:true,
+   why:"Talks on PINNs, DeepONet and scientific ML from the group that created them. Watch one a month during Study 2."},
+  {t:"talks", p:"Core", n:"PPPL Colloquium and Introduction to Fusion Energy course", where:"Online (Princeton Plasma Physics Laboratory)", when:"Wednesdays 4 pm US Eastern in term; recordings online", u:"https://www.youtube.com/@PPPLab", us:true,
+   why:"Fusion science and technology talks, including one on CHIMERA; PPPL's open intro course is a gentle way to fill plasma physics gaps."},
+  {t:"talks", p:"Strong", n:"IPAM (UCLA) workshop talks", where:"Online, YouTube", when:"Workshops all year; recordings online", u:"https://www.youtube.com/@IPAMUCLA", us:true,
+   why:"Where your Marcus Noack lecture came from: deep talks on UQ, GPs, scientific ML and digital twins."},
+  {t:"talks", p:"Strong", n:"ICERM (Brown) workshop talks", where:"Online, YouTube", when:"Workshops all year", u:"https://www.youtube.com/@ICERM", us:true,
+   why:"Mathematical talks on UQ, numerical PDEs and ML; useful for the theory chapter."},
+  {t:"talks", p:"Optional", n:"One World Seminar on the Mathematics of Machine Learning", where:"Online", when:"Regular seminars", u:"https://www.oneworldml.org/",
+   why:"Theory of ML from top researchers worldwide; for when you want depth beyond applications."}
+];
+
+CONF_PLAN.forEach(Y=>{
+  if(Y.y===2027){ Y.items.splice(2,0,["July","s:Culham Plasma Physics Summer School (UKAEA)","Optional: plasma physics basics and UKAEA facility tours"]);
+    Y.items.push(["September","s:Gaussian Process and Uncertainty Quantification Summer School","Attend: GP methods for your Study 1 emulator"]);
+    Y.items.push(["Late Sep / Oct","s:Karlsruhe International School on Fusion Technologies (KIT)","Attend: the best blanket-focused school"]);}
+  if(Y.y===2028){ Y.items.splice(2,0,["Summer","s:Argonne Training Program on Extreme-Scale Computing (ATPESC)","Apply in early 2028: HPC and ML training at a US national lab"]);
+    Y.items.push(["2028","tofe","Optional US talk: blanket validation results to the American fusion community"]);}
+  if(Y.y===2029){ Y.items.unshift(["Feb/Mar","siamcse","Present Study 2/3 scientific ML results (USA or Europe)"]);}
+});
 
 </script>
 <script>
@@ -2058,20 +2157,34 @@ function renderLibrary(){
   $("#libg").addEventListener("change",e=>{libGroup=e.target.value; renderLibrary()});
 }
 
-/* ---- CONFERENCES ---- */
+/* ---- EVENTS: conferences, schools, courses, US talks ---- */
+const MONTH_ORDER={"Feb/Mar":2.5,"April":4,"Spring":4.5,"May":5,"June":6,"July":7,"Summer":7.5,"August":8,"September":9,"Late Sep / Oct":9.6,"Autumn":10,"2028":11,"December":12};
 function renderConferences(){
   const el=$("#tab-conferences"); const by={}; CONF.forEach(c=>by[c.id]=c);
   const fields=[...new Set(CONF.map(c=>c.f))];
   const pill=s=>`<span class="chip" style="${s==="confirmed"?"background:color-mix(in srgb,var(--ok) 18%,var(--surface));":""}">${s==="confirmed"?"Confirmed":"Expected"}</span>`;
   const pr=p=>`<span class="chip" style="${p==="Core"?"background:var(--ink);color:var(--bg)":p==="Strong"?"background:color-mix(in srgb,var(--ember) 20%,var(--surface))":""}">${esc(p)}</span>`;
-  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Conferences</h1>
-  <p class="muted prose">${CONF.length} meetings across fusion engineering, computational mechanics, uncertainty and V&V, scientific ML, heat transfer and experimental mechanics. "Confirmed" means the dates and place are announced; "Expected" follows the series' usual cycle, so check the website about a year ahead. Ask your supervisors early what travel budget your FOSTER/UKAEA studentship has, and apply for travel grants (for example from the conference itself or learned societies) when you submit an abstract.</p>
-  <div class="card" style="margin-top:16px"><div class="eyebrow">Recommended path</div>
-  ${CONF_PLAN.map(Y=>`<div style="margin-top:14px"><h2 style="font-size:22px;font-weight:800">${Y.y}</h2><ol class="tl">${Y.items.map(([m,id,t])=>`<li class="k-${by[id].p==="Core"?"paper":by[id].p==="Strong"?"review":"admin"}"><span class="mono muted">${esc(m)}</span><span><b>${esc(by[id].n.split(":")[0])}</b><br><span class="muted" style="font-size:13.5px">${esc(t)}</span></span><span></span></li>`).join("")}</ol></div>`).join("")}
-  </div>`+
-  fields.map(f=>`<div class="libgroup"><h2>${esc(f)}</h2><div class="lgrid" style="margin-top:12px">${CONF.filter(c=>c.f===f).map(c=>`<article class="card lec"><div style="display:flex;gap:6px;flex-wrap:wrap">${pr(c.p)}<span class="chip">${esc(c.cyc)}</span></div><h3><a href="${esc(c.u)}" target="_blank" rel="noopener">${esc(c.n)}</a></h3><p style="margin:8px 0 0">${esc(c.why)}</p>
-    <div class="stamps" style="margin-top:12px"><div class="eyebrow" style="margin-bottom:6px">Editions</div>${c.ed.map(e=>`<div style="grid-template-columns:52px 1fr;margin-bottom:6px"><span class="mono muted">${e.y}</span><span>${esc(e.w)} · ${esc(e.at)} ${pill(e.s)}${e.note?`<br><span class="muted" style="font-size:12.5px">${esc(e.note)}</span>`:""}</span></div>`).join("")}</div></article>`).join("")}</div></div>`).join("")+
-  `<p class="muted" style="font-size:12.5px;margin-top:24px">Researched October 2026. Conference dates change; always confirm on the official site before submitting or booking.</p>`;
+  const usa=x=>x?`<span class="chip" style="background:color-mix(in srgb,var(--violet) 18%,var(--surface))">USA</span>`:"";
+  const pathItem=([m,id,t])=>{let name,p; if(id.startsWith("s:")){name=id.slice(2); const sc=SCHOOLS.find(x=>x.n===name); p=sc?sc.p:"Optional"} else {name=by[id].n.split(":")[0]; p=by[id].p}
+    return `<li class="k-${p==="Core"?"paper":p==="Strong"?"review":"admin"}"><span class="mono muted">${esc(m)}</span><span><b>${esc(name)}</b><br><span class="muted" style="font-size:13.5px">${esc(t)}</span></span><span></span></li>`};
+  const card=c=>`<article class="card lec"><div style="display:flex;gap:6px;flex-wrap:wrap">${pr(c.p)}${usa(c.r==="USA")}<span class="chip">${esc(c.cyc)}</span></div><h3><a href="${esc(c.u)}" target="_blank" rel="noopener">${esc(c.n)}</a></h3><p style="margin:8px 0 0">${esc(c.why)}</p>
+    <div class="stamps" style="margin-top:12px"><div class="eyebrow" style="margin-bottom:6px">Editions</div>${c.ed.map(e=>`<div style="grid-template-columns:52px 1fr;margin-bottom:6px"><span class="mono muted">${e.y}</span><span>${esc(e.w)} · ${esc(e.at)} ${pill(e.s)}${e.note?`<br><span class="muted" style="font-size:12.5px">${esc(e.note)}</span>`:""}</span></div>`).join("")}</div></article>`;
+  const scard=x=>`<article class="card lec"><div style="display:flex;gap:6px;flex-wrap:wrap">${pr(x.p)}${usa(x.us)}</div><h3><a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.n)}</a></h3><p class="muted" style="margin:4px 0 0;font-size:13.5px">${esc(x.where)} · ${esc(x.when)}</p><p style="margin:8px 0 0">${esc(x.why)}</p>${x.go?`<p style="margin:8px 0 0;font-size:13.5px"><span class="eyebrow">Suggested</span> ${esc(x.go)}</p>`:""}</article>`;
+  const usConf=CONF.filter(c=>c.r==="USA");
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Events</h1>
+  <p class="muted prose">Conferences, summer schools, training courses and US talk series for a PhD on validating breeding-blanket digital twins. "Confirmed" means dates and place are announced; "Expected" follows the series' usual cycle, so check the website about a year ahead. Ask your supervisors early about your FOSTER/UKAEA travel and training budget, and apply for travel grants when you submit.</p>
+  <div class="libtools" style="gap:8px"><a class="btn" href="#ev-path">Recommended path</a><a class="btn" href="#ev-conf">Conferences (${CONF.length})</a><a class="btn" href="#ev-us">USA (${usConf.length+SCHOOLS.filter(x=>x.us).length})</a><a class="btn" href="#ev-school">Summer schools</a><a class="btn" href="#ev-course">Training courses</a><a class="btn" href="#ev-talks">US talk series</a></div>
+  <div class="card" id="ev-path" style="margin-top:16px"><div class="eyebrow">Recommended path</div>
+  ${CONF_PLAN.map(Y=>`<div style="margin-top:14px"><h2 style="font-size:22px;font-weight:800">${Y.y}</h2><ol class="tl">${Y.items.slice().sort((a,b)=>(MONTH_ORDER[a[0]]||6)-(MONTH_ORDER[b[0]]||6)).map(pathItem).join("")}</ol></div>`).join("")}
+  </div>
+  <div id="ev-conf"></div>`+
+  fields.map(f=>`<div class="libgroup"><h2>${esc(f)}</h2><div class="lgrid" style="margin-top:12px">${CONF.filter(c=>c.f===f).map(card).join("")}</div></div>`).join("")+
+  `<div class="libgroup" id="ev-us"><h2>Main US meetings at a glance</h2><div class="table-wrap" style="margin-top:10px"><table><thead><tr><th>Event</th><th>Cycle</th><th>Next editions</th><th>Priority</th></tr></thead><tbody>${usConf.map(c=>`<tr><td><a href="${esc(c.u)}" target="_blank" rel="noopener">${esc(c.n)}</a></td><td>${esc(c.cyc)}</td><td>${c.ed.map(e=>esc(e.w)+(e.s==="confirmed"?" (confirmed, "+esc(e.at)+")":"")).join("; ")}</td><td>${esc(c.p)}</td></tr>`).join("")}</tbody></table></div></div>`+
+  `<div class="libgroup" id="ev-school"><h2>Summer schools</h2><div class="lgrid" style="margin-top:12px">${SCHOOLS.filter(x=>x.t==="school").map(scard).join("")}</div></div>`+
+  `<div class="libgroup" id="ev-course"><h2>Training courses</h2><div class="lgrid" style="margin-top:12px">${SCHOOLS.filter(x=>x.t==="course").map(scard).join("")}</div></div>`+
+  `<div class="libgroup" id="ev-talks"><h2>US talk series (free, online)</h2><p class="muted prose" style="margin:6px 0 0">Watch one talk a week with a notebook. US Eastern time is 5 hours behind UK time.</p><div class="lgrid" style="margin-top:12px">${SCHOOLS.filter(x=>x.t==="talks").map(scard).join("")}</div></div>`+
+  `<p class="muted" style="font-size:12.5px;margin-top:24px">Researched October 2026. Dates change; always confirm on the official site before applying or booking.</p>`;
+  el.querySelectorAll('a[href^="#ev-"]').forEach(a=>a.addEventListener("click",e=>{e.preventDefault(); const t=document.getElementById(a.getAttribute("href").slice(1)); if(t) t.scrollIntoView({behavior:"smooth"})}));
 }
 
 /* ---- PROJECT ---- */
