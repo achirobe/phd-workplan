@@ -170,6 +170,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
       <button role="tab" data-tab="today" aria-selected="true">Today</button>
       <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
       <button role="tab" data-tab="milestones" aria-selected="false">Milestones</button>
+      <button role="tab" data-tab="conferences" aria-selected="false">Conferences</button>
       <button role="tab" data-tab="lectures" aria-selected="false">Lectures</button>
       <button role="tab" data-tab="library" aria-selected="false">Library</button>
       <button role="tab" data-tab="project" aria-selected="false">Project</button>
@@ -182,6 +183,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
   <section id="tab-today"></section>
   <section id="tab-plan" hidden></section>
   <section id="tab-milestones" hidden></section>
+  <section id="tab-conferences" hidden></section>
   <section id="tab-lectures" hidden></section>
   <section id="tab-library" hidden></section>
   <section id="tab-project" hidden></section>
@@ -854,7 +856,7 @@ wk("Re-evaluation on new data", "Test every model on the new conditions.", [
 ], [], "Updated scoreboard");
 
 wk("Conference abstract and teaching training", "Share results; get ready to demonstrate.", [
-  "Pick an autumn fusion or computational mechanics conference (check deadlines on the conference site)",
+  "Submit an abstract for SOFT 2028 (September) using the Conferences tab; also note the ECCOMAS Milan (July 2028) deadline",
   "Write and submit the abstract",
   "Swansea demonstrator / teaching training",
   "Update literature matrix with new papers",
@@ -922,7 +924,7 @@ wk("Multi-fidelity reading", "Learn how to fuse models of different quality.", [
   "Weekly log"
 ], ["koh","piml"], "Multi-fidelity summary");
 
-wk("Conference week", "Present Paper 2 results.", [
+wk("Conference week (SOFT 2028)", "Present Paper 2 results. Move this week to the real SOFT 2028 dates once announced.", [
   "Travel",
   "Present; take notes on questions",
   "Meet people working on fusion digital twins",
@@ -1135,7 +1137,7 @@ wk("Integrated demo results", "Turn the demo into a thesis chapter result.", [
 ], [], "Demo results");
 
 wk("Conference abstract and UKAEA talk", "Share the final story.", [
-  "Write an abstract for an autumn 2029 conference (check dates)",
+  "Write an abstract for ISFNT-18 (autumn 2029); see the Conferences tab",
   "Present to the UKAEA CAV team online",
   "Update CV",
   "Read 3 new papers",
@@ -1190,7 +1192,7 @@ leave("Summer leave (week 2)");
 chapter("Ch5", "Study 2: AI on synthetic vs experimental data", "a");
 chapter("Ch5", "Study 2: AI on synthetic vs experimental data", "b");
 
-wk("Conference week", "Present final results.", [
+wk("Conference week (ISFNT-18, autumn 2029)", "Present final results. Move this week to the real dates once announced.", [
   "Travel",
   "Present",
   "Network for postdoc and job options",
@@ -1662,6 +1664,119 @@ const LECTURES = [
   ], stamps:[], read:["piml","raissi-arx","deeponet","deepxde"]}
 ];
 
+/* ===== Conferences (researched Oct 2026). status: "confirmed" = announced dates/place; "expected" = follows the series' usual cycle, not yet announced ===== */
+const CONF = [
+  // Fusion engineering
+  {id:"soft", f:"Fusion engineering", p:"Core", n:"SOFT: Symposium on Fusion Technology", cyc:"Every even year, September, Europe",
+   u:"https://www.fz-juelich.de/de/ifn/ifn-1/aktuelles/tagungen/34th-symposium-on-fusion-technology-soft-2026",
+   why:"Europe's main fusion engineering meeting, and where UKAEA and EUROfusion engineers present component testing, HIVE-type work and digital twins. Your best audience for Papers 1 and 2.",
+   ed:[{y:2026,w:"21-25 Sep 2026",at:"Aix-en-Provence, France",s:"confirmed",note:"Before your start: follow the programme online"},{y:2028,w:"September 2028",at:"Europe (to be announced)",s:"expected"},{y:2030,w:"September 2030",at:"Europe (to be announced)",s:"expected"}]},
+  {id:"isfnt", f:"Fusion engineering", p:"Strong", n:"ISFNT: International Symposium on Fusion Nuclear Technology", cyc:"Every odd year, autumn, rotates Europe / Americas / Asia",
+   u:"https://isfnt-16.ornl.gov/",
+   why:"Blanket, divertor and plasma-facing component engineering; strong on thermo-mechanics and qualification, which is exactly your validation story.",
+   ed:[{y:2027,w:"Autumn 2027",at:"To be announced (ISFNT-17)",s:"expected"},{y:2029,w:"Autumn 2029",at:"To be announced (ISFNT-18)",s:"expected"}]},
+  {id:"sofe", f:"Fusion engineering", p:"Strong", n:"IEEE SOFE: Symposium on Fusion Engineering", cyc:"Every odd year, June, mostly USA",
+   u:"https://ieee-npss.org/conferences/",
+   why:"The US counterpart of SOFT, with many fusion start-ups and national labs. Good for Study 3 results and for meeting people for postdocs.",
+   ed:[{y:2027,w:"20-24 Jun 2027 (reported)",at:"San Diego, USA (joint with Pulsed Power Conference)",s:"confirmed",note:"Dates from listings; confirm on the IEEE NPSS site"},{y:2029,w:"June 2029",at:"To be announced",s:"expected"}]},
+  {id:"fec", f:"Fusion engineering", p:"Optional", n:"IAEA Fusion Energy Conference (FEC)", cyc:"About every 2 years, October",
+   u:"https://www.euronuclear.org/project/31st-iaea-fusion-energy-conference-4-9-oct-2027-seoul-republic-of-korea/",
+   why:"The biggest world fusion meeting, more plasma-physics heavy. Worth attending once for the big picture if funding allows; not essential for your topic.",
+   ed:[{y:2027,w:"4-9 Oct 2027",at:"Seoul, Republic of Korea",s:"confirmed"},{y:2029,w:"About autumn 2029",at:"To be announced",s:"expected"}]},
+  {id:"psi", f:"Fusion engineering", p:"Optional", n:"PSI: Plasma-Surface Interactions in Controlled Fusion Devices", cyc:"Every even year, May/June",
+   u:"https://ipp.mpg.de/psi27",
+   why:"Heat loads and materials at the plasma-facing surface: the source of the boundary conditions in your models. Useful reading of the proceedings even if you don't attend.",
+   ed:[{y:2028,w:"May/June 2028",at:"To be announced (PSI-28)",s:"expected"},{y:2030,w:"May/June 2030",at:"To be announced",s:"expected"}]},
+
+  // Computational mechanics
+  {id:"ukacm", f:"Computational mechanics", p:"Core", n:"UKACM: UK Association for Computational Mechanics conference", cyc:"Every year, April, a UK university",
+   u:"https://ukacm.org/",
+   why:"Small, friendly, cheap and in the UK, and most UK computational mechanics groups attend. Ideal for your first talk in 2027 and a yearly update after that.",
+   ed:[{y:2027,w:"April 2027",at:"UK university (to be announced)",s:"expected"},{y:2028,w:"April 2028",at:"UK (to be announced)",s:"expected"},{y:2029,w:"April 2029",at:"UK (to be announced)",s:"expected"},{y:2030,w:"April 2030",at:"UK (to be announced)",s:"expected"}]},
+  {id:"eccomas", f:"Computational mechanics", p:"Core", n:"ECCOMAS Congress", cyc:"Every 2 years in Europe (joint with WCCM in some years)",
+   u:"https://eccomas.org/conferences/eccomas-congresses/",
+   why:"Europe's largest computational mechanics congress, with mini-symposia on UQ, scientific ML and digital twins. A natural home for Paper 2.",
+   ed:[{y:2028,w:"25-30 Jul 2028",at:"Milan, Italy",s:"confirmed"},{y:2030,w:"2030",at:"To be announced",s:"expected"}]},
+  {id:"wccm", f:"Computational mechanics", p:"Optional", n:"WCCM: World Congress on Computational Mechanics", cyc:"Every 2 years, rotates continents",
+   u:"https://www.iacm.info/",
+   why:"The world version of ECCOMAS. In 2028 it is one week before ECCOMAS Milan, so choose one; Milan is closer and cheaper from Swansea.",
+   ed:[{y:2028,w:"16-21 Jul 2028",at:"Busan, South Korea",s:"confirmed"}]},
+  {id:"uncecomp", f:"Uncertainty and V&V", p:"Core", n:"UNCECOMP: Uncertainty Quantification in Computational Sciences and Engineering (ECCOMAS)", cyc:"Every odd year, June, usually Greece",
+   u:"https://www.eccomasproceedia.org/conferences/thematic-conferences/uncecomp-2025",
+   why:"A focused UQ meeting for engineers: Bayesian calibration, surrogates, sensitivity analysis. The best fit for Paper 1 and Paper 3.",
+   ed:[{y:2027,w:"June 2027",at:"To be announced",s:"expected"},{y:2029,w:"June 2029",at:"To be announced",s:"expected"}]},
+  {id:"nafems", f:"Computational mechanics", p:"Optional", n:"NAFEMS World Congress", cyc:"Every odd year, May",
+   u:"https://www.nafems.org/congress/",
+   why:"Industry simulation community: simulation governance, credibility and V&V in practice. Good for seeing how companies would use your decision framework.",
+   ed:[{y:2027,w:"May 2027",at:"To be announced",s:"expected"},{y:2029,w:"May 2029",at:"To be announced",s:"expected"}]},
+
+  // UQ / V&V
+  {id:"siamuq", f:"Uncertainty and V&V", p:"Strong", n:"SIAM Conference on Uncertainty Quantification", cyc:"Every even year, spring",
+   u:"https://www.siam.org/conferences-events/",
+   why:"The main mathematical UQ meeting: GP emulators, Bayesian inverse problems, multi-fidelity methods. Go in 2028 to learn the methods behind Study 2 and Study 3.",
+   ed:[{y:2028,w:"Spring 2028",at:"To be announced (UQ28)",s:"expected"},{y:2030,w:"Spring 2030",at:"To be announced (UQ30)",s:"expected"}]},
+  {id:"vvuq", f:"Uncertainty and V&V", p:"Strong", n:"ASME VVUQ Symposium", cyc:"Every year, May, USA",
+   u:"https://event.asme.org/VandV",
+   why:"The home of the ASME V&V 20 standard you use in Study 1. The people who write validation standards attend; very relevant to RQ1.",
+   ed:[{y:2027,w:"17-20 May 2027",at:"USA, venue to be announced",s:"confirmed"},{y:2028,w:"May 2028",at:"USA",s:"expected"},{y:2029,w:"May 2029",at:"USA",s:"expected"}]},
+
+  // Scientific ML
+  {id:"ml4ps", f:"Scientific machine learning", p:"Strong", n:"NeurIPS workshop: Machine Learning and the Physical Sciences", cyc:"Every year, December, with NeurIPS",
+   u:"https://ml4physicalsciences.github.io/",
+   why:"Short workshop papers (4 pages) on ML for physics. A low-cost way to show Study 2 (synthetic vs real data) to the ML community.",
+   ed:[{y:2027,w:"December 2027",at:"With NeurIPS (location to be announced)",s:"expected"},{y:2028,w:"December 2028",at:"With NeurIPS",s:"expected"},{y:2029,w:"December 2029",at:"With NeurIPS",s:"expected"}]},
+
+  // Heat transfer
+  {id:"ukhtc", f:"Heat transfer and thermofluids", p:"Strong", n:"UK Heat Transfer Conference (UKHTC)", cyc:"Every 2 years, September, UK",
+   u:"https://ukht.eng.ed.ac.uk/",
+   why:"The UK thermal community; good for the thermofluid case in Study 3 and for meeting heat transfer people from other UK universities.",
+   ed:[{y:2028,w:"September 2028",at:"UK (to be announced)",s:"expected"},{y:2030,w:"September 2030",at:"UK (to be announced)",s:"expected"}]},
+  {id:"ihtc", f:"Heat transfer and thermofluids", p:"Optional", n:"IHTC: International Heat Transfer Conference", cyc:"Every 4 years",
+   u:"https://www.ihtc18.org/",
+   why:"The world heat transfer meeting. IHTC-18 is in Rio in August 2026, before you start; the next one (about 2030) clashes with thesis submission.",
+   ed:[{y:2026,w:"2-7 Aug 2026",at:"Rio de Janeiro, Brazil",s:"confirmed",note:"Before your start"},{y:2030,w:"About 2030",at:"To be announced (IHTC-19)",s:"expected"}]},
+
+  // Experimental mechanics and thermography
+  {id:"bssm", f:"Experiments and thermography", p:"Core", n:"BSSM Advances in Experimental Mechanics", cyc:"Every year, early September, UK",
+   u:"https://www.bssm.org/events/conference/",
+   why:"The UK experimental mechanics community (DIC, thermography, validation experiments). Close to UKAEA's Computer Aided Validation work and cheap to reach.",
+   ed:[{y:2027,w:"8-10 Sep 2027",at:"Bristol, UK",s:"confirmed",note:"Dates from listings; confirm on the BSSM site"},{y:2028,w:"September 2028",at:"UK (to be announced)",s:"expected"},{y:2029,w:"September 2029",at:"UK (to be announced)",s:"expected"}]},
+  {id:"qirt", f:"Experiments and thermography", p:"Strong", n:"QIRT: Quantitative InfraRed Thermography", cyc:"Every even year, summer",
+   u:"http://qirt.org/",
+   why:"Builds directly on your MPhil in infrared thermography. Present the IR uncertainty part of Study 1 (emissivity, calibration, sensor effects).",
+   ed:[{y:2028,w:"3-7 Jul 2028",at:"Belo Horizonte, Brazil",s:"confirmed",note:"Dates from listings; confirm on qirt.org"},{y:2030,w:"Summer 2030",at:"To be announced",s:"expected"}]},
+  {id:"sem", f:"Experiments and thermography", p:"Optional", n:"SEM Annual Conference (Society for Experimental Mechanics)", cyc:"Every year, June, USA",
+   u:"https://sem.org/annual",
+   why:"Large experimental mechanics meeting with sessions on model validation and DIC. An alternative to BSSM if you want a US trip.",
+   ed:[{y:2028,w:"June 2028",at:"USA",s:"expected"},{y:2029,w:"June 2029",at:"USA",s:"expected"}]}
+];
+
+/* Recommended path: what to attend, and with what */
+const CONF_PLAN = [
+  {y:2027, items:[
+    ["April", "ukacm", "Attend (poster if possible): first contact with the UK community; show your verified monoblock model"],
+    ["May", "vvuq", "Optional: attend only if travel money allows; otherwise watch recorded talks"],
+    ["September", "bssm", "Present: first Study 1 validation results with HIVE data (Bristol, a short train ride)"],
+    ["December", "ml4ps", "Optional: a 4-page workshop paper if early surrogate results are ready"]
+  ]},
+  {y:2028, items:[
+    ["April", "ukacm", "Present: Study 1 calibration and sensor-design results"],
+    ["Spring", "siamuq", "Attend to learn: GP emulators and multi-fidelity methods for Study 3"],
+    ["July", "eccomas", "Present: Study 2 synthetic-vs-real comparison (choose Milan over Busan)"],
+    ["September", "soft", "Main talk: Paper 2 results to the fusion engineering community (your plan has a conference week here; move it to the real dates)"],
+    ["December", "ml4ps", "Workshop paper: Study 2 for the ML audience"]
+  ]},
+  {y:2029, items:[
+    ["April", "ukacm", "Present: hybrid methods and the decision framework"],
+    ["June", "uncecomp", "Present: Paper 3 (hybrid strategies) to the UQ community"],
+    ["Autumn", "isfnt", "Present: integrated digital-twin demo (your plan has a conference week in September 2029)"]
+  ]},
+  {y:2030, items:[
+    ["April", "ukacm", "Short talk on the whole thesis; good practice before the viva"],
+    ["September", "soft", "After submission: present final results and meet employers for postdoc or industry roles"]
+  ]}
+];
+
 </script>
 <script>
 (function(){
@@ -1943,10 +2058,26 @@ function renderLibrary(){
   $("#libg").addEventListener("change",e=>{libGroup=e.target.value; renderLibrary()});
 }
 
+/* ---- CONFERENCES ---- */
+function renderConferences(){
+  const el=$("#tab-conferences"); const by={}; CONF.forEach(c=>by[c.id]=c);
+  const fields=[...new Set(CONF.map(c=>c.f))];
+  const pill=s=>`<span class="chip" style="${s==="confirmed"?"background:color-mix(in srgb,var(--ok) 18%,var(--surface));":""}">${s==="confirmed"?"Confirmed":"Expected"}</span>`;
+  const pr=p=>`<span class="chip" style="${p==="Core"?"background:var(--ink);color:var(--bg)":p==="Strong"?"background:color-mix(in srgb,var(--ember) 20%,var(--surface))":""}">${esc(p)}</span>`;
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Conferences</h1>
+  <p class="muted prose">${CONF.length} meetings across fusion engineering, computational mechanics, uncertainty and V&V, scientific ML, heat transfer and experimental mechanics. "Confirmed" means the dates and place are announced; "Expected" follows the series' usual cycle, so check the website about a year ahead. Ask your supervisors early what travel budget your FOSTER/UKAEA studentship has, and apply for travel grants (for example from the conference itself or learned societies) when you submit an abstract.</p>
+  <div class="card" style="margin-top:16px"><div class="eyebrow">Recommended path</div>
+  ${CONF_PLAN.map(Y=>`<div style="margin-top:14px"><h2 style="font-size:22px;font-weight:800">${Y.y}</h2><ol class="tl">${Y.items.map(([m,id,t])=>`<li class="k-${by[id].p==="Core"?"paper":by[id].p==="Strong"?"review":"admin"}"><span class="mono muted">${esc(m)}</span><span><b>${esc(by[id].n.split(":")[0])}</b><br><span class="muted" style="font-size:13.5px">${esc(t)}</span></span><span></span></li>`).join("")}</ol></div>`).join("")}
+  </div>`+
+  fields.map(f=>`<div class="libgroup"><h2>${esc(f)}</h2><div class="lgrid" style="margin-top:12px">${CONF.filter(c=>c.f===f).map(c=>`<article class="card lec"><div style="display:flex;gap:6px;flex-wrap:wrap">${pr(c.p)}<span class="chip">${esc(c.cyc)}</span></div><h3><a href="${esc(c.u)}" target="_blank" rel="noopener">${esc(c.n)}</a></h3><p style="margin:8px 0 0">${esc(c.why)}</p>
+    <div class="stamps" style="margin-top:12px"><div class="eyebrow" style="margin-bottom:6px">Editions</div>${c.ed.map(e=>`<div style="grid-template-columns:52px 1fr;margin-bottom:6px"><span class="mono muted">${e.y}</span><span>${esc(e.w)} · ${esc(e.at)} ${pill(e.s)}${e.note?`<br><span class="muted" style="font-size:12.5px">${esc(e.note)}</span>`:""}</span></div>`).join("")}</div></article>`).join("")}</div></div>`).join("")+
+  `<p class="muted" style="font-size:12.5px;margin-top:24px">Researched October 2026. Conference dates change; always confirm on the official site before submitting or booking.</p>`;
+}
+
 /* ---- PROJECT ---- */
 function renderProject(){ $("#tab-project").innerHTML=PROJECT_HTML; }
 
-function render(tab){({today:renderToday,plan:renderPlan,milestones:renderMilestones,lectures:renderLectures,library:renderLibrary,project:renderProject})[tab]()}
+function render(tab){({today:renderToday,plan:renderPlan,milestones:renderMilestones,conferences:renderConferences,lectures:renderLectures,library:renderLibrary,project:renderProject})[tab]()}
 function renderAll(){render(current)}
 
 viewDate=clampDate(realToday());
