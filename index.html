@@ -1,0 +1,1959 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Day-by-day PhD workplan: digital twin validation for fusion components (Swansea University and UKAEA), October 2026 to December 2030.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Fusion Twin PhD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a working tool. Sticky top bar with tabs; content column max 1120px; Today = main column + side rail. */
+:root{
+  --bg:#F3F4F8; --surface:#FFFFFF; --sunk:#E9EBF2; --ink:#14172B; --muted:#596079; --line:#D9DCE7;
+  --violet:#4B2A9A; --ember:#C2410C; --gold:#D99A00; --ok:#1D7A4B; --warn:#B45309;
+  --heat:linear-gradient(90deg,#3B1F8C 0%,#9B2C7A 38%,#D9480F 72%,#E8A300 100%);
+  --display:"Archivo",ui-sans-serif,system-ui,sans-serif;
+  --body:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#0D0F1C; --surface:#161A2C; --sunk:#1E2338; --ink:#E7E9F5; --muted:#9BA1BC; --line:#2A3050;
+    --violet:#A48BF0; --ember:#FB8A4A; --gold:#F2C14E; --ok:#4CC98A; --warn:#F0A04B;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0D0F1C; --surface:#161A2C; --sunk:#1E2338; --ink:#E7E9F5; --muted:#9BA1BC; --line:#2A3050;
+  --violet:#A48BF0; --ember:#FB8A4A; --gold:#F2C14E; --ok:#4CC98A; --warn:#F0A04B;}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);margin:0}
+a{color:var(--violet);text-underline-offset:2px}
+a:hover{color:var(--ember)}
+h1,h2,h3{font-family:var(--display);font-stretch:88%;line-height:1.15;text-wrap:balance;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;padding-block:12px}
+.brand{display:flex;flex-direction:column}
+.brand b{font-family:var(--display);font-stretch:80%;font-size:20px;font-weight:800;letter-spacing:.01em}
+.brand span{font-size:12px;color:var(--muted)}
+.heatbar{height:3px;background:var(--heat)}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+nav.tabs button{border:0;background:transparent;padding:7px 12px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:500}
+nav.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+nav.tabs button:hover:not([aria-selected="true"]){background:var(--sunk);color:var(--ink)}
+.sync{font-size:12px;color:var(--muted)}
+
+main{padding-block:24px 64px}
+section[hidden]{display:none!important}
+
+/* shared */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.eyebrow{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--ink);white-space:nowrap}
+.chip.ph{color:#fff}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 12px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:var(--ember)}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.prog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--heat);border-radius:99px}
+
+/* today */
+.daynav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
+.daynav input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px}
+.today-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start}
+@media (max-width:860px){.today-grid{grid-template-columns:1fr}}
+.dayhead h1{font-size:clamp(26px,4vw,38px);font-weight:800}
+.dayhead .meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.weekgoal{margin-top:14px;font-size:16px}
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.task{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.task.done span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--muted)}
+.task input{width:18px;height:18px;margin-top:3px;accent-color:var(--ember);cursor:pointer}
+.task small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.routine{display:flex;flex-direction:column;gap:6px;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.routine div::before{content:"↻ ";color:var(--ember)}
+.blockttl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:26px 0 10px}
+.blockttl h2{font-size:19px;font-weight:700}
+.reslist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.reslist li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.kind{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 5px;white-space:nowrap}
+textarea{width:100%;min-height:110px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:12px;resize:vertical}
+.rail{display:flex;flex-direction:column;gap:16px}
+.stat{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.stat b{font-family:var(--display);font-size:28px;font-weight:800;font-stretch:85%}
+.mslist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mslist li{display:grid;grid-template-columns:52px 1fr;gap:10px}
+.mslist .d{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
+.leave{padding:28px;text-align:center;background:var(--surface);border:1px dashed var(--line);border-radius:var(--r)}
+.leave h2{font-size:24px}
+.lecture-nudge{border-left:3px solid var(--violet);padding:10px 14px;background:var(--surface);border-radius:0 var(--r) var(--r) 0;margin-top:14px}
+
+/* plan */
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(14px,1fr));gap:3px;margin:12px 0 4px}
+.map button{aspect-ratio:1;border:0;border-radius:3px;padding:0;cursor:pointer;position:relative;background:var(--sunk);overflow:hidden}
+.map button i{position:absolute;inset:auto 0 0 0;display:block}
+.map button.lv{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,transparent 3px 6px)}
+.map button.cur{outline:2px solid var(--ink);outline-offset:1px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.phase{margin-top:28px}
+.phase h2{font-size:22px;font-weight:800;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.weeks{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+details.week{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+details.week>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:56px 118px 1fr 90px;gap:12px;align-items:center;padding:10px 14px}
+details.week>summary::-webkit-details-marker{display:none}
+details.week[open]>summary{border-bottom:1px solid var(--line)}
+details.week.isleave>summary{color:var(--muted)}
+details.week .wbody{padding:14px;display:flex;flex-direction:column;gap:10px}
+@media (max-width:640px){details.week>summary{grid-template-columns:44px 1fr 60px}details.week>summary .wd{display:none}}
+.dayrow{display:grid;grid-template-columns:88px 1fr;gap:10px;align-items:start}
+.dayrow label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.dayrow input{margin-top:4px;accent-color:var(--ember)}
+
+/* milestones */
+.year{margin-top:26px}
+.year h2{font-size:28px;font-weight:800}
+.tl{list-style:none;margin:12px 0 0;padding:0;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.tl li{position:relative;padding-left:18px;display:grid;grid-template-columns:132px 1fr auto;gap:10px;align-items:baseline}
+.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--muted)}
+.tl li.k-paper::before{border-color:var(--ember)} .tl li.k-review::before{border-color:var(--violet)} .tl li.k-thesis::before{border-color:var(--gold)} .tl li.k-research::before{border-color:var(--ok)}
+.tl li.past::before{background:var(--muted)}
+@media (max-width:640px){.tl li{grid-template-columns:1fr}}
+
+/* lectures */
+.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.lec h3{font-size:19px;font-weight:700;margin-top:6px}
+.lec ul{margin:8px 0 0;padding-left:18px}
+.lec .stamps{margin-top:10px;font-size:13.5px}
+.lec .stamps div{display:grid;grid-template-columns:58px 1fr;gap:8px}
+
+/* library */
+.libtools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+.libtools input{flex:1 1 240px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 10px}
+.libgroup{margin-top:22px}
+.libgroup h2{font-size:19px;font-weight:700}
+.libitem{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.libitem .used{font-size:12.5px;color:var(--muted)}
+@media (max-width:640px){.libitem{grid-template-columns:1fr}}
+
+/* project */
+.prose{max-width:68ch}
+.prose h2{font-size:24px;font-weight:800;margin-top:30px}
+.prose h3{font-size:18px;font-weight:700;margin-top:20px}
+.rq{display:grid;gap:12px;margin-top:12px}
+.rq .card h3{margin-top:4px}
+.table-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.prog i{transition:width .4s ease}}
+</style>
+
+<div class="top">
+  <div class="heatbar"></div>
+  <div class="wrap">
+    <div class="brand"><b>Fusion Twin PhD</b><span>Reamy W. Achirobe · Swansea × UKAEA · Oct 2026 to Dec 2030</span></div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button role="tab" data-tab="today" aria-selected="true">Today</button>
+      <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
+      <button role="tab" data-tab="milestones" aria-selected="false">Milestones</button>
+      <button role="tab" data-tab="lectures" aria-selected="false">Lectures</button>
+      <button role="tab" data-tab="library" aria-selected="false">Library</button>
+      <button role="tab" data-tab="project" aria-selected="false">Project</button>
+    </nav>
+    <span class="sync" id="sync">Saving on this device</span>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="tab-today"></section>
+  <section id="tab-plan" hidden></section>
+  <section id="tab-milestones" hidden></section>
+  <section id="tab-lectures" hidden></section>
+  <section id="tab-library" hidden></section>
+  <section id="tab-project" hidden></section>
+</main>
+
+<script>
+/* ===== Library: every link the plan points to (checked Oct 2026) ===== */
+const LIB = {
+  // Fusion context
+  "iter":        {g:"Fusion context", k:"Website", t:"ITER Organization: what ITER is and how a tokamak works", u:"https://www.iter.org/"},
+  "iter-div":    {g:"Fusion context", k:"Website", t:"ITER divertor: the component that takes the highest heat loads", u:"https://www.iter.org/machine/divertor"},
+  "step":        {g:"Fusion context", k:"Website", t:"UKAEA STEP: the UK prototype fusion power plant", u:"https://www.ukaea.org/work/step/"},
+  "euro":        {g:"Fusion context", k:"Website", t:"EUROfusion: European fusion roadmap and materials", u:"https://www.euro-fusion.org/"},
+  "plasma-ocw":  {g:"Fusion context", k:"Course", t:"MIT OCW 22.611J Introduction to Plasma Physics I (lecture notes)", u:"https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2006/"},
+  "hive":        {g:"Fusion context", k:"Facility", t:"UKAEA HIVE: Heating by Induction to Verify Extremes (thermocouples, IR, DIC)", u:"https://www.ukaea.org/service/heating-by-induction-to-verify-extremes-hive/"},
+  "hive-paper":  {g:"Fusion context", k:"Paper", t:"Testing advanced divertor concepts using a small high heat flux facility (UKAEA)", u:"https://scientific-publications.ukaea.uk/papers/testing-advanced-divertor-concepts-for-fusion-power-plants-using-a-small-high-heat-flux-facility/"},
+  "hive-castell":{g:"Fusion context", k:"Paper", t:"Impact of first-wall armour castellations on induction heating efficiency in HIVE", u:"https://scientific-publications.ukaea.uk/papers/characterising-the-impact-of-first-wall-armor-castellations-on-the-efficiency-of-induction-heating-during-high-heat-flux-testing-in-the-hive-facility/"},
+  "chimera":     {g:"Fusion context", k:"Paper", t:"Towards a fusion component digital twin: virtual test and monitoring in CHIMERA", u:"https://scientific-publications.ukaea.uk/papers/towards-a-fusion-component-digital-twin-virtual-test-and-monitoring-of-components-in-chimera-by-systems-simulation/"},
+  "ukaea-pubs":  {g:"Fusion context", k:"Database", t:"UKAEA scientific publications (search: HIVE, monoblock, digital twin, validation)", u:"https://scientific-publications.ukaea.uk/"},
+  "flf":         {g:"Fusion context", k:"News", t:"Lloyd Fletcher's Future Leaders Fellowship: Computer Aided Validation (CAV)", u:"https://www.ukaea.org/news/future-leaders-fellowship-awarded-to-ukaeas-dr-lloyd-fletcher/"},
+
+  // FEM and simulation
+  "lewis":       {g:"Finite elements and simulation", k:"Book", t:"Lewis, Nithiarasu & Seetharamu: Fundamentals of the FEM for Heat and Fluid Flow (Wiley, 2004). Your supervisor's book", u:"https://doi.org/10.1002/0470014164"},
+  "zienk":       {g:"Finite elements and simulation", k:"Book", t:"Zienkiewicz, Taylor & Nithiarasu: The Finite Element Method for Fluid Dynamics", u:"https://doi.org/10.1016/C2009-0-26328-8"},
+  "dolfinx":     {g:"Finite elements and simulation", k:"Tutorial", t:"FEniCSx tutorial (Dokken): heat equation, linear elasticity, convergence", u:"https://jsdokken.com/dolfinx-tutorial/"},
+  "moose":       {g:"Finite elements and simulation", k:"Software", t:"MOOSE framework (INL): documentation home", u:"https://mooseframework.inl.gov/"},
+  "moose-ws":    {g:"Finite elements and simulation", k:"Tutorial", t:"MOOSE workshop slides and step-by-step exercises", u:"https://mooseframework.inl.gov/workshop/index.html"},
+  "moose-ht":    {g:"Finite elements and simulation", k:"Docs", t:"MOOSE heat transfer module", u:"https://mooseframework.inl.gov/modules/heat_transfer/index.html"},
+  "moose-sm":    {g:"Finite elements and simulation", k:"Docs", t:"MOOSE solid mechanics module (thermal expansion, plasticity)", u:"https://mooseframework.inl.gov/modules/solid_mechanics/index.html"},
+  "moose-gh":    {g:"Finite elements and simulation", k:"Code", t:"MOOSE source on GitHub (examples and tests folders are the best manual)", u:"https://github.com/idaholab/moose"},
+  "herder":      {g:"Finite elements and simulation", k:"Code", t:"mooseherder: run MOOSE/Gmsh parameter sweeps from Python", u:"https://github.com/Applied-Materials-Technology/mooseherder"},
+  "paraview":    {g:"Finite elements and simulation", k:"Docs", t:"ParaView user guide (post-processing fields)", u:"https://docs.paraview.org/en/latest/"},
+  "scw":         {g:"Finite elements and simulation", k:"HPC", t:"Supercomputing Wales: accounts, training, job scripts", u:"https://www.supercomputing.wales/"},
+
+  // V&V and digital twins
+  "oberkampf":   {g:"Verification, validation and digital twins", k:"Book", t:"Oberkampf & Roy: Verification and Validation in Scientific Computing (Cambridge)", u:"https://doi.org/10.1017/CBO9780511760396"},
+  "asme-vv20":   {g:"Verification, validation and digital twins", k:"Standard", t:"ASME V&V 20: Verification and Validation in CFD and Heat Transfer", u:"https://www.asme.org/codes-standards/find-codes-standards/standard-for-verification-and-validation-in-computational-fluid-dynamics-and-heat-transfer"},
+  "nas-2012":    {g:"Verification, validation and digital twins", k:"Report (free)", t:"NASEM: Assessing the Reliability of Complex Models: Foundations of VVUQ (2012)", u:"https://nap.nationalacademies.org/catalog/13395/assessing-the-reliability-of-complex-models-mathematical-and-statistical-foundations"},
+  "nas-dt":      {g:"Verification, validation and digital twins", k:"Report (free)", t:"NASEM: Foundational Research Gaps and Future Directions for Digital Twins (2024)", u:"https://nap.nationalacademies.org/catalog/26894/foundational-research-gaps-and-future-directions-for-digital-twins"},
+  "kapteyn":     {g:"Verification, validation and digital twins", k:"Paper", t:"Kapteyn, Pretorius & Willcox: A probabilistic graphical model foundation for predictive digital twins", u:"https://arxiv.org/abs/2012.05841"},
+  "thelen":      {g:"Verification, validation and digital twins", k:"Paper", t:"Thelen et al.: A comprehensive review of digital twin, Part 1 (SMO 2022)", u:"https://doi.org/10.1007/s00158-022-03425-4"},
+
+  // UQ and Bayesian
+  "sullivan":    {g:"Uncertainty quantification and Bayesian calibration", k:"Book", t:"Sullivan: Introduction to Uncertainty Quantification (Springer)", u:"https://link.springer.com/book/10.1007/978-3-319-23395-6"},
+  "smith-uq":    {g:"Uncertainty quantification and Bayesian calibration", k:"Book", t:"Smith: Uncertainty Quantification: Theory, Implementation, and Applications (SIAM)", u:"https://doi.org/10.1137/1.9781611973228"},
+  "koh":         {g:"Uncertainty quantification and Bayesian calibration", k:"Paper", t:"Kennedy & O'Hagan (2001): Bayesian calibration of computer models", u:"https://doi.org/10.1111/1467-9868.00294"},
+  "hull-w":      {g:"Uncertainty quantification and Bayesian calibration", k:"Paper", t:"Hüllermeier & Waegeman: Aleatoric and epistemic uncertainty in machine learning", u:"https://arxiv.org/abs/1910.09457"},
+  "psaros":      {g:"Uncertainty quantification and Bayesian calibration", k:"Paper", t:"Psaros et al.: Uncertainty quantification in scientific machine learning (review)", u:"https://arxiv.org/abs/2201.07766"},
+  "abdar":       {g:"Uncertainty quantification and Bayesian calibration", k:"Paper", t:"Abdar et al.: A review of uncertainty quantification in deep learning", u:"https://arxiv.org/abs/2011.06225"},
+  "emcee":       {g:"Uncertainty quantification and Bayesian calibration", k:"Software", t:"emcee: MCMC sampling in Python (start with the 'fitting a model' tutorial)", u:"https://emcee.readthedocs.io/"},
+  "pymc":        {g:"Uncertainty quantification and Bayesian calibration", k:"Software", t:"PyMC: probabilistic programming (Bayesian models, diagnostics)", u:"https://www.pymc.io/welcome.html"},
+  "salib":       {g:"Uncertainty quantification and Bayesian calibration", k:"Software", t:"SALib: Sobol and Morris sensitivity analysis", u:"https://salib.readthedocs.io/"},
+  "chaospy":     {g:"Uncertainty quantification and Bayesian calibration", k:"Software", t:"chaospy: polynomial chaos expansions and Monte Carlo", u:"https://chaospy.readthedocs.io/"},
+
+  // Gaussian processes
+  "gpml":        {g:"Gaussian processes", k:"Book (free)", t:"Rasmussen & Williams: Gaussian Processes for Machine Learning", u:"https://gaussianprocess.org/gpml/"},
+  "sk-gp":       {g:"Gaussian processes", k:"Docs", t:"scikit-learn Gaussian process regression guide", u:"https://scikit-learn.org/stable/modules/gaussian_process.html"},
+  "gpytorch":    {g:"Gaussian processes", k:"Software", t:"GPyTorch: scalable GPs (exact, sparse/SVGP, multitask)", u:"https://gpytorch.ai/"},
+  "gpcam":       {g:"Gaussian processes", k:"Software", t:"gpCAM (Marcus Noack, LBNL): GP-driven autonomous experiments", u:"https://gpcam.lbl.gov/"},
+  "gpcam-gh":    {g:"Gaussian processes", k:"Code", t:"gpCAM on GitHub (examples folder)", u:"https://github.com/lbl-camera/gpCAM"},
+
+  // Machine learning
+  "probml":      {g:"Machine learning foundations", k:"Book (free)", t:"Murphy: Probabilistic Machine Learning (Books 1 and 2)", u:"https://probml.github.io/pml-book/"},
+  "d2l":         {g:"Machine learning foundations", k:"Book (free)", t:"Dive into Deep Learning (PyTorch code for every chapter)", u:"https://d2l.ai/"},
+  "pytorch":     {g:"Machine learning foundations", k:"Tutorial", t:"PyTorch official tutorials", u:"https://pytorch.org/tutorials/"},
+
+  // Scientific ML
+  "raissi":      {g:"Scientific machine learning", k:"Paper", t:"Raissi, Perdikaris & Karniadakis: Physics-informed neural networks (JCP 2019)", u:"https://doi.org/10.1016/j.jcp.2018.10.045"},
+  "raissi-arx":  {g:"Scientific machine learning", k:"Paper", t:"Physics Informed Deep Learning Part I (free arXiv version)", u:"https://arxiv.org/abs/1711.10561"},
+  "piml":        {g:"Scientific machine learning", k:"Paper", t:"Karniadakis et al.: Physics-informed machine learning (Nature Reviews Physics 2021)", u:"https://doi.org/10.1038/s42254-021-00314-5"},
+  "cuomo":       {g:"Scientific machine learning", k:"Paper", t:"Cuomo et al.: Scientific ML through PINNs: where we are and what's next", u:"https://arxiv.org/abs/2201.05624"},
+  "willard":     {g:"Scientific machine learning", k:"Paper", t:"Willard et al.: Integrating scientific knowledge with machine learning", u:"https://arxiv.org/abs/2003.04919"},
+  "pbdl":        {g:"Scientific machine learning", k:"Book (free)", t:"Thuerey et al.: Physics-based Deep Learning", u:"https://arxiv.org/abs/2109.05237"},
+  "deeponet":    {g:"Scientific machine learning", k:"Paper", t:"Lu et al.: DeepONet, learning nonlinear operators", u:"https://arxiv.org/abs/1910.03193"},
+  "fno":         {g:"Scientific machine learning", k:"Paper", t:"Li et al.: Fourier Neural Operator for parametric PDEs", u:"https://arxiv.org/abs/2010.08895"},
+  "deepxde":     {g:"Scientific machine learning", k:"Software", t:"DeepXDE (Lu Lu): PINNs and DeepONet library", u:"https://github.com/lululxvi/deepxde"},
+  "neuralop":    {g:"Scientific machine learning", k:"Software", t:"neuraloperator: FNO and friends in PyTorch", u:"https://github.com/neuraloperator/neuraloperator"},
+
+  // Uncertainty in deep learning
+  "guo":         {g:"Uncertainty in deep learning", k:"Paper", t:"Guo et al.: On calibration of modern neural networks (temperature scaling)", u:"https://arxiv.org/abs/1706.04599"},
+  "conformal":   {g:"Uncertainty in deep learning", k:"Paper", t:"Angelopoulos & Bates: A gentle introduction to conformal prediction", u:"https://arxiv.org/abs/2107.07511"},
+  "ensembles":   {g:"Uncertainty in deep learning", k:"Paper", t:"Lakshminarayanan et al.: Deep ensembles", u:"https://arxiv.org/abs/1612.01474"},
+  "mcdropout":   {g:"Uncertainty in deep learning", k:"Paper", t:"Gal & Ghahramani: Dropout as a Bayesian approximation", u:"https://arxiv.org/abs/1506.02142"},
+  "bbb":         {g:"Uncertainty in deep learning", k:"Paper", t:"Blundell et al.: Weight uncertainty in neural networks (Bayes by Backprop)", u:"https://arxiv.org/abs/1505.05424"},
+  "laplace":     {g:"Uncertainty in deep learning", k:"Paper", t:"Daxberger et al.: Laplace Redux, effortless Bayesian deep learning", u:"https://arxiv.org/abs/2106.14806"},
+  "laplace-gh":  {g:"Uncertainty in deep learning", k:"Software", t:"laplace-torch library", u:"https://github.com/aleximmer/Laplace"},
+
+  // Experimental mechanics
+  "pyvale":      {g:"Experiments and sensors", k:"Software", t:"pyvale docs: SensorSim, DIC and Render (UKAEA Computer Aided Validation team)", u:"https://computer-aided-validation-laboratory.github.io/pyvale/"},
+  "pyvale-gh":   {g:"Experiments and sensors", k:"Code", t:"pyvale on GitHub", u:"https://github.com/Computer-Aided-Validation-Laboratory/pyvale"},
+  "idics":       {g:"Experiments and sensors", k:"Guide (free)", t:"iDICs Good Practices Guide for Digital Image Correlation", u:"https://idics.org/guide/"},
+
+  // Research skills
+  "missing":     {g:"Research skills and tools", k:"Course", t:"MIT Missing Semester: shell, scripting, Git, debugging", u:"https://missing.csail.mit.edu/"},
+  "git":         {g:"Research skills and tools", k:"Course", t:"Software Carpentry: Version control with Git", u:"https://swcarpentry.github.io/git-novice/"},
+  "zotero":      {g:"Research skills and tools", k:"Tool", t:"Zotero reference manager (use the Better BibTeX plug-in for LaTeX)", u:"https://www.zotero.org/"},
+  "overleaf":    {g:"Research skills and tools", k:"Tool", t:"Overleaf LaTeX guides (thesis, figures, BibTeX)", u:"https://www.overleaf.com/learn"},
+  "vitae":       {g:"Research skills and tools", k:"Framework", t:"Vitae Researcher Development Framework (for your training needs analysis)", u:"https://www.vitae.ac.uk/researchers-professional-development/about-the-vitae-researcher-development-framework"},
+  "fse-pgr":     {g:"Research skills and tools", k:"Swansea", t:"Swansea FSE Postgraduate Research hub (induction, training, forms)", u:"https://hwb.swansea.ac.uk/fse/pgr/"},
+  "sw-cand":     {g:"Research skills and tools", k:"Swansea", t:"Swansea Guide to Research Degree Candidature (confirmation, progress, submission)", u:"https://iss-myuni-00.swan.ac.uk/academic-life/academic-regulations/research-guidance/guide-to-research-degree-candidature"},
+  "nith":        {g:"Research skills and tools", k:"People", t:"Prof. Perumal Nithiarasu: staff page and publications", u:"https://www.swansea.ac.uk/staff/engineering/nithiarasu-p/"},
+  "cocc":        {g:"Research skills and tools", k:"People", t:"Dr Alberto Coccarelli: staff page and publications", u:"https://www.swansea.ac.uk/staff/alberto.coccarelli/"}
+};
+
+/* ===== Weeks: index 0 = Mon 4 Jan 2027, index 208 = Mon 30 Dec 2030 ===== */
+const W = [];
+function wk(t, g, d, r, del) { W.push({t, g, d, r: r || [], del: del || ""}); }
+function leave(t) { W.push({t, g: t, d: [], r: [], leave: true}); }
+
+// Helpers for writing weeks, so paper and chapter weeks stay consistent
+function paper(n, part, topic, r) {
+  const P = {
+    outline: ["Pick the target journal; read its author guide and 2 recent papers there as models",
+              "Write the paper's one-sentence claim and a 6-figure storyboard",
+              "Draft the introduction: gap, question, contribution (about 800 words)",
+              "Draft the related-work paragraphs from your literature matrix",
+              "Send the storyboard and introduction to supervisors for a quick yes/no"],
+    methods: ["Draft the methods: model, data, uncertainty sources",
+              "Write the equations once, in the notation of your nomenclature list",
+              "Describe the numerical set-up so someone else could repeat it",
+              "Make the method schematic figure",
+              "Check every method choice has a reason and a citation"],
+    results: ["Produce final versions of results figures 1 to 3 from scripts in the repo",
+              "Produce final versions of results figures 4 to 6",
+              "Write the results text: one paragraph per figure, numbers with uncertainty",
+              "Make the summary table of metrics",
+              "Re-run the full pipeline from a clean checkout to confirm reproducibility"],
+    discuss: ["Draft the discussion: what the results mean for digital-twin validation",
+              "Write limitations honestly (data, assumptions, cost)",
+              "Write the conclusion and the abstract (250 words)",
+              "Full read-through; cut 10 percent of the words",
+              "Send the full draft to supervisors and Lloyd Fletcher"],
+    revise: ["Go through supervisor comments; make a response table",
+             "Fix the major comments",
+             "Fix the minor comments and the figures",
+             "Prepare the cover letter, highlights and data/code availability statement",
+             "Final proofread and format to the journal template"],
+    submit: ["Final check of author list, affiliations (Swansea, UKAEA) and funding statement (FOSTER/UKAEA)",
+             "Tag the code release on GitHub and archive it on Zenodo for a DOI",
+             "Submit the paper; save the submission PDF to your thesis folder",
+             "Post the preprint on arXiv if supervisors agree",
+             "Update your CV and Swansea profile; note reviewer suggestions for later"]
+  };
+  wk("Paper " + n + ": " + {outline:"outline and introduction", methods:"methods", results:"results", discuss:"discussion and abstract", revise:"revision", submit:"submission"}[part],
+     "Paper " + n + " (" + topic + "): " + {outline:"set the story", methods:"write the methods", results:"lock the results", discuss:"finish the full draft", revise:"respond to internal review", submit:"submit and release code"}[part] + ".",
+     P[part], r || [], part === "submit" ? "Paper " + n + " submitted" : "Paper " + n + " " + part + " section done");
+}
+function chapter(code, name, part, r) {
+  const C = {
+    a: ["Re-read the source material for " + name + " (papers, notes, figures); list what the chapter must show",
+        "Write a detailed section outline with a figure list; agree it in supervision",
+        "Draft section 1 (about 1,500 words)",
+        "Draft section 2 (about 1,500 words)",
+        "Make or update 2 figures; push everything to the thesis repo"],
+    b: ["Draft section 3 (about 1,500 words)",
+        "Draft section 4 (about 1,500 words)",
+        "Fill citations; check that every claim has a source",
+        "Rewrite the weakest section",
+        "Update figures, captions and cross-references"],
+    c: ["Write the chapter summary and the link to the next chapter",
+        "Read the whole chapter on paper; mark gaps",
+        "Fix the gaps; tighten the language (plain English, short paragraphs)",
+        "Check notation against the nomenclature list",
+        "Send the chapter to supervisors with 3 specific questions"]
+  };
+  wk(code + " " + name + " (" + {a:"start", b:"middle", c:"finish"}[part] + ")",
+     "Thesis " + code + ": " + {a:"outline and first sections", b:"main body", c:"complete and send"}[part] + ".",
+     C[part], r || ["overleaf","zotero"], code + " " + {a:"sections 1-2 drafted", b:"sections 3-4 drafted", c:"sent to supervisors"}[part]);
+}
+
+/* ---------- PHASE A: Arrival and set-up (Jan 2027) ---------- */
+wk("Enrolment and induction", "Become a registered PhD student, get paid, and meet your supervisors.", [
+  "Finish online enrolment and the in-person ID check at Bay Campus; then upload bank details on a campus computer (myuni > Intranet > Financial Transactions > Verify Account)",
+  "FSE PGR induction; activate e:Vision, student card, Wi-Fi and university email; say hello to Zoë Perry",
+  "First supervision meeting with Prof. Nithiarasu and Dr Coccarelli: agree meeting day, how to share work, and first 3 months",
+  "Set up your workstation: Python (uv or conda), Git + GitHub, VS Code, Zotero, Overleaf; create a private 'phd-log' repo",
+  "Write a 1-page 'my understanding of the project' from the ATAS statement; email it to supervisors"
+], ["fse-pgr","sw-cand","zotero","overleaf"], "Enrolled, bank details verified, 1-page project summary sent");
+
+wk("Tools and first UKAEA contact", "Get every tool and account working, and meet Lloyd Fletcher.", [
+  "Apply for a Supercomputing Wales account; do Missing Semester lectures 1-2 (shell, scripting)",
+  "Do the Software Carpentry Git lesson; create the thesis repo and an Overleaf thesis template",
+  "Video call with Lloyd Fletcher (UKAEA): his CAV work, HIVE data, pyvale, data-sharing rules",
+  "Book Swansea PGR skills courses; start a training needs analysis using the Vitae framework",
+  "Install pyvale and run its first SensorSim example; note questions for Lloyd"
+], ["scw","missing","git","flf","pyvale","vitae"], "Accounts working; first pyvale example runs");
+
+/* ---------- PHASE B: Foundations (Jan to Jul 2027) ---------- */
+wk("Fusion engineering context I", "Understand why fusion components need validated digital twins.", [
+  "Read the ITER pages on how a tokamak works and where heat ends up",
+  "Read about the divertor: heat fluxes of 10-20 MW/m², tungsten monoblocks on CuCrZr pipes",
+  "Read about STEP and what UKAEA needs from simulation and testing",
+  "Read the two HIVE papers: how induction heating tests components, what is measured",
+  "Write 2 pages: 'Thermal and mechanical problems in fusion components' + start a glossary"
+], ["iter","iter-div","step","hive","hive-paper","hive-castell"], "2-page fusion context note + glossary");
+
+wk("Fusion context II and digital twins", "Learn the digital-twin vocabulary and UKAEA's direction.", [
+  "Skim MIT 22.611J notes, lectures 1-2 (only the physical picture, skip heavy derivations)",
+  "Read the CHIMERA digital-twin paper; list what it validates and how",
+  "Read the NASEM 2024 digital twin report summary and the VVUQ chapter",
+  "Read Thelen et al. Part 1 (digital twin review): definitions and architecture",
+  "Supervision: present a 10-slide summary of what you learned and 3 open questions"
+], ["plasma-ocw","chimera","nas-dt","thelen"], "10-slide context talk given");
+
+wk("FEM for heat transfer I", "Rebuild FEM basics from your supervisor's own book.", [
+  "Lewis, Nithiarasu & Seetharamu ch. 1-2: weighted residuals, weak form",
+  "Ch. 3: 1D steady conduction elements; work 2 examples by hand",
+  "Code a 1D steady conduction FEM solver in Python (numpy, sparse matrices)",
+  "Verify it against the analytical solution; plot error versus mesh size on log-log axes",
+  "Write a short note: what the convergence rate means and why it matters for V&V"
+], ["lewis","probml"], "1D FEM solver with convergence plot");
+
+wk("FEM for heat transfer II", "Move to 2D and transient conduction.", [
+  "Book: 2D linear triangles and quadrilaterals, assembly",
+  "Book: transient conduction and the theta time-stepping method",
+  "FEniCSx tutorial: heat equation; reproduce it and change the boundary conditions",
+  "Mesh and time-step convergence study for the 2D transient case",
+  "Method of manufactured solutions (MMS): build one and check the order of accuracy"
+], ["lewis","dolfinx"], "2D transient solver verified with MMS");
+
+wk("Thermo-mechanics in FEM", "Couple temperature to thermal stress.", [
+  "FEniCSx tutorial: linear elasticity",
+  "Read about thermal strain and thermal stress coupling; derive the 1-way coupled equations",
+  "Code a thermo-elastic plate: temperature field drives stress",
+  "Learn ParaView: plot temperature, von Mises stress and line plots",
+  "Supervision: show convergence plots and the coupled result"
+], ["dolfinx","paraview","lewis"], "Thermo-elastic plate example");
+
+wk("MOOSE I", "Get productive in the code UKAEA uses.", [
+  "Install MOOSE (conda route); build and run the first workshop steps",
+  "Heat transfer module tutorial; run a transient conduction case",
+  "Re-make last week's 2D transient problem in MOOSE; compare with FEniCSx",
+  "Write a 1-page 'anatomy of a MOOSE input file' cheat sheet",
+  "Weekly log; push inputs and plots to GitHub"
+], ["moose","moose-ws","moose-ht","moose-gh"], "Same problem solved in MOOSE and FEniCSx, results match");
+
+wk("MOOSE II: monoblock model", "Build the first fusion-relevant model.", [
+  "Solid mechanics module: thermal expansion example",
+  "Thermo-mechanical coupling in MOOSE; run a coupled example from the test folder",
+  "Build a simple tungsten monoblock + CuCrZr pipe geometry in Gmsh",
+  "Run steady heat flux (10 MW/m²) with coolant convection; check energy balance",
+  "Use mooseherder to sweep heat flux and coolant HTC; plot peak temperature"
+], ["moose-sm","herder","moose-gh"], "Monoblock thermo-mechanical model runs");
+
+wk("Verification and validation I", "Learn the language of V&V properly.", [
+  "Oberkampf & Roy ch. 1-2: terms, the V&V framework",
+  "Oberkampf & Roy: validation experiments and metrics (skim the chapter list first)",
+  "ASME V&V 20 approach: comparison error E = S - D and validation uncertainty u_val",
+  "NASEM 2012 report ch. 1-3: VVUQ foundations; summarise in 1 page",
+  "Write a V&V cheat sheet; discuss it in supervision"
+], ["oberkampf","asme-vv20","nas-2012"], "V&V cheat sheet");
+
+wk("Confirmation of candidature: drafting", "Turn what you know into a research plan.", [
+  "Write 3 research questions (physics model + data; AI on synthetic vs experimental data; hybrid)",
+  "Write the methods for each question (models, data, metrics)",
+  "Make a Gantt chart for 4 years (use this portal) and a risk table",
+  "Draft the full confirmation document (5-8 pages) with training plan",
+  "Send the draft to supervisors"
+], ["sw-cand","fse-pgr","oberkampf"], "Confirmation draft sent");
+
+wk("Verification II and confirmation submission", "Code and solution verification; submit confirmation.", [
+  "Code verification of your MOOSE monoblock with MMS",
+  "Solution verification: Richardson extrapolation and the Grid Convergence Index (GCI)",
+  "Apply GCI to monoblock peak temperature and peak stress",
+  "Make supervisor edits; submit confirmation of candidature in e:Vision",
+  "Weekly log"
+], ["oberkampf","asme-vv20","moose"], "Confirmation submitted");
+
+leave("Easter leave");
+
+wk("Uncertainty quantification I", "Separate aleatoric and epistemic uncertainty.", [
+  "Sullivan ch. 1-2: probability for UQ",
+  "Read Hüllermeier & Waegeman: aleatoric versus epistemic uncertainty",
+  "Watch Lecture L1 (Hüllermeier part 1); write notes using the portal's lecture guide",
+  "Monte Carlo propagation: random conductivity through your 1D FEM; histogram of outputs",
+  "Weekly log"
+], ["sullivan","hull-w"], "Monte Carlo propagation notebook");
+
+wk("Uncertainty quantification II", "Surrogates and sensitivity on the monoblock.", [
+  "chaospy tutorial: polynomial chaos expansion on a toy model",
+  "SALib tutorial: Sobol indices",
+  "Sobol analysis on the monoblock via mooseherder (k, HTC, heat flux, emissivity)",
+  "Interpret first-order and total indices; which inputs matter",
+  "Supervision: show the Sobol results"
+], ["chaospy","salib","herder"], "Sobol sensitivity of monoblock");
+
+wk("Bayesian inference", "Learn to infer model parameters from noisy data.", [
+  "Murphy (PML book 1): Bayesian statistics chapter",
+  "emcee 'fitting a model to data' tutorial",
+  "Calibrate conductivity in the 1D model from synthetic noisy thermocouple data",
+  "PyMC introduction; repeat the calibration and compare",
+  "Write notes on priors, likelihood, posterior, and MCMC diagnostics (R-hat, ESS)"
+], ["probml","emcee","pymc"], "Calibrated 1D model with posterior plots");
+
+wk("Kennedy-O'Hagan calibration", "The key method for physics model + data.", [
+  "Read Kennedy & O'Hagan (2001) sections 1-4 slowly",
+  "Understand model discrepancy: why the model is wrong even at the best parameters",
+  "Implement a toy KOH calibration with a GP discrepancy term",
+  "Read about identifiability problems between parameters and discrepancy",
+  "Weekly log with a 1-page explanation in your own words"
+], ["koh","gpml","smith-uq"], "KOH toy example");
+
+wk("Gaussian processes I", "Your main surrogate and uncertainty tool.", [
+  "GPML ch. 2: GP regression",
+  "Watch Lecture L6 (Marcus Noack, GPs and autonomous experiments)",
+  "scikit-learn GP regression on your simulation data",
+  "GPyTorch introduction notebook",
+  "Weekly log"
+], ["gpml","sk-gp","gpytorch","gpcam"], "GP surrogate notebook");
+
+wk("Gaussian processes II and probabilistic prediction", "Kernels, model selection, scoring.", [
+  "GPML ch. 4-5: kernels and model selection",
+  "Watch Lecture L2 (Hüllermeier part 2: scoring rules, GPs, conformal prediction)",
+  "Build a GP surrogate of the MOOSE monoblock (inputs: k, HTC, flux; output: peak T)",
+  "Try gpCAM to choose the next simulation where uncertainty is highest",
+  "Supervision: GP surrogate accuracy and uncertainty plots"
+], ["gpml","gpcam-gh","gpytorch"], "GP surrogate of monoblock with active learning");
+
+wk("Experimental data and sensors", "Learn what real measurements look like and how they mislead.", [
+  "pyvale SensorSim user guide",
+  "Add virtual thermocouples with noise and position error to your MOOSE results",
+  "IR thermography uncertainty: emissivity, reflections, calibration (link to your MPhil work)",
+  "iDICs Good Practices Guide: chapters on DIC uncertainty",
+  "pyvale DIC/Render example: synthetic images from a deforming mesh"
+], ["pyvale","pyvale-gh","idics"], "Virtual sensor study notebook");
+
+wk("Scientific ML I: PINNs", "Learn the physics-informed approach.", [
+  "Read Karniadakis et al. Physics-informed ML review",
+  "Watch Lecture L7 (Karniadakis: from PINNs to DeepONets)",
+  "Read Raissi et al. PINN paper (free arXiv version)",
+  "DeepXDE: solve 1D transient heat with a PINN",
+  "Compare the PINN to your FEM solution: accuracy, cost, failure modes"
+], ["piml","raissi","raissi-arx","deepxde"], "PINN vs FEM comparison");
+
+wk("Scientific ML II: operators", "Learn DeepONet and FNO.", [
+  "Read the DeepONet paper",
+  "Read the FNO paper",
+  "Generate 500 synthetic 2D heat fields with your FEniCSx/MOOSE code",
+  "Train an FNO with the neuraloperator library on those fields",
+  "Weekly log"
+], ["deeponet","fno","neuralop","deepxde"], "First neural operator surrogate");
+
+wk("Uncertainty in deep learning I", "Ensembles, dropout, Bayesian nets.", [
+  "Watch Lecture L4 (Weiwei Pan: BNNs and ensembles)",
+  "Read Deep Ensembles; implement a 5-model ensemble",
+  "Read MC dropout; implement it",
+  "Compare both on a toy regression with a gap in the data (in-between uncertainty)",
+  "Supervision: show where each method is over-confident"
+], ["ensembles","mcdropout","bbb","d2l"], "Ensemble vs MC dropout comparison");
+
+wk("Uncertainty in deep learning II", "Laplace, calibration, conformal prediction.", [
+  "Watch Lecture L5 (Tübingen: Laplace approximations)",
+  "Read Laplace Redux; try laplace-torch on your surrogate",
+  "Watch Lecture L3 (Kull: calibration)",
+  "Read Guo et al.; make reliability diagrams; regression calibration (PIT, coverage)",
+  "Read Angelopoulos & Bates; implement split conformal intervals"
+], ["laplace","laplace-gh","guo","conformal"], "Calibration and conformal toolkit");
+
+wk("Literature synthesis", "Turn reading into a structured literature map.", [
+  "Read Psaros et al. UQ in SciML review",
+  "Read Kapteyn et al. digital twin paper",
+  "Read Willard et al. on integrating physics and ML",
+  "Build the literature matrix in Zotero (method, physics, data, UQ, validation)",
+  "Find the 5 papers closest to your project; write what each one misses"
+], ["psaros","kapteyn","willard","zotero"], "Literature matrix + gap statement");
+
+wk("6-month review", "Show solid progress at the interim review.", [
+  "Draft the literature review chapter structure (headings + key papers)",
+  "Write the first 2,000 words of the literature review",
+  "Write the 6-month progress report (done, learned, plan, risks)",
+  "Prepare slides for the review",
+  "Submit the report in e:Vision; review meeting"
+], ["sw-cand","fse-pgr"], "6-month progress report submitted");
+
+/* ---------- PHASE C: Study 1, physics model + experimental data (Jul 2027 to Dec 2027) ---------- */
+wk("Study 1 plan and UKAEA data", "Fix the benchmark and get real data.", [
+  "Write the Study 1 specification: HIVE-type test article, outputs, metrics",
+  "Write a data management plan (folders, formats, versioning, backups)",
+  "Meeting or visit with Lloyd Fletcher: which HIVE datasets exist (thermocouples, IR, DIC), geometry, materials",
+  "Sort data-sharing agreement / NDA with UKAEA through supervisors",
+  "Finalise the Study 1 plan with supervisors"
+], ["hive","hive-paper","pyvale"], "Study 1 plan + data request agreed");
+
+wk("Study 1: geometry and materials", "Build the model of the real test article.", [
+  "Build geometry from UKAEA drawings in Gmsh; check dimensions",
+  "Collect temperature-dependent properties for tungsten and CuCrZr with their uncertainty ranges",
+  "Mesh study set-up: 3 mesh levels",
+  "First steady run; check energy balance",
+  "Weekly log"
+], ["moose","herder","lewis"], "Test-article model built");
+
+wk("Study 1: boundary conditions", "Model induction heating and coolant correctly.", [
+  "Represent induction heating as a heat flux map; read the HIVE castellation paper again",
+  "Coolant convection: Gnielinski / Sieder-Tate correlations and their scatter",
+  "List every boundary condition with its uncertainty (value + range + source)",
+  "Run the transient heating pulse case",
+  "Supervision: review the uncertainty list"
+], ["hive-castell","lewis","moose-ht"], "Input uncertainty table");
+
+wk("Study 1: verification", "Show numerical error is small and known.", [
+  "Run transient thermal + thermo-mechanical on 3 meshes",
+  "GCI for peak temperature, thermocouple locations and strains",
+  "Time-step convergence",
+  "Write the verification section of your notes (tables + plots)",
+  "Weekly log"
+], ["oberkampf","asme-vv20"], "Numerical uncertainty u_num estimated");
+
+wk("Study 1: experimental data processing", "Turn raw data into validation data with uncertainty.", [
+  "Load thermocouple time series; check sensor drift and noise",
+  "IR frames: emissivity correction, region of interest, uncertainty",
+  "DIC strain maps: noise floor and spatial resolution",
+  "Build one tidy dataset (NetCDF/HDF5) with uncertainty attached to every value",
+  "Weekly log"
+], ["idics","pyvale"], "Clean experimental dataset u_D");
+
+leave("Summer leave (week 1)");
+leave("Summer leave (week 2)");
+
+wk("Study 1: first validation comparison", "Apply ASME V&V 20 to real data.", [
+  "Compute comparison error E = S - D at each sensor",
+  "Propagate input uncertainty (Monte Carlo on HPC) to get u_input",
+  "Combine u_num, u_input, u_D into u_val",
+  "Decide: is |E| within u_val? where not, why?",
+  "Supervision: first validation results"
+], ["asme-vv20","oberkampf","scw"], "First validation metric");
+
+wk("Study 1: sensitivity on full model", "Find which inputs control the error.", [
+  "Set up Sobol sampling on HPC through mooseherder",
+  "Run the batch (about 1,000 runs); monitor jobs",
+  "Compute Sobol indices for each sensor output",
+  "Link results to the validation error",
+  "Weekly log"
+], ["salib","herder","scw"], "Sobol indices on full model");
+
+wk("Study 1: emulator for calibration", "Make MCMC affordable.", [
+  "Latin hypercube design over the important inputs",
+  "Run the design on HPC",
+  "Train a GP emulator (GPyTorch, multi-output if needed)",
+  "Check the emulator with leave-out tests; coverage of its intervals",
+  "Weekly log"
+], ["gpytorch","gpml","herder"], "Validated GP emulator");
+
+wk("Study 1: Bayesian calibration", "Infer uncertain inputs from the experiment.", [
+  "Write the likelihood with sensor uncertainty from pyvale analysis",
+  "Choose priors from the input uncertainty table",
+  "Run MCMC with the emulator; check R-hat and ESS",
+  "Plot posteriors and parameter correlations",
+  "Supervision: calibrated parameters"
+], ["emcee","pymc","koh"], "Posterior of calibrated inputs");
+
+wk("Study 1: model discrepancy", "Separate wrong parameters from wrong physics.", [
+  "Add a GP discrepancy term (KOH)",
+  "Compare calibration with and without discrepancy",
+  "Check identifiability: do parameters change meaning?",
+  "Write a 1-page interpretation",
+  "Weekly log"
+], ["koh","smith-uq"], "KOH calibration result");
+
+wk("Study 1: sensor design study", "How do the sensors change what we learn?", [
+  "Use pyvale to vary sensor count, position error and noise",
+  "Repeat the calibration for each sensor set-up (emulator makes it cheap)",
+  "Plot posterior width versus sensor configuration",
+  "Write recommendations for HIVE instrumentation",
+  "Share findings with Lloyd Fletcher"
+], ["pyvale","pyvale-gh"], "Sensor design results");
+
+wk("Study 1: predictive validation", "Test the calibrated model on new conditions.", [
+  "Hold out an experiment (different heat flux) for testing",
+  "Posterior predictive of temperatures and strains",
+  "Propagate to thermal stress; uncertainty bands",
+  "Coverage check: how often is the data inside the band",
+  "Supervision"
+], ["koh","conformal"], "Predictive validation done");
+
+wk("Study 1: uncertainty to stress and lifetime", "Carry input and calibration uncertainty through to the quantities engineers care about.", [
+  "Propagate the posterior through the thermo-mechanical model (stress, strain range)",
+  "Rank uncertainty sources by their effect on peak stress (variance decomposition)",
+  "Compare prior-only versus calibrated predictions: how much did the experiment help?",
+  "Make a figure: uncertainty budget before and after calibration",
+  "Supervision"
+], ["koh","salib","moose-sm"], "Uncertainty budget for stress");
+
+wk("Study 1: repeatability and a second test", "Check the conclusions hold on another experiment.", [
+  "Repeat the pipeline on a second HIVE test (different sample or pulse)",
+  "Compare posteriors: are calibrated values consistent between tests?",
+  "If not consistent, find the cause (boundary conditions, sensors, physics)",
+  "Write a short note on what changed",
+  "Weekly log"
+], ["hive","pyvale"], "Second-test comparison");
+
+wk("Study 1: consolidate results", "Freeze results for the paper.", [
+  "Re-run every script from a clean checkout",
+  "Make draft figures for the paper",
+  "Write a results summary table",
+  "List what is missing; plan it",
+  "Weekly log"
+], ["paraview"], "Frozen results set");
+
+paper(1, "outline", "calibration and uncertainty of a fusion component model with experimental data", ["ukaea-pubs","zotero"]);
+paper(1, "methods", "calibration and uncertainty", ["koh","asme-vv20"]);
+paper(1, "results", "calibration and uncertainty", ["paraview"]);
+paper(1, "discuss", "calibration and uncertainty", ["overleaf"]);
+
+wk("Year 1 annual review preparation", "Prepare the annual progress report.", [
+  "Write the annual report: aims, progress against plan, outputs, training done",
+  "Update the 4-year plan and risks",
+  "Prepare a 15-minute presentation",
+  "Practice the talk with a friend or the group",
+  "Send report to supervisors"
+], ["sw-cand","fse-pgr"], "Annual report drafted");
+
+paper(1, "revise", "calibration and uncertainty", ["overleaf"]);
+paper(1, "submit", "calibration and uncertainty", ["zotero"]);
+leave("Christmas closure");
+leave("Christmas closure");
+
+/* ---------- PHASE D: Study 2, AI on synthetic vs experimental data (2028) ---------- */
+wk("Study 2 design", "Can AI replace the physics model? Plan a fair test.", [
+  "Write Study 2 questions: synthetic-trained vs experiment-trained vs physics model",
+  "Choose models: GP, MLP ensemble, DeepONet, FNO, PINN",
+  "Choose metrics: RMSE, NLL, CRPS, coverage, calibration error, cost",
+  "Plan data splits, including out-of-distribution tests",
+  "Supervision: approve design"
+], ["psaros","abdar"], "Study 2 design document");
+
+wk("Synthetic data pipeline", "Generate training data at scale.", [
+  "Define the input space (geometry, loads, materials) and sampling plan",
+  "Automate MOOSE runs with mooseherder on HPC",
+  "Store outputs in a versioned format (zarr or HDF5)",
+  "Test the pipeline on 50 runs",
+  "Weekly log"
+], ["herder","scw"], "Working data pipeline");
+
+wk("Synthetic campaign", "Run about 2,000 simulations.", [
+  "Launch the full campaign",
+  "Monitor and re-run failed jobs",
+  "Quality checks: energy balance on every run",
+  "Write the dataset README (inputs, units, ranges)",
+  "Weekly log"
+], ["scw","herder"], "Synthetic dataset complete");
+
+wk("Baseline: GP surrogates", "Start with the strongest small-data model.", [
+  "Exact GP on scalar outputs (peak T, strain at gauges)",
+  "Sparse/variational GP for bigger data",
+  "Multi-output GP for sensor time series",
+  "Evaluate on held-out synthetic data",
+  "Weekly log"
+], ["gpytorch","gpml"], "GP baselines");
+
+wk("Neural surrogates", "Fields, not just scalars.", [
+  "POD (SVD) of temperature fields; how many modes?",
+  "MLP from inputs to POD coefficients",
+  "Deep ensemble of 5 MLPs",
+  "Evaluate accuracy and uncertainty",
+  "Supervision"
+], ["ensembles","d2l","pytorch"], "POD + ensemble surrogate");
+
+wk("DeepONet surrogate", "Learn the operator from loads to fields.", [
+  "Set up DeepONet in DeepXDE or PyTorch",
+  "Train on the synthetic set",
+  "Tune width, depth, learning rate",
+  "Evaluate on held-out and OOD sets",
+  "Weekly log"
+], ["deeponet","deepxde"], "DeepONet results");
+
+wk("FNO surrogate", "Compare with Fourier Neural Operator.", [
+  "Map the mesh data to a grid (or use a geometry-aware variant)",
+  "Train FNO with neuraloperator",
+  "Compare accuracy and training cost to DeepONet",
+  "Write a 1-page comparison",
+  "Weekly log"
+], ["fno","neuralop"], "FNO results");
+
+wk("PINN for the monoblock", "Physics inside the network.", [
+  "Transient heat PINN on the monoblock cross-section",
+  "Data-free versus data-assisted PINN",
+  "Inverse PINN: infer HTC from sensor data",
+  "Compare cost and accuracy to FEM",
+  "Supervision"
+], ["deepxde","cuomo","raissi"], "PINN results");
+
+wk("Buffer: Paper 1 reviews", "Reviews often arrive about now. Use this week for them; if none, catch up.", [
+  "Read reviews calmly; list every point",
+  "Plan responses with supervisors",
+  "Do the extra analysis asked for",
+  "Write the response letter",
+  "Resubmit (or, if no reviews yet, catch up Study 2 tasks)"
+], ["overleaf"], "Paper 1 revision or catch-up");
+
+wk("Uncertainty for AI surrogates", "Give every AI model honest error bars.", [
+  "Ensembles for DeepONet and FNO",
+  "MC dropout variants",
+  "Laplace approximation on the MLP surrogate",
+  "Compare predictive uncertainty on in-range and OOD inputs",
+  "Weekly log"
+], ["laplace-gh","ensembles","mcdropout"], "Uncertainty-aware surrogates");
+
+wk("Calibration of AI uncertainty", "Are the error bars right?", [
+  "Regression calibration: PIT histograms, coverage curves",
+  "Proper scoring: NLL and CRPS (see Lecture L2 notes)",
+  "Recalibration: temperature/variance scaling",
+  "Conformal prediction intervals with guaranteed coverage",
+  "Supervision"
+], ["guo","conformal"], "Calibration results");
+
+wk("Synthetic-to-real test", "The core question: do synthetic-trained models work on real data?", [
+  "Evaluate every synthetic-trained model on HIVE measurements",
+  "Quantify the gap (error, coverage, calibration)",
+  "Find where and why each model fails",
+  "Compare with the calibrated physics model from Study 1",
+  "Weekly log"
+], ["psaros","hive"], "Synthetic-to-real gap measured");
+
+wk("Training on experimental data", "Small real data: what can it do alone?", [
+  "Train GP and ensembles on experimental data only",
+  "Learning curves: error versus number of experiments",
+  "Uncertainty quality with tiny data",
+  "Write up findings",
+  "Weekly log"
+], ["gpml","ensembles"], "Data-efficiency curves");
+
+wk("Transfer learning", "Pre-train on synthetic, fine-tune on real.", [
+  "Fine-tune neural surrogates on experimental data",
+  "GP with simulation prior mean",
+  "Compare against both pure approaches",
+  "Plot all three on one figure",
+  "Supervision"
+], ["pbdl"], "Transfer results");
+
+leave("Easter leave");
+
+wk("Unified comparison", "Physics vs AI on one scoreboard.", [
+  "Build one evaluation script for all models",
+  "Metrics table: accuracy, NLL, CRPS, coverage, cost, data needed",
+  "Statistical tests or bootstrap intervals on the metrics",
+  "Draft the main comparison figure",
+  "Weekly log"
+], ["psaros"], "Unified scoreboard");
+
+wk("Out-of-distribution tests", "Where does AI break?", [
+  "Extrapolate to higher heat flux",
+  "Change geometry (castellation size)",
+  "Change material property",
+  "Summarise failure modes and warning signs",
+  "Supervision"
+], ["hull-w","abdar"], "OOD study");
+
+wk("UKAEA visit: data campaign I", "Collect targeted validation data, if a HIVE slot is available.", [
+  "Travel to UKAEA; safety induction",
+  "Use the Study 1 posterior to choose the most informative test conditions",
+  "Help set up sensors (thermocouples, IR camera, DIC)",
+  "Run tests; keep a lab notebook",
+  "Back up all raw data the same day"
+], ["hive","pyvale","idics"], "New HIVE data collected");
+
+wk("UKAEA visit: data campaign II", "Finish tests and process data.", [
+  "Finish testing",
+  "Process the new data with your Study 1 pipeline",
+  "Meet the CAV team; present your work",
+  "Travel back",
+  "Weekly log"
+], ["hive","pyvale"], "New data processed");
+
+wk("Re-evaluation on new data", "Test every model on the new conditions.", [
+  "Run all models on the new data",
+  "Update the scoreboard",
+  "Check if the physics model still validates",
+  "Note surprises",
+  "Supervision"
+], [], "Updated scoreboard");
+
+wk("Conference abstract and teaching training", "Share results; get ready to demonstrate.", [
+  "Pick an autumn fusion or computational mechanics conference (check deadlines on the conference site)",
+  "Write and submit the abstract",
+  "Swansea demonstrator / teaching training",
+  "Update literature matrix with new papers",
+  "Weekly log"
+], ["zotero"], "Abstract submitted");
+
+wk("Study 2: consolidate", "Freeze results.", [
+  "Re-run the full pipeline from scratch",
+  "Final figures",
+  "Results tables",
+  "List of claims with evidence",
+  "Weekly log"
+], [], "Study 2 results frozen");
+
+paper(2, "outline", "AI trained on synthetic vs experimental data for fusion component digital twins", ["psaros","zotero"]);
+paper(2, "methods", "AI surrogates", ["deeponet","fno"]);
+paper(2, "results", "AI surrogates", []);
+
+wk("18-month review", "Interim progress review.", [
+  "Write the 18-month progress report",
+  "Update thesis outline and plan",
+  "Prepare slides",
+  "Review meeting",
+  "Submit in e:Vision"
+], ["sw-cand"], "18-month review done");
+
+paper(2, "discuss", "AI surrogates", []);
+
+wk("Literature review update", "Keep chapter 2 current.", [
+  "Search new 2027-2028 papers (digital twin validation, SciML UQ, fusion)",
+  "Add 15-20 papers to the matrix",
+  "Update the literature review draft",
+  "Note new competitors to your contribution",
+  "Weekly log"
+], ["zotero","ukaea-pubs"], "Literature review updated");
+
+paper(2, "revise", "AI surrogates", []);
+paper(2, "submit", "AI surrogates", []);
+
+wk("Conference preparation", "Make the talk or poster.", [
+  "Build slides from Paper 2 figures",
+  "Practice 3 times; time it",
+  "Prepare answers to 10 likely questions",
+  "Book travel; apply for travel funds",
+  "Weekly log"
+], [], "Talk ready");
+
+leave("Summer leave (week 1)");
+leave("Summer leave (week 2)");
+
+/* ---------- PHASE E: Study 3, hybrid strategies (Aug 2028 to Mar 2029) ---------- */
+wk("Study 3 scoping", "When is physics essential, when is data enough, and how to combine them?", [
+  "Write Study 3 questions and hypotheses",
+  "List hybrid methods: KOH discrepancy, residual NN, multi-fidelity, physics-constrained NN",
+  "Define the decision criteria (data amount, extrapolation, cost, confidence needed)",
+  "Plan two case studies: the monoblock (thermo-mechanical) and a coolant channel (thermofluid)",
+  "Supervision"
+], ["willard","kapteyn"], "Study 3 plan");
+
+wk("Multi-fidelity reading", "Learn how to fuse models of different quality.", [
+  "Read about multi-fidelity GP (Kennedy & O'Hagan style autoregressive models)",
+  "Read multi-fidelity neural network papers from Karniadakis's group (search arXiv)",
+  "Summarise options in a table",
+  "Pick 2 to implement",
+  "Weekly log"
+], ["koh","piml"], "Multi-fidelity summary");
+
+wk("Conference week", "Present Paper 2 results.", [
+  "Travel",
+  "Present; take notes on questions",
+  "Meet people working on fusion digital twins",
+  "Write a 1-page trip report",
+  "Follow-up emails"
+], [], "Talk given");
+
+wk("Hybrid 1: physics + GP discrepancy", "Physics model corrected by a learned error.", [
+  "Use the calibrated Study 1 model + GP discrepancy for prediction",
+  "Test in-range and OOD",
+  "Compare with pure AI from Study 2",
+  "Uncertainty calibration check",
+  "Weekly log"
+], ["koh","gpytorch"], "Hybrid 1 results");
+
+wk("Hybrid 2: residual neural network", "Learn the physics model's error with a network.", [
+  "Train a residual NN on (experiment - physics)",
+  "Ensemble it for uncertainty",
+  "Compare with GP discrepancy",
+  "Check extrapolation behaviour",
+  "Supervision"
+], ["ensembles","pbdl"], "Hybrid 2 results");
+
+wk("Hybrid 3: multi-fidelity", "Coarse model + fine model + experiments.", [
+  "Generate coarse and fine simulation sets",
+  "Train a multi-fidelity GP",
+  "Train a multi-fidelity NN",
+  "Compare cost versus accuracy",
+  "Weekly log"
+], ["gpytorch","herder"], "Multi-fidelity results");
+
+wk("Hybrid 4: PINN with real data", "Physics-constrained learning from sparse sensors.", [
+  "PINN with sensor data and uncertain parameters",
+  "Infer HTC and heat flux scale",
+  "Compare with Bayesian calibration of Study 1",
+  "Assess uncertainty quality",
+  "Weekly log"
+], ["deepxde","cuomo"], "Hybrid 4 results");
+
+wk("Benchmark all hybrids", "One scoreboard for physics, AI and hybrid.", [
+  "Run the unified evaluation on all hybrids",
+  "Add to the scoreboard",
+  "Find which method wins in which situation",
+  "Draft the main figure",
+  "Supervision"
+], [], "Hybrid scoreboard");
+
+wk("Active learning and experiment design", "Choose the next test or sensor for maximum information.", [
+  "Read gpCAM docs and examples",
+  "Set up active learning over test conditions with a GP",
+  "Use pyvale virtual sensors for sensor placement",
+  "Compare against random choice",
+  "Weekly log"
+], ["gpcam","gpcam-gh","pyvale"], "Active learning set-up");
+
+wk("Active learning results", "How much data does smart selection save?", [
+  "Run active learning campaigns",
+  "Plot error versus number of experiments",
+  "Recommend a strategy for HIVE testing",
+  "Share with Lloyd Fletcher",
+  "Weekly log"
+], ["gpcam"], "Active learning results");
+
+wk("Decision framework draft", "Guidance for engineers: physics, data, or hybrid?", [
+  "Write the decision criteria with evidence from Studies 1-3",
+  "Make a flowchart",
+  "Test it on the monoblock case",
+  "Ask supervisors and Lloyd to challenge it",
+  "Supervision"
+], ["nas-dt","kapteyn"], "Framework draft");
+
+wk("Thermofluid case: set-up", "Second case to test the framework.", [
+  "Define a coolant channel / pipe case with heating",
+  "Set up MOOSE thermal-hydraulics or Navier-Stokes model",
+  "Verification (mesh, time step)",
+  "Collect validation data (UKAEA or literature)",
+  "Weekly log"
+], ["moose","zienk"], "Thermofluid model");
+
+wk("Thermofluid case: runs", "Generate data.", [
+  "Run the sampling campaign on HPC",
+  "Calibrate the uncertain HTC/inlet conditions",
+  "Train AI surrogates",
+  "Train hybrids",
+  "Weekly log"
+], ["scw","herder"], "Thermofluid data and models");
+
+wk("Thermofluid case: evaluation", "Does the framework hold?", [
+  "Run the unified evaluation",
+  "Apply the decision framework",
+  "Note where it needs changes",
+  "Update the framework",
+  "Supervision"
+], [], "Framework tested on second case");
+
+wk("Year 2 annual review preparation", "Prepare the annual report.", [
+  "Write the annual report",
+  "Update plan and thesis outline",
+  "Prepare presentation",
+  "Practice",
+  "Send to supervisors"
+], ["sw-cand"], "Annual report drafted");
+
+wk("Year 2 annual review", "Complete the review.", [
+  "Make edits",
+  "Submit in e:Vision",
+  "Review meeting",
+  "Act on feedback",
+  "Weekly log"
+], ["sw-cand"], "Year 2 review passed");
+
+wk("Consolidate Study 3", "Freeze results.", [
+  "Re-run all pipelines",
+  "Final figures",
+  "Tables",
+  "Claims with evidence",
+  "Weekly log"
+], [], "Study 3 results frozen");
+
+wk("Light week: notes and reading", "Recharge before Christmas.", [
+  "Tidy the code repos and README files",
+  "Read 3 recent papers for fun",
+  "Write down thesis ideas",
+  "Back up everything",
+  "Plan January"
+], [], "Repos tidy");
+
+leave("Christmas closure");
+
+/* ---------- 2029: finish research, start thesis ---------- */
+wk("Year 3 planning", "Agree the thesis structure.", [
+  "Thesis outline v1: chapters and what each proves",
+  "Map papers to chapters",
+  "Agree the final research tasks",
+  "Start a job/career plan (postdoc, UKAEA, industry)",
+  "Supervision"
+], ["overleaf"], "Thesis outline agreed");
+
+wk("Thermofluid validation data", "Strengthen the second case.", [
+  "Process validation data",
+  "Validation comparison with uncertainty",
+  "Update scoreboard",
+  "Notes",
+  "Weekly log"
+], ["asme-vv20"], "Thermofluid validation");
+
+wk("Framework evaluation across cases", "Robust guidance.", [
+  "Compare the framework's advice on both cases",
+  "Sensitivity of the advice to assumptions",
+  "Final version of the flowchart",
+  "Write the framework section",
+  "Supervision"
+], [], "Framework final");
+
+wk("Robustness checks", "Make reviewers happy before they ask.", [
+  "Ablations: remove one component at a time",
+  "Repeat with different random seeds",
+  "Check results are not due to one dataset",
+  "Document",
+  "Weekly log"
+], [], "Robustness checks done");
+
+paper(3, "outline", "hybrid physics-AI strategies for reliable fusion digital twins", ["zotero"]);
+paper(3, "methods", "hybrid strategies", []);
+paper(3, "results", "hybrid strategies", []);
+paper(3, "discuss", "hybrid strategies", []);
+paper(3, "revise", "hybrid strategies", []);
+paper(3, "submit", "hybrid strategies", []);
+
+wk("Buffer: Paper 2 reviews", "Reviews for Paper 2 likely now.", [
+  "Read reviews; list points",
+  "Plan responses",
+  "Extra analysis",
+  "Response letter",
+  "Resubmit (or catch up)"
+], [], "Paper 2 revision or catch-up");
+
+wk("Software release", "Make your work reusable.", [
+  "Package your validation workflows as a small Python library",
+  "Write docs and examples",
+  "Add tests",
+  "Offer improvements to pyvale where they fit (discuss with Lloyd)",
+  "Weekly log"
+], ["pyvale-gh","git"], "Code released");
+
+leave("Easter leave");
+
+wk("Integrated digital-twin demo I", "Show physics + AI + data working together.", [
+  "Design an end-to-end demo on the HIVE case",
+  "Connect calibrated model, surrogate and sensor stream",
+  "Bayesian updating as new data arrives",
+  "Test",
+  "Weekly log"
+], ["kapteyn","nas-dt"], "Demo prototype");
+
+wk("Integrated digital-twin demo II", "Make it robust.", [
+  "Add uncertainty dashboards",
+  "Test with replayed experimental data",
+  "Measure update speed",
+  "Document",
+  "Supervision"
+], [], "Demo working");
+
+wk("Integrated demo results", "Turn the demo into a thesis chapter result.", [
+  "Run demo scenarios",
+  "Figures",
+  "Write results",
+  "Record a short video for UKAEA",
+  "Weekly log"
+], [], "Demo results");
+
+wk("Conference abstract and UKAEA talk", "Share the final story.", [
+  "Write an abstract for an autumn 2029 conference (check dates)",
+  "Present to the UKAEA CAV team online",
+  "Update CV",
+  "Read 3 new papers",
+  "Weekly log"
+], [], "Abstract submitted");
+
+wk("Thesis plan", "Detailed chapter plan before writing.", [
+  "Write a page per chapter: claim, sections, figures",
+  "Set up the thesis LaTeX (Swansea format, nomenclature, bibliography)",
+  "Collect all figures in one folder",
+  "Agree plan with supervisors",
+  "Weekly log"
+], ["overleaf","sw-cand"], "Chapter plan agreed");
+
+chapter("Ch1", "Introduction", "a");
+chapter("Ch1", "Introduction", "c");
+chapter("Ch2", "Literature review", "a", ["zotero"]);
+chapter("Ch2", "Literature review", "c", ["zotero"]);
+chapter("Ch3", "Theory and methods", "a", ["lewis","oberkampf","gpml"]);
+chapter("Ch3", "Theory and methods", "b", ["koh","laplace"]);
+chapter("Ch3", "Theory and methods", "c");
+
+wk("30-month review", "Interim review.", [
+  "Write the 30-month report",
+  "Update plan to submission",
+  "Slides",
+  "Meeting",
+  "Submit in e:Vision"
+], ["sw-cand"], "30-month review done");
+
+wk("Gap-filling experiments I", "Do what supervisors asked for.", [
+  "List requested extra analyses",
+  "Run them",
+  "Update figures",
+  "Note results",
+  "Weekly log"
+], [], "Gaps filled (part 1)");
+
+wk("Gap-filling experiments II", "Finish extra analyses.", [
+  "Finish runs",
+  "Update tables",
+  "Update papers if needed",
+  "Notes",
+  "Supervision"
+], [], "Gaps filled");
+
+chapter("Ch4", "Study 1: physics model and experimental data", "a");
+chapter("Ch4", "Study 1: physics model and experimental data", "b");
+chapter("Ch4", "Study 1: physics model and experimental data", "c");
+leave("Summer leave (week 1)");
+leave("Summer leave (week 2)");
+chapter("Ch5", "Study 2: AI on synthetic vs experimental data", "a");
+chapter("Ch5", "Study 2: AI on synthetic vs experimental data", "b");
+
+wk("Conference week", "Present final results.", [
+  "Travel",
+  "Present",
+  "Network for postdoc and job options",
+  "Trip report",
+  "Follow-ups"
+], [], "Talk given");
+
+chapter("Ch5", "Study 2: AI on synthetic vs experimental data", "c");
+chapter("Ch6", "Study 3: hybrid strategies", "a");
+chapter("Ch6", "Study 3: hybrid strategies", "b");
+chapter("Ch6", "Study 3: hybrid strategies", "c");
+chapter("Ch7", "Integrated digital twin and decision framework", "a");
+chapter("Ch7", "Integrated digital twin and decision framework", "b");
+chapter("Ch7", "Integrated digital twin and decision framework", "c");
+
+wk("Optional Paper 4: framework paper I", "A short paper on the decision framework (only if time allows).", [
+  "Outline",
+  "Draft introduction and framework",
+  "Case study results",
+  "Discussion",
+  "Weekly log"
+], [], "Paper 4 draft");
+
+wk("Optional Paper 4: framework paper II", "Finish the draft.", [
+  "Finish draft",
+  "Supervisor review",
+  "Revise",
+  "Proofread",
+  "Weekly log"
+], [], "Paper 4 revised");
+
+wk("Optional Paper 4: submit", "Submit or park it.", [
+  "Final checks",
+  "Submit",
+  "Archive code",
+  "Update CV",
+  "Weekly log"
+], [], "Paper 4 submitted (optional)");
+
+chapter("Ch8", "Conclusions and future work", "a");
+
+wk("Year 3 annual review and thesis v0", "Show a complete thesis draft exists.", [
+  "Write the annual report",
+  "Assemble thesis v0 (all chapters in one PDF)",
+  "Slides",
+  "Practice",
+  "Send report and v0 to supervisors"
+], ["sw-cand"], "Thesis v0 assembled");
+
+wk("Year 3 annual review", "Complete the review.", [
+  "Edits",
+  "Submit in e:Vision",
+  "Review meeting",
+  "Act on feedback",
+  "Weekly log"
+], ["sw-cand"], "Year 3 review passed");
+
+wk("Thesis v0 to supervisors", "Get full feedback.", [
+  "Send v0 with a list of questions per chapter",
+  "Fix the bibliography",
+  "Check figure quality",
+  "Start the nomenclature list",
+  "Weekly log"
+], ["zotero"], "v0 with supervisors");
+
+wk("Light week", "Rest a bit before the final push.", [
+  "Tidy files",
+  "Read",
+  "Job search: list postdoc openings (UKAEA, fusion groups, SciML groups)",
+  "Back up",
+  "Plan 2030"
+], [], "2030 plan");
+
+leave("Christmas closure");
+
+/* ---------- PHASE F: Final year 2030: thesis, submission, viva ---------- */
+wk("Final year plan", "Plan to submission in July 2030.", [
+  "Write the week-by-week plan to July (this portal)",
+  "Agree feedback turnaround times with supervisors",
+  "Job search plan",
+  "Check the Swansea submission rules and forms",
+  "Weekly log"
+], ["sw-cand"], "Final year plan agreed");
+
+wk("Feedback: Ch1-3", "Act on supervisor comments.", ["Ch1 comments","Ch2 comments","Ch3 comments","Re-check consistency","Weekly log"], [], "Ch1-3 revised");
+wk("Feedback: Ch4", "Act on supervisor comments.", ["Major comments","Minor comments","Figures","Re-read","Weekly log"], [], "Ch4 revised");
+wk("Feedback: Ch5", "Act on supervisor comments.", ["Major comments","Minor comments","Figures","Re-read","Weekly log"], [], "Ch5 revised");
+wk("Feedback: Ch6", "Act on supervisor comments.", ["Major comments","Minor comments","Figures","Re-read","Weekly log"], [], "Ch6 revised");
+wk("Feedback: Ch7-8", "Act on supervisor comments.", ["Ch7 comments","Ch8 comments","Abstract","Re-read","Weekly log"], [], "Ch7-8 revised");
+
+wk("Reproducibility appendix", "Anyone can repeat your work.", [
+  "Archive all code and data on Zenodo (or UKAEA-approved store)",
+  "Write the software/data appendix",
+  "Check every figure has a script",
+  "Add DOIs to the thesis",
+  "Weekly log"
+], ["git"], "Code and data archived");
+
+wk("Figures pass", "Make all figures consistent.", ["Same fonts and sizes","Same colour maps (colour-blind safe)","Units and labels","Captions that stand alone","Weekly log"], [], "Figures consistent");
+wk("Notation and references pass", "Consistency.", ["Nomenclature list complete","Notation checked chapter by chapter","Zotero to BibTeX clean-up","Check every reference is cited","Weekly log"], ["zotero"], "Notation and references clean");
+wk("Thesis v1 to supervisors", "Second full draft.", ["Assemble v1","Read once fully","Send to supervisors","Start job applications","Weekly log"], [], "Thesis v1 sent");
+
+wk("Buffer: paper reviews", "Paper 3/4 reviews.", ["Read reviews","Plan","Extra work","Response letter","Resubmit or catch up"], [], "Reviews handled");
+wk("Job applications", "Secure your next step.", ["Write 2 postdoc/job applications","Ask supervisors for references","Update research statement","Prepare for interviews","Weekly log"], [], "Applications sent");
+wk("v1 feedback I", "Integrate comments.", ["Ch1-3","Ch4","Ch5","Re-read","Weekly log"], [], "v1 feedback part 1");
+wk("v1 feedback II", "Integrate comments.", ["Ch6","Ch7","Ch8","Re-read","Weekly log"], [], "v1 feedback done");
+wk("Abstract and conclusions polish", "The parts examiners read first.", ["Rewrite the abstract","Rewrite chapter summaries","Rewrite conclusions","List your contributions clearly","Weekly log"], [], "Front and back polished");
+
+leave("Easter leave");
+
+wk("Language pass I", "Plain, clear English.", ["Ch1-2 line edit","Ch3 line edit","Ch4 line edit","Check consistency","Weekly log"], ["sw-cand"], "Language pass part 1");
+wk("Language pass II", "Plain, clear English.", ["Ch5 line edit","Ch6 line edit","Ch7-8 line edit","Check consistency","Weekly log"], [], "Language pass done");
+wk("Thesis v2 to supervisors", "Near-final draft.", ["Assemble v2","Full read","Send","Prepare for questions","Weekly log"], [], "Thesis v2 sent");
+wk("Spring conference or final papers", "Last outputs before submission.", ["Finish any paper revision","Prepare a short talk on the whole thesis","Present (if a conference fits)","Update CV","Weekly log"], [], "Outputs finished");
+wk("v2 feedback", "Final supervisor comments.", ["Read comments","Fix major","Fix minor","Re-read","Weekly log"], [], "v2 feedback done");
+wk("v2 feedback (cont.)", "Finish changes.", ["Finish changes","Figures last check","References last check","Re-read","Weekly log"], [], "v2 final changes");
+wk("Intention to submit", "Start the formal process.", [
+  "Submit the notice of intention to submit in e:Vision (check the timing rule in the candidature guide)",
+  "Supervisors arrange examiners",
+  "Check thesis formatting rules",
+  "Fix formatting",
+  "Weekly log"
+], ["sw-cand"], "Intention to submit filed");
+wk("Formatting", "Meet the regulations exactly.", ["Title page and declarations","Word count","Page layout","Appendices","Weekly log"], ["sw-cand"], "Format correct");
+wk("Full proofread", "Read every word.", ["Ch1-3 proofread","Ch4-5 proofread","Ch6-8 proofread","Fix","Weekly log"], [], "Proofread done");
+wk("Final supervisor read", "Last check.", ["Send final draft","Answer questions","Small fixes","Prepare files","Weekly log"], [], "Supervisors approve");
+wk("Final corrections", "Close all comments.", ["Close all comments","Final PDF","Check links and references","Check figures in print","Weekly log"], [], "Final PDF ready");
+wk("Similarity check and final formatting", "Ready to submit.", ["Run the similarity check","Fix any issues","Final PDF/A","Prepare submission forms","Weekly log"], ["sw-cand"], "Submission pack ready");
+wk("Buffer week", "Spare time for anything that slipped.", ["Catch up","Catch up","Catch up","Final read of abstract","Rest"], [], "Ready");
+wk("Thesis submission", "Submit the thesis.", ["Final check of the PDF","Submit through the university system","Email supervisors and Lloyd Fletcher","Celebrate","Rest"], ["sw-cand"], "THESIS SUBMITTED");
+wk("After submission", "Recover and plan.", ["Rest","Job applications","Tidy all repos","Thank-you notes","Plan viva preparation"], [], "Viva prep plan");
+
+leave("Summer leave (week 1)");
+leave("Summer leave (week 2)");
+
+wk("Viva prep I", "Know your thesis cold.", ["Re-read Ch1-2; write 1-page summary","Re-read Ch3; summary","Re-read Ch4; summary","Re-read Ch5; summary","Weekly log"], [], "Chapter summaries 1-5");
+wk("Viva prep II", "Know your examiners' work.", ["Re-read Ch6-8; summaries","Read 3 papers by each examiner","List 30 likely questions","Answer them out loud","Weekly log"], [], "Question bank");
+wk("Mock viva", "Practice with supervisors.", ["Mock viva with supervisors","Note weak answers","Improve them","Second mini-mock with a friend","Weekly log"], [], "Mock viva done");
+wk("Viva prep III", "Polish.", ["Errata list (typos you found)","Key figures on one page","Contributions in 3 sentences","Limitations and future work answers","Rest"], [], "Viva pack ready");
+wk("Write a paper from thesis leftovers", "Keep publishing while you wait.", ["Pick unpublished results","Outline","Draft","Figures","Weekly log"], [], "Extra paper draft");
+wk("Viva prep IV", "Stay sharp.", ["Re-read abstract and conclusions","Practice the 10-minute summary","Answer 10 random questions","Logistics: date, room or video link","Rest"], [], "Ready for viva");
+wk("Viva week (expected)", "The examiners set the actual date; this is the planned week.", ["Light review","Light review","VIVA (or final prep if your date is later)","Rest; note the corrections list","Celebrate"], [], "Viva");
+wk("Viva week (alternative)", "If the viva moves, it often lands here.", ["Light review","Viva if scheduled","Note corrections","Plan corrections with supervisors","Rest"], [], "Viva done");
+wk("Corrections plan", "Turn the examiners' list into tasks.", ["Make a corrections table","Agree it with supervisors","Start minor corrections","Continue","Weekly log"], [], "Corrections plan");
+wk("Corrections I", "Fix.", ["Corrections","Corrections","Corrections","Corrections","Weekly log"], [], "Corrections part 1");
+wk("Corrections II", "Fix.", ["Corrections","Corrections","Corrections","Corrections","Weekly log"], [], "Corrections part 2");
+wk("Corrections III", "Fix.", ["Corrections","Corrections","Response document","Supervisor check","Weekly log"], [], "Corrections part 3");
+wk("Corrections IV", "Finish.", ["Last corrections","Final PDF","Supervisor sign-off","Prepare submission","Weekly log"], [], "Corrections complete");
+wk("Submit corrections", "Send corrected thesis.", ["Submit corrected thesis","Email examiners via the university","Update CV","Rest","Weekly log"], ["sw-cand"], "Corrections submitted");
+wk("Final deposit", "Put the thesis in the library.", ["Deposit final thesis in the repository (Cronfa)","Archive code/data links","Thank everyone","Clear desk","Weekly log"], [], "Final thesis deposited");
+wk("Handover to UKAEA/FOSTER", "Leave your work usable.", ["Hand over code, data, docs to UKAEA","Final report to FOSTER/UKAEA if required","Exit meeting with supervisors","Update LinkedIn and profiles","Weekly log"], [], "Handover complete");
+wk("Next position preparation", "Start well.", ["Prepare for next job","Relocation/visa planning (Graduate route or Skilled Worker)","Admin","Rest","Weekly log"], [], "Next steps ready");
+wk("Wrap-up", "Close the PhD.", ["Final admin with Swansea","Return equipment","Farewells","Rest","Rest"], [], "PhD complete");
+leave("Christmas: funding ends 31 Dec 2030");
+leave("End of funded period");
+
+/* ===== Phases (week ranges inclusive) ===== */
+const PHASES = [
+  {id:"A", n:"Arrival and set-up",                 s:0,   e:1},
+  {id:"B", n:"Foundations",                        s:2,   e:25},
+  {id:"C", n:"Study 1: physics model + data",      s:26,  e:51},
+  {id:"D", n:"Study 2: AI, synthetic vs real",     s:52,  e:84},
+  {id:"E", n:"Study 3: hybrid strategies",         s:85,  e:120},
+  {id:"F", n:"Thesis writing",                     s:121, e:155},
+  {id:"G", n:"Final year: submit, viva, finish",   s:156, e:208}
+];
+
+/* ===== Milestones (week index, weekday 0=Mon..4=Fri) ===== */
+const MILESTONES = [
+  {w:0, d:0, t:"Enrolment, ID check and bank details verified", k:"admin"},
+  {w:0, d:2, t:"First supervision meeting", k:"admin"},
+  {w:1, d:2, t:"First call with Lloyd Fletcher (UKAEA)", k:"admin"},
+  {w:11, d:3, t:"Confirmation of candidature submitted", k:"review"},
+  {w:25, d:4, t:"6-month progress review", k:"review"},
+  {w:26, d:2, t:"Study 1 data agreed with UKAEA", k:"research"},
+  {w:29, d:4, t:"Study 1 model verified (GCI)", k:"research"},
+  {w:36, d:4, t:"Bayesian calibration with experimental data", k:"research"},
+  {w:47, d:4, t:"Year 1 annual review", k:"review"},
+  {w:49, d:2, t:"Paper 1 submitted", k:"paper"},
+  {w:54, d:4, t:"Synthetic dataset (about 2,000 runs) complete", k:"research"},
+  {w:63, d:4, t:"Synthetic-to-real gap measured", k:"research"},
+  {w:69, d:1, t:"UKAEA HIVE data campaign", k:"research"},
+  {w:77, d:3, t:"18-month review", k:"review"},
+  {w:81, d:2, t:"Paper 2 submitted", k:"paper"},
+  {w:87, d:1, t:"Conference talk (Paper 2)", k:"paper"},
+  {w:95, d:4, t:"Decision framework draft", k:"research"},
+  {w:100,d:2, t:"Year 2 annual review", k:"review"},
+  {w:113,d:2, t:"Paper 3 submitted", k:"paper"},
+  {w:119,d:4, t:"Integrated digital-twin demo", k:"research"},
+  {w:128,d:4, t:"Chapters 1-3 to supervisors", k:"thesis"},
+  {w:129,d:3, t:"30-month review", k:"review"},
+  {w:152,d:2, t:"Year 3 annual review", k:"review"},
+  {w:153,d:0, t:"Thesis v0 to supervisors", k:"thesis"},
+  {w:165,d:2, t:"Thesis v1 to supervisors", k:"thesis"},
+  {w:174,d:2, t:"Thesis v2 to supervisors", k:"thesis"},
+  {w:178,d:0, t:"Notice of intention to submit", k:"review"},
+  {w:185,d:1, t:"THESIS SUBMITTED", k:"thesis"},
+  {w:191,d:0, t:"Mock viva", k:"thesis"},
+  {w:195,d:2, t:"Viva (expected; date set by examiners)", k:"thesis"},
+  {w:202,d:0, t:"Corrections submitted", k:"thesis"},
+  {w:203,d:0, t:"Final thesis deposited", k:"thesis"},
+  {w:208,d:1, t:"Funded period ends (31 Dec 2030)", k:"admin"}
+];
+
+/* ===== Head start: self-study from Mon 12 Oct 2026, about 3 hours per weekday ===== */
+Object.assign(LIB, {
+  "uv":          {g:"Research skills and tools", k:"Tool", t:"uv: fast Python environments and packages", u:"https://docs.astral.sh/uv/"},
+  "sci-py":      {g:"Research skills and tools", k:"Course (free)", t:"Scientific Python Lectures: NumPy, SciPy, Matplotlib, optimisation", u:"https://lectures.scientific-python.org/"},
+  "numpy":       {g:"Research skills and tools", k:"Docs", t:"NumPy: the absolute basics", u:"https://numpy.org/doc/stable/user/absolute_beginners.html"},
+  "scipy":       {g:"Research skills and tools", k:"Docs", t:"SciPy user guide (sparse matrices, linear algebra, integration)", u:"https://docs.scipy.org/doc/scipy/tutorial/index.html"},
+  "fluent":      {g:"Research skills and tools", k:"Book", t:"Ramalho: Fluent Python (idiomatic, advanced Python)", u:"https://fluentpython.com/"},
+  "packaging":   {g:"Research skills and tools", k:"Tutorial", t:"Python Packaging: turn your code into an installable package", u:"https://packaging.python.org/en/latest/tutorials/packaging-projects/"},
+  "pytest":      {g:"Research skills and tools", k:"Docs", t:"pytest: getting started with testing", u:"https://docs.pytest.org/en/stable/getting-started.html"},
+  "numba":       {g:"Research skills and tools", k:"Docs", t:"Numba: speed up numerical loops in 5 minutes", u:"https://numba.readthedocs.io/en/stable/user/5minguide.html"},
+  "jax":         {g:"Research skills and tools", k:"Docs", t:"JAX quickstart (autodiff + GPU numpy; optional)", u:"https://jax.readthedocs.io/en/latest/quickstart.html"},
+  "mit-18086":   {g:"Finite elements and simulation", k:"Course", t:"MIT OCW 18.086 Mathematical Methods for Engineers II (difference methods, stability)", u:"https://ocw.mit.edu/courses/18-086-mathematical-methods-for-engineers-ii-spring-2006/"},
+  "fenics-dl":   {g:"Finite elements and simulation", k:"Install", t:"FEniCSx download and install options (conda or Docker on macOS)", u:"https://fenicsproject.org/download/"},
+  "cfdpython":   {g:"CFD and OpenFOAM", k:"Course (free)", t:"Barba: CFD Python, 12 steps to Navier-Stokes (Jupyter notebooks)", u:"https://github.com/barbagroup/CFDPython"},
+  "of-dl":       {g:"CFD and OpenFOAM", k:"Install", t:"OpenFOAM (openfoam.org) download, including Docker for macOS", u:"https://openfoam.org/download/"},
+  "of-guide":    {g:"CFD and OpenFOAM", k:"Docs", t:"OpenFOAM User Guide (CFD Direct): cavity tutorial, case structure, meshing", u:"https://doc.cfd.direct/openfoam/user-guide-v12/"},
+  "of-tut":      {g:"CFD and OpenFOAM", k:"Tutorial", t:"OpenFOAM tutorial guide (openfoam.com): heat transfer and multiphysics cases", u:"https://www.openfoam.com/documentation/tutorial-guide"},
+  "cfd-wiki":    {g:"CFD and OpenFOAM", k:"Reference", t:"CFD Online wiki: turbulence models, y+, discretisation schemes", u:"https://www.cfd-online.com/Wiki/Main_Page"},
+  "rethinking":  {g:"Uncertainty quantification and Bayesian calibration", k:"Course (free)", t:"McElreath: Statistical Rethinking 2024 (lecture videos linked in the repo)", u:"https://github.com/rmcelreath/stat_rethinking_2024"},
+  "pymc-learn":  {g:"Uncertainty quantification and Bayesian calibration", k:"Docs", t:"PyMC learning path: introductory notebooks", u:"https://www.pymc.io/projects/docs/en/stable/learn.html"},
+  "moseley":     {g:"Scientific machine learning", k:"Blog", t:"Ben Moseley: So, what is a physics-informed neural network?", u:"https://benmoseley.blog/my-research/so-what-is-a-physics-informed-neural-network/"},
+  "moseley-gh":  {g:"Scientific machine learning", k:"Code", t:"Harmonic oscillator PINN notebook (from the blog)", u:"https://github.com/benmoseley/harmonic-oscillator-pinn"},
+  "raissi-gh":   {g:"Scientific machine learning", k:"Code", t:"Raissi's original PINN code and examples", u:"https://github.com/maziarraissi/PINNs"},
+  "sciml-book":  {g:"Scientific machine learning", k:"Course (free)", t:"Rackauckas: Parallel Computing and Scientific Machine Learning (MIT 18.337 notes)", u:"https://book.sciml.ai/"},
+  "databook":    {g:"Scientific machine learning", k:"Book", t:"Brunton & Kutz: Data-Driven Science and Engineering (book site, code, videos)", u:"http://databookuw.com/"},
+  "brunton":     {g:"Scientific machine learning", k:"Video", t:"Steve Brunton's YouTube channel: ML for fluids, SVD/POD, SINDy", u:"https://www.youtube.com/@Eigensteve"}
+});
+
+const __before = W.length;
+wk("Head start 1: set-up and scientific Python", "Build the computer habits every later week depends on.", [
+  "Install uv; make a private GitHub repo 'phd-headstart'; do Missing Semester lecture 1 (the shell)",
+  "Missing Semester Git lecture + Software Carpentry Git lesson; from today, commit every study day",
+  "Scientific Python Lectures: NumPy (arrays, broadcasting, vectorising loops)",
+  "Matplotlib and SciPy: sparse matrices, linear solvers, integration",
+  "Mini-project: 1D steady heat conduction by finite differences with a sparse solver; plot T(x) against the exact solution"
+], ["uv","missing","git","sci-py","numpy","scipy"], "Repo with a working 1D heat solver");
+
+wk("Head start 2: advanced Python for research code", "Write code you can trust and reuse for four years.", [
+  "Fluent Python topics: functions as objects, dataclasses, generators, comprehensions (read the matching chapters)",
+  "Turn your solver into a package: src layout, pyproject.toml, install it with uv",
+  "Write pytest tests: the solver must match the exact solution to a tolerance",
+  "Profile with cProfile; vectorise the slow parts; try Numba on one loop and time it",
+  "Add type hints and docstrings; write a README with one example; weekly log"
+], ["fluent","packaging","pytest","numba"], "Tested, installable mini-package");
+
+wk("Head start 3: numerical methods for heat transfer", "Understand stability and accuracy before using big codes.", [
+  "Explicit finite differences for 1D transient heat; find the stability limit (Fourier number below 0.5)",
+  "Implicit methods: backward Euler and Crank-Nicolson with scipy.sparse; compare with explicit",
+  "2D transient plate: Dirichlet, Neumann and convective (Robin) boundary conditions",
+  "Convergence study: error versus dx and dt on log-log axes; read off the order",
+  "Skim MIT 18.086 notes on difference methods and stability; weekly log"
+], ["mit-18086","scipy"], "2D transient solver with convergence plots");
+
+wk("Head start 4: finite elements, the Swansea way", "Learn FEM from your supervisor's own book.", [
+  "Lewis, Nithiarasu & Seetharamu ch. 1-2: weighted residuals, weak form, Galerkin method",
+  "Write a 1D linear finite element code for heat conduction from scratch",
+  "Install FEniCSx (conda or Docker); run the Poisson tutorial",
+  "FEniCSx heat equation tutorial; change the boundary conditions and the source",
+  "Compare your FD code, your FEM code and FEniCSx on one problem; weekly log"
+], ["lewis","fenics-dl","dolfinx"], "Same problem solved three ways");
+
+wk("Head start 5: CFD fundamentals", "See how flow equations are discretised and solved.", [
+  "CFD Python steps 1-4: linear and non-linear convection, diffusion, Burgers",
+  "Steps 5-8: 2D convection and diffusion",
+  "Steps 9-10: Laplace and Poisson equations",
+  "Steps 11-12: lid-driven cavity and channel flow (pressure-velocity coupling)",
+  "Write 1 page: discretisation, stability (CFL), pressure-velocity coupling; weekly log"
+], ["cfdpython","zienk"], "12 CFD notebooks done + summary page");
+
+wk("Head start 6: OpenFOAM I", "Learn the most common open-source CFD code.", [
+  "Install OpenFOAM (Docker on macOS) and ParaView; run the built-in test case",
+  "User Guide: lid-driven cavity with icoFoam; refine the mesh and compare",
+  "Learn the case structure: 0/, constant/, system/; blockMesh, controlDict, fvSchemes, fvSolution",
+  "pitzDaily with simpleFoam: turbulence model, residuals, y+ (CFD Online wiki)",
+  "Compare your OpenFOAM cavity with CFD Python step 11; weekly log"
+], ["of-dl","of-guide","paraview","cfd-wiki"], "Cavity and pitzDaily run and post-processed");
+
+wk("Head start 7: OpenFOAM II, heat transfer and automation", "Thermofluids, the way fusion cooling problems look.", [
+  "Run a buoyancy-driven heat transfer tutorial (natural convection in a cavity)",
+  "Run a conjugate heat transfer (multi-region) tutorial: solid heated, fluid cooling it",
+  "Script a parameter sweep from Python: copy case, edit a dictionary, run, read results",
+  "Post-process heat flux and Nusselt number in ParaView and Python",
+  "Weekly log: note what carries over to MOOSE (UKAEA's main code) and what does not"
+], ["of-tut","of-guide","paraview"], "Automated CHT parameter sweep");
+
+wk("Head start 8: probability and Bayesian thinking", "The language of uncertainty quantification.", [
+  "Statistical Rethinking lectures 1-2 (videos linked from the repo)",
+  "Statistical Rethinking lectures 3-4 (priors, linear models)",
+  "Monte Carlo: random conductivity and heat transfer coefficient through your 2D solver; check MC convergence",
+  "PyMC: infer conductivity from noisy synthetic temperatures; look at the posterior",
+  "SALib: Sobol indices for your heat solver; which input matters most? Weekly log"
+], ["rethinking","pymc-learn","salib","chaospy"], "MC, Bayesian fit and Sobol on your own solver");
+
+wk("Head start 9: deep learning with PyTorch", "Build and train neural surrogates.", [
+  "Dive into Deep Learning: linear regression and MLP chapters (PyTorch version)",
+  "PyTorch tutorials: tensors, autograd, the training loop",
+  "Generate 2,000 runs of your heat solver; train an MLP: (k, h, q) to peak temperature",
+  "Validation split, early stopping, overfitting; a 5-model deep ensemble for uncertainty",
+  "Watch 2 Brunton videos on ML for fluid dynamics / POD; weekly log"
+], ["d2l","pytorch","ensembles","brunton","databook"], "MLP surrogate with ensemble uncertainty");
+
+wk("Head start 10: PINNs hands-on", "Physics-informed neural networks from scratch.", [
+  "Read Ben Moseley's PINN blog; run the harmonic oscillator PINN notebook",
+  "Watch Lecture L7 (Karniadakis: from PINNs to DeepONets) for the big picture",
+  "Write a PINN in plain PyTorch for 1D transient heat (no library)",
+  "Inverse PINN: recover conductivity from 5 noisy 'sensor' points",
+  "Compare PINN versus your FD solver: accuracy, run time, failure modes; weekly log"
+], ["moseley","moseley-gh","raissi-arx","raissi-gh","sciml-book"], "Forward and inverse PINN for heat");
+
+wk("Head start 11: Gaussian processes and wrap-up", "The surrogate you will use most, then a light Christmas week.", [
+  "scikit-learn GP regression guide; build a GP surrogate of your heat solver",
+  "Compare GP and deep-ensemble uncertainty: where is each one confident or not?",
+  "Read the two HIVE papers: a preview of your project's experiments",
+  "Write a 2-page 'what I learned this autumn'; push the repo; this is your first meeting material in January",
+  "Rest"
+], ["sk-gp","gpml","hive-paper","hive-castell"], "GP surrogate + 2-page autumn summary");
+
+wk("Travel and arrival", "Get to Swansea calm and prepared. Your PhD starts Monday 4 January.", [
+  "Document check: passport, eVisa share code, CAS, offer and scholarship letters, ATAS certificate",
+  "Back up the laptop; make sure your environments run offline",
+  "Travel to Swansea",
+  "Settle in: UK SIM, groceries, find your way to Bay Campus",
+  "Rest before induction"
+], ["fse-pgr"], "Arrived in Swansea");
+
+const HEAD = W.splice(__before);
+W.unshift(...HEAD);
+const MAIN0 = HEAD.length; // 12
+MILESTONES.forEach(m => m.w += MAIN0);
+PHASES.forEach(p => { p.s += MAIN0; p.e += MAIN0; });
+PHASES.unshift({id:"0", n:"Head start: self-study", s:0, e:MAIN0-1});
+MILESTONES.unshift({w:MAIN0-1, d:3, t:"Travel to Swansea", k:"admin"});
+MILESTONES.unshift({w:0, d:0, t:"Head start begins: self-study", k:"research"});
+
+const PROJECT_HTML = `
+<div class="prose">
+<div class="eyebrow">RS973 · PhD in Mechanical Engineering · Swansea University with UKAEA</div>
+<h1 style="font-size:34px;font-weight:800;margin-top:6px">Digital twin validation: physics-based model, AI and data</h1>
+<p>Funded by FOSTER (UKAEA's Fusion Opportunities in Skills, Training, Education and Research programme) and the Faculty of Science and Engineering. Based at Bay Campus in the Zienkiewicz Institute for Modelling, Data and AI.</p>
+
+<h2>The project in plain words</h2>
+<p>A fusion power plant has parts, such as the divertor, that take heat loads of 10 to 20 MW/m². Engineers want "digital twins" of these parts: computer models that stay in step with the real part and can be trusted to predict its temperature, stress and lifetime. There are three ways to build the model inside a twin:</p>
+<ul>
+<li><b>Physics-based models</b> (finite elements in MOOSE): reliable when the inputs are right, but slow, and the inputs (material data, boundary conditions) are uncertain.</li>
+<li><b>Experimental data</b> (thermocouples, infrared cameras, digital image correlation in rigs like HIVE): real, but noisy, sparse and expensive.</li>
+<li><b>AI models</b>: fast, but most are trained on synthetic simulation data, and nobody has properly tested how well they hold up on real measurements.</li>
+</ul>
+<p>Your job is to measure, with honest uncertainty, what each approach can and cannot do, and to show when physics is essential, when data is enough, and how to combine them.</p>
+
+<h2>Research questions</h2>
+<div class="rq">
+<div class="card"><div class="eyebrow">RQ1 · Study 1 · 2027</div><h3>What uncertainty comes from bringing experimental data into a physics-based model?</h3><p class="muted" style="margin:6px 0 0">Bayesian calibration (Kennedy-O'Hagan) of a MOOSE thermo-mechanical model of a HIVE test article against thermocouple, IR and DIC data. Verification (GCI), ASME V&V 20 validation, Sobol sensitivity, sensor design with pyvale. Output: Paper 1, thesis Chapter 4.</p></div>
+<div class="card"><div class="eyebrow">RQ2 · Study 2 · 2028</div><h3>Can AI replace the physics model, when trained on synthetic data or on experimental data?</h3><p class="muted" style="margin:6px 0 0">GPs, deep ensembles, DeepONet, FNO and PINNs, trained on about 2,000 MOOSE runs and on real HIVE data. Test the synthetic-to-real gap, calibration (NLL, CRPS, coverage, conformal), out-of-distribution failure and transfer learning. Output: Paper 2, Chapter 5.</p></div>
+<div class="card"><div class="eyebrow">RQ3 · Study 3 · late 2028 to 2029</div><h3>When is physics essential, when is data enough, and how should they be combined?</h3><p class="muted" style="margin:6px 0 0">Hybrid methods (GP discrepancy, residual networks, multi-fidelity, PINNs with real data), active learning for tests and sensors (gpCAM, pyvale), a decision framework tested on a thermo-mechanical and a thermofluid case, and an integrated twin demo. Output: Paper 3, Chapters 6 and 7.</p></div>
+</div>
+
+<h2>Thesis chapter plan</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Chapter</th><th>Content</th><th>Drafted</th></tr></thead>
+<tbody>
+<tr><td>1 Introduction</td><td>Fusion components, digital twins, why validation matters, RQs, contributions</td><td>May 2029</td></tr>
+<tr><td>2 Literature review</td><td>V&V, UQ, Bayesian calibration, SciML, uncertainty in deep learning, fusion testing</td><td>Started Jun 2027, final May 2029</td></tr>
+<tr><td>3 Theory and methods</td><td>FEM for heat and thermo-mechanics, V&V 20, GPs, MCMC, surrogates, calibration metrics</td><td>Jun 2029</td></tr>
+<tr><td>4 Study 1</td><td>Physics model + experimental data</td><td>Jul 2029 (from Paper 1)</td></tr>
+<tr><td>5 Study 2</td><td>AI on synthetic vs experimental data</td><td>Aug to Sep 2029 (from Paper 2)</td></tr>
+<tr><td>6 Study 3</td><td>Hybrid strategies</td><td>Sep to Oct 2029 (from Paper 3)</td></tr>
+<tr><td>7 Integration</td><td>Integrated digital twin and decision framework</td><td>Oct 2029</td></tr>
+<tr><td>8 Conclusions</td><td>Answers to RQs, limits, future work</td><td>Nov 2029</td></tr>
+</tbody></table></div>
+
+<h2>People</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Who</th><th>Role</th><th>Use them for</th></tr></thead>
+<tbody>
+<tr><td><a href="https://www.swansea.ac.uk/staff/engineering/nithiarasu-p/" target="_blank" rel="noopener">Prof. Perumal Nithiarasu</a></td><td>Primary supervisor; Associate Dean (Research, Innovation and Impact)</td><td>Direction, FEM and modelling, big decisions. Short, clear emails with one question.</td></tr>
+<tr><td><a href="https://www.swansea.ac.uk/staff/alberto.coccarelli/" target="_blank" rel="noopener">Dr Alberto Coccarelli</a></td><td>Second supervisor</td><td>Day-to-day modelling questions, code, drafts.</td></tr>
+<tr><td>Dr Lloyd Fletcher (UKAEA)</td><td>Industrial supervisor; leads Computer Aided Validation (Future Leaders Fellowship)</td><td>HIVE data, pyvale, sensors, what UKAEA needs.</td></tr>
+<tr><td>Zoë Perry</td><td>FSE PGR Support Manager</td><td>Reviews, forms, leave, admin (pgr-scienceengineering@swansea.ac.uk).</td></tr>
+</tbody></table></div>
+
+<h2>How the timeline was built</h2>
+<ul>
+<li>Start Monday 4 January 2027, assuming the January deferral is approved. If your start date changes, ask Claude to shift the plan; all dates come from one start date.</li>
+<li>Funded to 31 December 2030 (four years). Thesis submission targeted for 23 July 2030, leaving five months for the viva and corrections inside the funded period.</li>
+<li>Swansea rules used: confirmation of candidature within three months, minimum candidature three years, maximum four, leave up to 31 days plus bank holidays. Check exact review dates in e:Vision; departments set their own windows.</li>
+<li>Leave built in: Easter week, two summer weeks and the Christmas closure each year. UK bank holidays are detected automatically and tasks move to the other working days.</li>
+<li>Three buffer weeks for paper reviews, plus gap-filling and buffer weeks before submission.</li>
+</ul>
+
+<h2>Main risks and what to do</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Risk</th><th>Early sign</th><th>Plan B</th></tr></thead>
+<tbody>
+<tr><td>HIVE data is late or limited</td><td>No data agreement by Aug 2027</td><td>Start Study 1 with published UKAEA cases and pyvale synthetic "experiments"; ask Lloyd for any past test data.</td></tr>
+<tr><td>MOOSE learning curve</td><td>Monoblock model not running by mid-March 2027</td><td>Keep FEniCSx as a backup solver; ask the MOOSE discussion forum; pair with someone in the CAV team.</td></tr>
+<tr><td>HPC queue or quota</td><td>Synthetic campaign behind by 2 weeks</td><td>Use the GP emulator earlier; reduce the design with active learning.</td></tr>
+<tr><td>Slow supervisor feedback</td><td>No reply in 10 working days</td><td>One short follow-up, then ask for a 15-minute call; send drafts to Dr Coccarelli first.</td></tr>
+<tr><td>Paper rejection</td><td>Reviews ask for major new work</td><td>Use the buffer weeks; keep the thesis timeline independent of acceptance.</td></tr>
+</tbody></table></div>
+</div>`;
+
+const LECTURES = [
+ {id:"L1", title:"Uncertainty in machine learning, part 1", who:"Eyke Hüllermeier (LMU Munich), 19th ESSCaSS summer school, University of Tartu", len:"1 h 43 min", file:"3000d381-b10d-46f7-bfdb-b6057bc50921.mp4",
+  why:"This gives you the vocabulary for your whole thesis: aleatoric uncertainty (noise you cannot remove, like sensor scatter in HIVE) versus epistemic uncertainty (lack of knowledge, like an AI surrogate asked to extrapolate). RQ2 and RQ3 are really questions about epistemic uncertainty.",
+  ideas:[
+   "Why uncertainty matters again: from certainty factors in early expert systems to adversarial examples that fool confident networks.",
+   "The supervised learning set-up written precisely (hypothesis space, loss, risk), because uncertainty can only be defined against stated assumptions.",
+   "Losses for regression (squared error) and classification (0/1, log-loss), and the Bayes-optimal predictor.",
+   "Probabilistic predictors capture aleatoric uncertainty through p(y | x); they say nothing yet about epistemic uncertainty.",
+   "Roadmap for part 2: calibration, set-valued (conformal) prediction, epistemic uncertainty."
+  ], stamps:[], read:["hull-w","abdar"]},
+ {id:"L2", title:"Uncertainty in machine learning, part 2", who:"Eyke Hüllermeier, 19th ESSCaSS summer school", len:"1 h 33 min", file:"88efe0f6-8fe7-41b9-8ff0-a8b938a3a769.mp4",
+  why:"Gives you the tools to judge an uncertain prediction honestly: proper scoring rules (log score, CRPS) for your Study 2 scoreboard, Gaussian processes for surrogates, and conformal prediction for intervals with guaranteed coverage.",
+  ideas:[
+   "Ways to get probabilistic predictions: ad-hoc methods, maximum likelihood, and proper scoring rules.",
+   "A strictly proper score splits into entropy (unavoidable, aleatoric) plus a divergence (the extra loss of a wrong model).",
+   "Gaussian processes as a distribution over functions; the posterior covariance is epistemic uncertainty.",
+   "Conformal prediction: nonconformity scores, the full method, and inductive (split) conformal with a calibration set.",
+   "The coverage guarantee is marginal: it holds on average, not for each input. Remember this when you report intervals."
+  ], stamps:[], read:["conformal","gpml","hull-w"]},
+ {id:"L3", title:"Calibration of probabilistic predictions", who:"Meelis Kull (University of Tartu), 19th ESSCaSS summer school", len:"1 h 14 min", file:"7369ebfb-6a59-4530-a98f-3cd9c0c01f33.mp4",
+  why:"A digital twin that says '95% sure' must be right 95% of the time. Calibration is how you test that, and it is a core metric in Study 2 for every AI surrogate.",
+  ideas:[
+   "Why confidence matters: knowing how well a model knows reduces the harm of its errors (examples include energy forecasting).",
+   "Types of over-confidence: models look calibrated on training data and drift on new data.",
+   "Temperature scaling (Guo et al. 2017): one parameter that fixes much of a network's over-confidence.",
+   "Visualising calibration on the probability simplex; reliability diagrams.",
+   "Decision calibration: calibration defined by the decisions you will make with the prediction."
+  ], stamps:[], read:["guo"]},
+ {id:"L4", title:"Uncertainty in deep learning: ensembles and Bayesian neural networks", who:"Weiwei Pan (Harvard IACS)", len:"1 h 12 min", file:"79c4fc85-199f-485a-8b5f-c3f5884f439e.mp4",
+  why:"Study 2 needs uncertainty for neural surrogates. This talk shows, with clear pictures, where ensembles and Bayesian neural networks give useful uncertainty and where they quietly fail, especially between and outside the training data.",
+  ideas:[
+   "A template for uncertainty: Bayesian polynomial regression and the posterior predictive.",
+   "Bootstrap ensembles: where their epistemic uncertainty comes from, and why it can vanish in data gaps.",
+   "Ensembles that are diverse on purpose (local independence training) extrapolate more honestly.",
+   "Bayesian neural networks: approximate posteriors often give poor uncertainty; check them, don't assume them.",
+   "LUNA (regression) and BaCOUn (classification): designing models for good uncertainty out of distribution."
+  ], stamps:[], read:["ensembles","bbb","mcdropout"]},
+ {id:"L5", title:"Uncertainty in deep learning: Laplace approximations", who:"Numerics of Machine Learning (lecture 13), University of Tübingen", len:"1 h 24 min", file:"uncertainity.mp4",
+  why:"The Laplace approximation adds uncertainty to a network you already trained, almost for free. That makes it the easiest way to give your Study 2 surrogates error bars, and it links neural networks back to Gaussian processes.",
+  ideas:[
+   "The problem: ReLU networks become more confident the further you move from the data (Hein et al. 2019).",
+   "Training with weight decay is maximum a posteriori (MAP) estimation; this opens the Bayesian view.",
+   "Laplace: a Gaussian around the MAP weights using the Hessian; cheap, post-hoc, keeps your point estimate.",
+   "Linearised Laplace turns a deep network into a Gaussian process for prediction.",
+   "The Laplace marginal likelihood can choose architectures and hyperparameters; even Bayesian finite networks stay a little over-confident."
+  ], stamps:[], read:["laplace","laplace-gh"]},
+ {id:"L6", title:"Advanced Gaussian processes for uncertainty quantification and autonomous experiments", who:"Marcus Noack (Lawrence Berkeley National Laboratory), IPAM", len:"52 min", file:"be844410-f0e3-4f3f-a8db-21c13cc40dfa.mp4",
+  why:"Directly about your Study 3 idea: let a GP decide where the next experiment or sensor should go. HIVE tests are expensive, so choosing them by uncertainty saves real money and time.",
+  ideas:[
+   "The human-driven experiment loop versus an autonomous loop where a GP picks the next measurement.",
+   "GPs as a normal distribution over functions; kernels decide what functions are believable.",
+   "Non-stationary and compactly supported kernels for real, uneven data.",
+   "Scaling: exact GPs on millions of points with gp2Scale (sparse kernels + HPC).",
+   "gpCAM: the open-source tool that implements all of this."
+  ], stamps:[], read:["gpcam","gpcam-gh","gpml"]},
+ {id:"L7", title:"From PINNs to DeepONets", who:"George Em Karniadakis (Brown University)", len:"1 h 19 min", file:"363e9d27-1ddf-4116-9f7a-04379ce7ae60.mp4",
+  why:"The founder of PINNs explains both main scientific ML families you will test in Study 2: PINNs (physics in the loss) and DeepONets (learning a whole operator from inputs to fields).",
+  ideas:[
+   "Physics-informed neural networks: data plus PDE residual in one loss; works for forward and inverse problems.",
+   "Hidden fluid mechanics: inferring velocity and pressure from flow visualisation (espresso cup, aneurysm).",
+   "Multi-fidelity deep learning: combining cheap and expensive data (3D-printed material properties from indentation).",
+   "DeepONet: neural networks can learn operators, shown first on a simple ODE (the antiderivative).",
+   "Hard applications (compressible flow with chemistry) and regularisation tricks to make training stable."
+  ], stamps:[], read:["piml","raissi-arx","deeponet","deepxde"]}
+];
+
+</script>
+<script>
+(function(){
+"use strict";
+const START = new Date(2026,9,12), MAIN_START = new Date(2027,0,4), PLAN_END = new Date(2030,11,31);
+const DAY = 864e5, NWEEKS = W.length;
+const PH_COLORS = ["#24306E","#3B1F8C","#5B2596","#86297F","#B7335F","#D9480F","#E27509","#D99A00"];
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ymd = d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const parse = s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const addDays=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const fmt = (d,o)=>d.toLocaleDateString("en-GB",o||{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const short = d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+const weekStart = i=>addDays(START,i*7);
+const daysBetween=(a,b)=>Math.round((new Date(b.getFullYear(),b.getMonth(),b.getDate())-new Date(a.getFullYear(),a.getMonth(),a.getDate()))/DAY);
+const phaseOf = i=>PHASES.findIndex(p=>i>=p.s&&i<=p.e);
+const wLabel = i=> i<MAIN0 ? "Head start "+(i+1) : "Week "+(i-MAIN0+1);
+const wShort = i=> i<MAIN0 ? "H"+(i+1) : "W"+(i-MAIN0+1);
+
+/* ---- UK (England & Wales) bank holidays ---- */
+function easter(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1;return new Date(y,mo-1,da)}
+function firstMon(y,m){let d=new Date(y,m,1);while(d.getDay()!==1)d=addDays(d,1);return d}
+function lastMon(y,m){let d=new Date(y,m+1,0);while(d.getDay()!==1)d=addDays(d,-1);return d}
+const HOL = {};
+for(let y=2026;y<=2031;y++){
+  let nyd=new Date(y,0,1); if(nyd.getDay()===6)nyd=addDays(nyd,2); else if(nyd.getDay()===0)nyd=addDays(nyd,1); HOL[ymd(nyd)]="New Year's Day";
+  const e=easter(y); HOL[ymd(addDays(e,-2))]="Good Friday"; HOL[ymd(addDays(e,1))]="Easter Monday";
+  HOL[ymd(firstMon(y,4))]="Early May bank holiday"; HOL[ymd(lastMon(y,4))]="Spring bank holiday"; HOL[ymd(lastMon(y,7))]="Summer bank holiday";
+  const x=new Date(y,11,25), dw=x.getDay();
+  if(dw===6){HOL[ymd(addDays(x,2))]="Christmas Day (substitute)";HOL[ymd(addDays(x,3))]="Boxing Day (substitute)"}
+  else if(dw===5){HOL[ymd(x)]="Christmas Day";HOL[ymd(addDays(x,3))]="Boxing Day (substitute)"}
+  else if(dw===0){HOL[ymd(addDays(x,1))]="Boxing Day";HOL[ymd(addDays(x,2))]="Christmas Day (substitute)"}
+  else {HOL[ymd(x)]="Christmas Day";HOL[ymd(addDays(x,1))]="Boxing Day"}
+}
+
+/* ---- map each week's tasks onto its working days ---- */
+function weekDays(i){
+  const w=W[i], ws=weekStart(i), out=[];
+  const work=[]; for(let k=0;k<5;k++){const d=addDays(ws,k); if(!HOL[ymd(d)]) work.push(k)}
+  const byDay={}; // weekday index -> [task indexes]
+  if(!w.leave){ w.d.forEach((t,ti)=>{const slot=work[Math.min(ti,work.length-1)]; (byDay[slot]=byDay[slot]||[]).push(ti)}) }
+  for(let k=0;k<7;k++){const d=addDays(ws,k); out.push({date:d,k,tasks:byDay[k]||[],hol:HOL[ymd(d)]||null})}
+  return out;
+}
+const taskKey=(i,ti)=>"w"+i+"t"+ti;
+
+/* ---- state: per-person, private; falls back to this browser ---- */
+let state={done:{},notes:{}};
+let db=null, uid=null, saveTimer=null, notesTimer=null, dirtyNotesYears=new Set();
+const LS="ftphd-v1";
+try{const s=localStorage.getItem(LS); if(s){const p=JSON.parse(s); state.done=p.done||{}; state.notes=p.notes||{}}}catch(e){}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(state))}catch(e){}}
+function setSync(t){$("#sync").textContent=t}
+async function initStore(){
+  try{
+    if(!window.claude||!window.claude.use) return;
+    const [d,u]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!d||!u) return;
+    const id=await u.id(); if(!id) return;
+    db=d; uid=id;
+    const snap=await db.doc("data/users/"+uid+"/progress").get();
+    if(snap.exists){const v=snap.data(); state.done=Object.assign({},state.done,v.done||{})}
+    for(const y of [2027,2028,2029,2030]){
+      const n=await db.doc("data/users/"+uid+"/notes-"+y).get();
+      if(n.exists){Object.assign(state.notes,(n.data().notes)||{})}
+    }
+    saveLocal(); setSync("Saved to your account"); renderAll();
+  }catch(e){ setSync("Saving on this device"); }
+}
+function persistDone(){
+  saveLocal(); if(!db) return;
+  clearTimeout(saveTimer); setSync("Saving…");
+  saveTimer=setTimeout(async()=>{
+    try{await db.doc("data/users/"+uid+"/progress").set({done:state.done}); setSync("Saved to your account")}
+    catch(e){setSync("Could not save online; kept on this device")}
+  },700);
+}
+function persistNotes(year){
+  saveLocal(); if(!db) return; dirtyNotesYears.add(year);
+  clearTimeout(notesTimer); setSync("Saving…");
+  notesTimer=setTimeout(async()=>{
+    const ys=[...dirtyNotesYears]; dirtyNotesYears.clear();
+    try{
+      for(const y of ys){const part={}; for(const k in state.notes){if(k.startsWith(y+"-")&&state.notes[k]) part[k]=state.notes[k]}
+        await db.doc("data/users/"+uid+"/notes-"+y).set({notes:part})}
+      setSync("Saved to your account");
+    }catch(e){setSync("Could not save online; kept on this device")}
+  },1200);
+}
+function toggle(key,on){ if(on) state.done[key]=1; else delete state.done[key]; persistDone(); refreshCounts(); }
+
+/* ---- progress ---- */
+function weekProgress(i){const w=W[i]; if(w.leave||!w.d.length) return null; let n=0; w.d.forEach((_,t)=>{if(state.done[taskKey(i,t)])n++}); return n/w.d.length}
+function totalProgress(){let n=0,t=0; W.forEach((w,i)=>{if(!w.leave){t+=w.d.length; w.d.forEach((_,ti)=>{if(state.done[taskKey(i,ti)])n++})}}); return {n,t}}
+
+/* ---- tabs ---- */
+let current="today", viewDate=null;
+function show(tab){current=tab; document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.tab===tab))); document.querySelectorAll("main>section").forEach(s=>s.hidden=s.id!=="tab-"+tab); render(tab); window.scrollTo({top:0})}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.tab)));
+
+function realToday(){const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function clampDate(d){ if(d>PLAN_END) return PLAN_END; return d; }
+
+function resItem(id){const r=LIB[id]; if(!r) return ""; return `<li><span class="kind">${esc(r.k)}</span><a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.t)}</a></li>`}
+function lectureRefs(text){const m=String(text).match(/Lecture (L\d)/g); return m?m.map(s=>s.split(" ")[1]):[]}
+
+/* ---- TODAY ---- */
+function renderToday(){
+  const el=$("#tab-today"); const d=viewDate;
+  const nav=`<div class="daynav">
+    <button class="btn" id="prevDay" aria-label="Previous day">← Day</button>
+    <button class="btn" id="nextDay" aria-label="Next day">Day →</button>
+    <button class="btn" id="prevWeek">← Week</button>
+    <button class="btn" id="nextWeek">Week →</button>
+    <button class="btn primary" id="goToday">Today</button>
+    <label class="muted" for="pick" style="margin-left:auto">Jump to</label>
+    <input type="date" id="pick" min="2026-10-01" max="2030-12-31" value="${ymd(d)}">
+  </div>`;
+  if(d<START){ el.innerHTML=nav+renderPrestart(d); wireDayNav();
+    el.querySelectorAll("input[data-key]").forEach(cb=>cb.addEventListener("change",e=>{toggle(e.target.dataset.key,e.target.checked); e.target.closest(".task").classList.toggle("done",e.target.checked)}));
+    return; }
+  const i=Math.max(0,Math.min(NWEEKS-1,Math.floor(daysBetween(START,d)/7)));
+  const w=W[i], pi=phaseOf(i), ph=PHASES[pi], days=weekDays(i);
+  const dow=(d.getDay()+6)%7; // 0=Mon
+  const thisDay = d<START ? null : days[dow];
+  const hol=HOL[ymd(d)];
+  const month=Math.floor(daysBetween(MAIN_START,d)/30.44)+1;
+  let main="";
+  const head=`<div class="dayhead"><div class="eyebrow">${i<MAIN0?"Head start week "+(i+1)+" of "+MAIN0+" · self-study, about 3 hours a day":"Week "+(i-MAIN0+1)+" of "+(NWEEKS-MAIN0)+" · PhD month "+Math.max(1,month)}</div>
+    <h1>${esc(fmt(d))}</h1>
+    <div class="meta"><span class="chip ph" style="background:${PH_COLORS[pi]}">Phase ${ph.id} · ${esc(ph.n)}</span>${hol?`<span class="chip">${esc(hol)}</span>`:""}</div>
+    <p class="weekgoal"><b>${esc(w.t)}.</b> ${esc(w.g)}</p></div>`;
+  if(w.leave){
+    main=`<div class="leave"><h2>${esc(w.t)}</h2><p class="muted">Planned leave. Swansea gives up to 31 days a year plus bank holidays; this plan uses about 20. Rest properly, so the next block goes well.</p></div>`;
+  } else if(dow===5){
+    main=`<div class="leave"><h2>Saturday</h2><p class="muted">Optional, 1 hour at most: read your notes from this week, tick anything you finished, and look at next week's goal. Then stop.</p></div>`;
+  } else if(dow===6){
+    main=`<div class="leave"><h2>Sunday: rest</h2><p class="muted">No PhD work today. A rested mind does better research on Monday.</p></div>`;
+  } else if(hol){
+    main=`<div class="leave"><h2>${esc(hol)}</h2><p class="muted">Bank holiday. This week's tasks have been spread over the other working days.</p></div>`;
+  } else {
+    const items=thisDay.tasks.map(ti=>taskLi(i,ti)).join("");
+    const routine=[];
+    if(dow===0) routine.push("Plan the week (15 min): read the goal, block time in your calendar.");
+    if(dow===2) routine.push("Supervision slot (default Wednesday; use the day you agreed).");
+    if(dow===4) routine.push("Weekly log (20 min): done, blocked, next. Push to GitHub and back up.");
+    if(i<MAIN0) routine.push("Commit today's code and notes to your phd-headstart repo.");
+    if(i>=MAIN0+2&&i<MAIN0+185) routine.push("20 min: read one abstract from your Zotero queue and tag it.");
+    main=`<div class="blockttl"><h2>Today</h2><span class="muted mono" id="dayCount"></span></div><ul class="tasks">${items||'<li class="muted">No task assigned; use today to catch up on anything unticked this week.</li>'}</ul><div class="routine">${routine.map(r=>`<div>${esc(r)}</div>`).join("")}</div>`;
+    const lecs=[...new Set(thisDay.tasks.flatMap(ti=>lectureRefs(w.d[ti])))];
+    if(lecs.length) main+=lecs.map(l=>{const L=LECTURES.find(x=>x.id===l); return L?`<div class="lecture-nudge"><b>${esc(L.id)}: ${esc(L.title)}</b> · <span class="muted">${esc(L.who)}, ${esc(L.len)}</span><br>Local file: <span class="mono">${esc(L.file)}</span> · <a href="#" data-golec="${esc(L.id)}">Open the study guide</a></div>`:""}).join("");
+  }
+  // rest of week
+  let weekList="";
+  if(!w.leave){
+    weekList=`<div class="blockttl"><h2>This week</h2><span class="muted mono" id="weekCount"></span></div><ul class="tasks">`+
+      days.filter(x=>x.tasks.length).map(x=>x.tasks.map(ti=>taskLi(i,ti,short(x.date)+" · "+x.date.toLocaleDateString("en-GB",{weekday:"short"}))).join("")).join("")+`</ul>`;
+    if(w.del) weekList+=`<p style="margin-top:12px"><span class="eyebrow">Deliverable by Friday</span><br>${esc(w.del)}</p>`;
+  }
+  const res = w.r.length?`<div class="blockttl"><h2>Materials for this week</h2></div><ul class="reslist">${w.r.map(resItem).join("")}</ul>`:"";
+  const notes=`<div class="blockttl"><h2>Notes for ${esc(short(d))}</h2><span class="muted" style="font-size:12.5px">Saved automatically</span></div><textarea id="note" aria-label="Notes for this day" placeholder="What did you learn? What is blocking you? What will you ask in supervision?">${esc(state.notes[ymd(d)]||"")}</textarea>`;
+  el.innerHTML=nav+`<div class="today-grid"><div>${head}${main}${weekList}${res}${notes}</div><aside class="rail">${railHtml(d,i)}</aside></div>`;
+  wireDayNav();
+  el.querySelectorAll("input[data-key]").forEach(cb=>cb.addEventListener("change",e=>{toggle(e.target.dataset.key,e.target.checked); e.target.closest(".task").classList.toggle("done",e.target.checked); syncTwins(e.target)}));
+  const ta=$("#note"); ta.addEventListener("input",()=>{const k=ymd(d); if(ta.value) state.notes[k]=ta.value; else delete state.notes[k]; persistNotes(d.getFullYear())});
+  el.querySelectorAll("[data-golec]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault(); show("lectures"); const t=document.getElementById("lec-"+a.dataset.golec); if(t) t.scrollIntoView({behavior:"smooth"})}));
+  refreshCounts();
+}
+function taskLi(i,ti,label){const k=taskKey(i,ti), on=!!state.done[k]; const id="cb-"+k+(label?"-w":"");
+  return `<li class="task${on?" done":""}"><input type="checkbox" id="${id}" data-key="${k}" ${on?"checked":""}><label for="${id}"><span>${esc(W[i].d[ti])}</span>${label?`<small>${esc(label)}</small>`:""}</label></li>`}
+function syncTwins(src){document.querySelectorAll(`input[data-key="${src.dataset.key}"]`).forEach(o=>{if(o!==src){o.checked=src.checked; const li=o.closest(".task"); if(li) li.classList.toggle("done",src.checked)}})}
+function railHtml(d,i){
+  const tp=totalProgress(), pct=tp.t?Math.round(100*tp.n/tp.t):0;
+  const wp=weekProgress(i);
+  const today=realToday();
+  const up=MILESTONES.map(m=>({...m,date:addDays(weekStart(m.w),m.d)})).filter(m=>m.date>=d).slice(0,4);
+  const daysLeft=daysBetween(today,PLAN_END);
+  return `<div class="card"><div class="eyebrow">Whole PhD</div><div class="stat"><b class="mono" id="totPct">${pct}%</b><span class="muted mono" id="totN">${tp.n} / ${tp.t} tasks</span></div><div class="prog"><i id="totBar" style="width:${pct}%"></i></div>
+   ${wp!==null?`<div class="eyebrow" style="margin-top:14px">This week</div><div class="prog"><i id="wkBar" style="width:${Math.round(wp*100)}%"></i></div>`:""}
+   <p class="muted" style="font-size:13px;margin:12px 0 0">${daysLeft>0?daysLeft.toLocaleString("en-GB")+" days until the funded period ends (31 Dec 2030).":"Funded period finished."}</p></div>
+   <div class="card"><div class="eyebrow">Next milestones</div><ul class="mslist" style="margin-top:10px">${up.map(m=>`<li><span class="d">${esc(short(m.date))}<br>${m.date.getFullYear()}</span><span>${esc(m.t)}<br><span class="muted" style="font-size:12.5px">in ${daysBetween(d,m.date)} days</span></span></li>`).join("")||'<li class="muted">All milestones passed.</li>'}</ul>
+   <button class="btn" style="margin-top:12px" id="toMs">All milestones</button></div>
+   ${i<MAIN0?preCard():""}<div class="card"><div class="eyebrow">Phase</div><p style="margin:6px 0 0">${esc(PHASES[phaseOf(i)].n)}: ${esc(wShort(PHASES[phaseOf(i)].s))} to ${esc(wShort(PHASES[phaseOf(i)].e))}, ${esc(short(weekStart(PHASES[phaseOf(i)].s)))} ${weekStart(PHASES[phaseOf(i)].s).getFullYear()} to ${esc(short(addDays(weekStart(PHASES[phaseOf(i)].e),4)))} ${addDays(weekStart(PHASES[phaseOf(i)].e),4).getFullYear()}.</p></div>`;
+}
+function refreshCounts(){
+  const tp=totalProgress(), pct=tp.t?Math.round(100*tp.n/tp.t):0;
+  const a=$("#totPct"),b=$("#totN"),c=$("#totBar"); if(a){a.textContent=pct+"%";b.textContent=tp.n+" / "+tp.t+" tasks";c.style.width=pct+"%"}
+  if(viewDate&&viewDate>=START){const i=Math.min(NWEEKS-1,Math.floor(daysBetween(START,viewDate)/7)); const wp=weekProgress(i); const wb=$("#wkBar"); if(wb&&wp!==null) wb.style.width=Math.round(wp*100)+"%";
+    const wc=$("#weekCount"); if(wc&&!W[i].leave){let n=0;W[i].d.forEach((_,t)=>{if(state.done[taskKey(i,t)])n++}); wc.textContent=n+" of "+W[i].d.length+" done"}}
+}
+function wireDayNav(){
+  const go=n=>{viewDate=clampDate(addDays(viewDate,n)); renderToday()};
+  $("#prevDay").onclick=()=>go(-1); $("#nextDay").onclick=()=>go(1); $("#prevWeek").onclick=()=>go(-7); $("#nextWeek").onclick=()=>go(7);
+  $("#goToday").onclick=()=>{viewDate=clampDate(realToday()); renderToday()};
+  $("#pick").onchange=e=>{if(e.target.value){viewDate=clampDate(parse(e.target.value)); renderToday()}};
+  const ms=$("#toMs"); if(ms) ms.onclick=()=>show("milestones");
+}
+const PRE_ITEMS=[
+    ["Get the January 2027 start confirmed in writing (start date + FOSTER/UKAEA scholarship moved)","Email sent 6 Oct 2026 to Prof. Nithiarasu and Zoë Perry"],
+    ["Complete the Qualification Check so the offer becomes unconditional","Admissions emailed the consent request on 22 Sep 2026"],
+    ["ATAS certificate","Applied 28 Sep 2026; 30+ working days"],
+    ["CAS from Swansea (needs ATAS + unconditional offer + new start date)","Started 29 Sep 2026"],
+    ["Student visa application (priority service if time is short)","After CAS"],
+    ["Accept the scholarship in the Learner Gateway","As well as the signed letter you emailed"],
+    ["Book accommodation and a flight arriving by 31 Dec 2026",""]
+  ];
+function preCard(){return `<div class="card"><div class="eyebrow">Admin before you travel</div><ul class="tasks" style="margin-top:10px">${PRE_ITEMS.map((x,j)=>{const k="pre"+j,on=!!state.done[k];return `<li class="task${on?" done":""}" style="padding:8px 10px"><input type="checkbox" id="cb-${k}" data-key="${k}" ${on?"checked":""}><label for="cb-${k}"><span style="font-size:13.5px">${esc(x[0])}</span>${x[1]?`<small>${esc(x[1])}</small>`:""}</label></li>`}).join("")}</ul></div>`}
+function renderPrestart(d){
+  const n=daysBetween(d,START);
+  return `<div class="dayhead"><div class="eyebrow">Before the head start</div><h1>${esc(fmt(d))}</h1><p class="weekgoal"><b>${n} day${n===1?"":"s"}</b> until Monday 12 October 2026, when your 12-week head start begins. The PhD itself starts Monday 4 January 2027 (if the deferral is approved).</p></div>
+  <div class="today-grid" style="margin-top:16px"><div><div class="blockttl"><h2>Get ready this week</h2></div><ul class="tasks">
+  ${[["Install Git, VS Code and uv; create a GitHub account if you don't have one","pc0"],["Clear 3 hours a day on your calendar, Monday to Friday, for the next 11 weeks","pc1"],["Look through the Plan tab to see where the head start leads","pc2"]].map(([t,k])=>{const on=!!state.done[k];return `<li class="task${on?" done":""}"><input type="checkbox" id="cb-${k}" data-key="${k}" ${on?"checked":""}><label for="cb-${k}"><span>${esc(t)}</span></label></li>`}).join("")}
+  </ul><p class="muted" style="margin-top:16px">Use "Week →" or "Jump to" to look ahead.</p></div><aside class="rail">${preCard()}</aside></div>`;
+}
+
+/* ---- PLAN ---- */
+function renderPlan(){
+  const el=$("#tab-plan"); const ti=realToday(); const cur=ti>=START?Math.floor(daysBetween(START,ti)/7):-1;
+  let map=`<div class="card"><div class="eyebrow">Head start + 209 PhD weeks at a glance</div><div class="map" role="list">`+
+    W.map((w,i)=>{const p=weekProgress(i), c=PH_COLORS[phaseOf(i)]; return `<button role="listitem" class="${w.leave?"lv":""} ${i===cur?"cur":""}" data-week="${i}" title="${esc(wLabel(i))} · ${esc(short(weekStart(i)))} ${weekStart(i).getFullYear()} · ${esc(w.t)}" style="${w.leave?"":"background:color-mix(in srgb, "+c+" 22%, var(--sunk))"}"><i style="height:${w.leave?0:Math.round((p||0)*100)}%;background:${c}"></i></button>`}).join("")+
+    `</div><div class="legend">${PHASES.map((p,j)=>`<span><i style="background:${PH_COLORS[j]}"></i>${esc(p.id)} ${esc(p.n)}</span>`).join("")}<span><i style="background:repeating-linear-gradient(45deg,var(--muted) 0 2px,transparent 2px 4px)"></i>Leave</span></div><p class="muted" style="font-size:12.5px;margin:8px 0 0">Each square is one week; it fills as you tick tasks. Click a square to open that week in Today.</p></div>`;
+  const ph=PHASES.map((p,j)=>{
+    const rows=[]; for(let i=p.s;i<=p.e;i++){const w=W[i], pr=weekProgress(i);
+      const days=weekDays(i);
+      const body=w.leave?`<p class="muted">Leave week.</p>`:days.filter(x=>x.tasks.length).map(x=>x.tasks.map(t=>{const k=taskKey(i,t),on=!!state.done[k];return `<div class="dayrow"><span class="mono muted" style="font-size:12.5px">${esc(x.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}))}</span><label><input type="checkbox" data-key="${k}" ${on?"checked":""}><span>${esc(w.d[t])}</span></label></div>`}).join("")).join("")+
+        (w.del?`<p style="margin:6px 0 0"><span class="eyebrow">Deliverable</span> ${esc(w.del)}</p>`:"")+
+        (w.r.length?`<ul class="reslist" style="margin-top:6px">${w.r.map(resItem).join("")}</ul>`:"")+
+        `<div><button class="btn" data-open="${i}">Open in Today</button></div>`;
+      rows.push(`<details class="week${w.leave?" isleave":""}"${i===cur?" open":""}><summary><span class="mono muted">${esc(wShort(i))}</span><span class="mono muted wd">${esc(weekStart(i).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}))}</span><span>${esc(w.t)}</span><span>${pr===null?'<span class="muted" style="font-size:12px">leave</span>':`<span class="prog"><i style="width:${Math.round(pr*100)}%"></i></span>`}</span></summary><div class="wbody">${body}</div></details>`)}
+    return `<div class="phase"><h2><span class="chip ph" style="background:${PH_COLORS[j]}">Phase ${p.id}</span>${esc(p.n)} <span class="muted mono" style="font-size:13px;font-family:var(--mono)">${esc(short(weekStart(p.s)))} ${weekStart(p.s).getFullYear()} to ${esc(short(addDays(weekStart(p.e),4)))} ${addDays(weekStart(p.e),4).getFullYear()}</span></h2><div class="weeks">${rows.join("")}</div></div>`}).join("");
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">The whole plan</h1><p class="muted prose">A 12-week head start (self-study from 12 October 2026), then seven phases over 209 weeks, five tasks per working week. Bank holidays and leave are built in. Tick tasks here or in Today; both stay in sync.</p>`+map+ph;
+  el.querySelectorAll(".map button").forEach(b=>b.addEventListener("click",()=>{viewDate=weekStart(+b.dataset.week); show("today")}));
+  el.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{viewDate=weekStart(+b.dataset.open); show("today")}));
+  el.querySelectorAll("input[data-key]").forEach(cb=>cb.addEventListener("change",e=>{toggle(e.target.dataset.key,e.target.checked); const det=e.target.closest("details"); const i=+e.target.dataset.key.match(/w(\d+)/)[1]; const bar=det.querySelector("summary .prog i"); if(bar) bar.style.width=Math.round(weekProgress(i)*100)+"%"}));
+  const c=el.querySelector("details[open]"); if(c) setTimeout(()=>c.scrollIntoView({block:"center"}),50);
+}
+
+/* ---- MILESTONES ---- */
+function renderMilestones(){
+  const el=$("#tab-milestones"), t=realToday();
+  const ms=MILESTONES.map((m,j)=>({...m,j,date:addDays(weekStart(m.w),m.d)}));
+  const years=[2027,2028,2029,2030];
+  const kinds={admin:"Admin",review:"Review",research:"Research",paper:"Paper",thesis:"Thesis"};
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Milestones</h1><p class="muted prose">Reviews follow Swansea's candidature guide: confirmation within three months, then regular progress reviews (check exact dates in e:Vision). Papers, conference and thesis dates are targets you can move.</p>
+   <div class="legend" style="margin-top:10px"><span><i style="background:var(--violet)"></i>Review</span><span><i style="background:var(--ember)"></i>Paper</span><span><i style="background:var(--ok)"></i>Research</span><span><i style="background:var(--gold)"></i>Thesis</span><span><i style="background:var(--muted)"></i>Admin</span></div>`+
+   years.map(y=>`<div class="year"><h2>${y}</h2><ol class="tl">${ms.filter(m=>m.date.getFullYear()===y||(y===2027&&m.date.getFullYear()<2027)).map(m=>{const k="ms"+m.j,on=!!state.done[k]; const dd=daysBetween(t,m.date);
+     return `<li class="k-${m.k}${m.date<t?" past":""}"><span class="mono muted">${esc(m.date.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"}))}</span><span><b>${esc(m.t)}</b><br><span class="muted" style="font-size:12.5px">${esc(kinds[m.k])} · ${esc(wLabel(m.w))}${dd>0?" · in "+dd+" days":""}</span></span><label class="muted" style="font-size:13px;display:flex;gap:6px;align-items:center"><input type="checkbox" data-key="${k}" ${on?"checked":""} style="accent-color:var(--ember)">Done</label></li>`}).join("")}</ol></div>`).join("");
+  el.querySelectorAll("input[data-key]").forEach(cb=>cb.addEventListener("change",e=>toggle(e.target.dataset.key,e.target.checked)));
+}
+
+/* ---- LECTURES ---- */
+function renderLectures(){
+  const el=$("#tab-lectures");
+  const when=id=>{const out=[]; W.forEach((w,i)=>w.d.forEach(t=>{if(lectureRefs(t).includes(id)) out.push(i)})); return out};
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Your seven lectures</h1><p class="muted prose">From your folder Downloads/phd. Each has a study guide: why it matters for your project, the key ideas to take from it, and the week it is scheduled in the plan. Watch with a notebook open and write the ideas in your own words.</p>
+   <div class="lgrid" style="margin-top:16px">`+LECTURES.map(L=>{const ws=when(L.id);
+     return `<article class="card lec" id="lec-${esc(L.id)}"><div class="eyebrow">${esc(L.id)} · ${esc(L.len)}${ws.length?" · scheduled: "+ws.map(wShort).join(", "):""}</div><h3>${esc(L.title)}</h3><p class="muted" style="margin:4px 0 0">${esc(L.who)}</p>
+     <p style="margin:10px 0 0"><b>Why it matters for you.</b> ${esc(L.why)}</p>
+     <ul>${L.ideas.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+     ${L.stamps&&L.stamps.length?`<div class="stamps"><div class="eyebrow" style="margin-bottom:4px">Where to look</div>${L.stamps.map(s=>`<div><span class="mono muted">${esc(s[0])}</span><span>${esc(s[1])}</span></div>`).join("")}</div>`:""}
+     <p class="muted" style="font-size:12.5px;margin:10px 0 0">File: <span class="mono">${esc(L.file)}</span>${L.read&&L.read.length?" · Read with: "+L.read.map(r=>LIB[r]?`<a href="${esc(LIB[r].u)}" target="_blank" rel="noopener">${esc(LIB[r].t.split(":")[0])}</a>`:"").join(", "):""}</p>
+     ${ws.length?`<button class="btn" style="margin-top:10px" data-open="${ws[0]}">Go to ${esc(wLabel(ws[0]))}</button>`:""}</article>`}).join("")+`</div>`;
+  el.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.open; const days=weekDays(i); const hit=days.find(x=>x.tasks.some(t=>lectureRefs(W[i].d[t]).length)); viewDate=hit?hit.date:weekStart(i); show("today")}));
+}
+
+/* ---- LIBRARY ---- */
+let libQuery="", libGroup="All";
+function renderLibrary(){
+  const el=$("#tab-library");
+  const used={}; W.forEach((w,i)=>w.r.forEach(r=>{(used[r]=used[r]||[]).push(wShort(i))}));
+  const groups=[...new Set(Object.values(LIB).map(r=>r.g))];
+  const q=libQuery.toLowerCase();
+  const list=Object.entries(LIB).filter(([id,r])=>(libGroup==="All"||r.g===libGroup)&&(!q||(r.t+" "+r.k+" "+r.g).toLowerCase().includes(q)));
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Library</h1><p class="muted prose">${Object.keys(LIB).length} books, papers, courses, tools and Swansea pages, all linked from the weeks where you need them. Links were checked in October 2026; publisher pages may ask you to sign in through Swansea's library.</p>
+  <div class="libtools"><input id="libq" type="search" placeholder="Search titles, e.g. Gaussian, MOOSE, calibration" value="${esc(libQuery)}" aria-label="Search the library"><select id="libg" class="btn" aria-label="Filter by topic"><option>All</option>${groups.map(g=>`<option${g===libGroup?" selected":""}>${esc(g)}</option>`).join("")}</select></div>`+
+  groups.filter(g=>list.some(([,r])=>r.g===g)).map(g=>`<div class="libgroup"><h2>${esc(g)}</h2>${list.filter(([,r])=>r.g===g).map(([id,r])=>`<div class="libitem"><span><span class="kind">${esc(r.k)}</span></span><span><a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.t)}</a><br><span class="used">${used[id]?"Used in "+used[id].slice(0,12).join(", ")+(used[id].length>12?"…":""):"Background reference"}</span></span></div>`).join("")}</div>`).join("")+(list.length?"":`<p class="muted" style="margin-top:20px">Nothing matches "${esc(libQuery)}". Try a shorter word.</p>`);
+  const qi=$("#libq"); qi.addEventListener("input",()=>{libQuery=qi.value; const pos=qi.selectionStart; renderLibrary(); const n=$("#libq"); n.focus(); n.setSelectionRange(pos,pos)});
+  $("#libg").addEventListener("change",e=>{libGroup=e.target.value; renderLibrary()});
+}
+
+/* ---- PROJECT ---- */
+function renderProject(){ $("#tab-project").innerHTML=PROJECT_HTML; }
+
+function render(tab){({today:renderToday,plan:renderPlan,milestones:renderMilestones,lectures:renderLectures,library:renderLibrary,project:renderProject})[tab]()}
+function renderAll(){render(current)}
+
+viewDate=clampDate(realToday());
+show("today");
+initStore();
+})();
+</script>
+
+</body>
+</html>
