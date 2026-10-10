@@ -69,6 +69,37 @@ section[hidden]{display:none!important}
 .prog{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
 .prog i{display:block;height:100%;background:var(--heat);border-radius:99px}
 
+/* dashboard */
+.dash-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:18px}
+@media (max-width:900px){.dash-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.dash-kpis{grid-template-columns:1fr}}
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi b{font-family:var(--display);font-size:34px;font-weight:800;font-stretch:85%;line-height:1}
+.kpi small{color:var(--muted);font-size:12.5px}
+.kpi.ring{flex-direction:row;align-items:center;gap:14px}
+.kpi.ring>div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.dash-two{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px;margin-top:16px}
+@media (max-width:860px){.dash-two{grid-template-columns:1fr}}
+.dash-card{margin-top:16px}
+.dash-card h2,.dash-two h2{font-size:19px;font-weight:800}
+.chart{width:100%;height:auto;display:block;margin-top:10px}
+.chart text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.phbar{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:4px 10px;align-items:center;margin-top:10px;font-size:13.5px}
+.phbar .prog{grid-column:1/-1;height:10px}
+.weekmap{display:grid;grid-template-columns:repeat(26,minmax(0,1fr));gap:4px;margin-top:12px}
+@media (max-width:640px){.weekmap{grid-template-columns:repeat(13,minmax(0,1fr))}}
+.weekmap button{aspect-ratio:1;border:0;border-radius:3px;padding:0;cursor:pointer;background:var(--sunk)}
+.weekmap button.leave{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,transparent 3px 6px);outline:1px solid var(--line)}
+.weekmap button.now{outline:2px solid var(--ink);outline-offset:1px}
+.weekmap button:hover{outline:2px solid var(--ember)}
+.wm-year{grid-column:1/-1;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:6px}
+.heat-scroll{overflow-x:auto}
+.activity{display:grid;grid-auto-flow:column;grid-template-rows:repeat(5,13px);gap:3px;margin-top:12px;width:max-content}
+.activity i{width:13px;height:13px;border-radius:3px;background:var(--sunk)}
+.scale{display:flex;gap:3px;align-items:center;font-size:12px;color:var(--muted);margin-top:8px}
+.scale i{width:11px;height:11px;border-radius:2px;display:inline-block}
+.pace-ok{color:var(--ok)} .pace-bad{color:var(--warn)}
+
 /* today */
 .daynav{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px}
 .daynav input{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px}
@@ -169,6 +200,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
     <div class="brand"><b>Fusion Twin PhD</b><span>Reamy W. Achirobe · Swansea × UKAEA · Oct 2026 to Dec 2030</span></div>
     <nav class="tabs" role="tablist" aria-label="Sections">
       <button role="tab" data-tab="today" aria-selected="true">Today</button>
+      <button role="tab" data-tab="dashboard" aria-selected="false">Dashboard</button>
       <button role="tab" data-tab="plan" aria-selected="false">Plan</button>
       <button role="tab" data-tab="milestones" aria-selected="false">Milestones</button>
       <button role="tab" data-tab="conferences" aria-selected="false">Events</button>
@@ -182,6 +214,7 @@ th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute
 
 <main class="wrap">
   <section id="tab-today"></section>
+  <section id="tab-dashboard" hidden></section>
   <section id="tab-plan" hidden></section>
   <section id="tab-milestones" hidden></section>
   <section id="tab-conferences" hidden></section>
@@ -1966,7 +1999,7 @@ function persistNotes(year){
     }catch(e){setSync("Could not save online; kept on this device")}
   },1200);
 }
-function toggle(key,on){ if(on) state.done[key]=1; else delete state.done[key]; persistDone(); refreshCounts(); }
+function toggle(key,on){ if(on) state.done[key]=ymd(realToday()); else delete state.done[key]; persistDone(); refreshCounts(); }
 
 /* ---- progress ---- */
 function weekProgress(i){const w=W[i]; if(w.leave||!w.d.length) return null; let n=0; w.d.forEach((_,t)=>{if(state.done[taskKey(i,t)])n++}); return n/w.d.length}
@@ -2190,9 +2223,73 @@ function renderConferences(){
 }
 
 /* ---- PROJECT ---- */
+/* ---- DASHBOARD ---- */
+const lvl=f=>f<=0?"var(--sunk)":`color-mix(in srgb, var(--ember) ${Math.round(25+75*Math.min(1,f))}%, var(--sunk))`;
+function plannedBy(d){let n=0; for(let i=0;i<NWEEKS;i++){if(weekStart(i)>d) break; if(W[i].leave) continue; weekDays(i).forEach(x=>{if(x.date<=d) n+=x.tasks.length})} return n}
+function tickDates(){const c={}; for(const k in state.done){const v=state.done[k]; if(typeof v==="string"&&/^\d{4}-\d\d-\d\d$/.test(v)) c[v]=(c[v]||0)+1} return c}
+function streak(c,t){let d=c[ymd(t)]?t:addDays(t,-1), n=0;
+  for(let g=0;g<4000;g++){const wd=d.getDay(); if(c[ymd(d)]) n++; else if(wd!==0&&wd!==6) break; d=addDays(d,-1)} return n}
+function ringSvg(f,size){const r=40,C=2*Math.PI*r; return `<svg width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="rg" x1="0" x2="1"><stop offset="0" stop-color="#3B1F8C"/><stop offset=".5" stop-color="#D9480F"/><stop offset="1" stop-color="#E8A300"/></linearGradient></defs><circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--sunk)" stroke-width="11"/><circle cx="50" cy="50" r="${r}" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${(C*f).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/></svg>`}
+function burnSvg(cur){
+  const per=W.map((w,i)=>w.leave?0:w.d.length), done=W.map((w,i)=>{if(w.leave)return 0;let n=0;w.d.forEach((_,t)=>{if(state.done[taskKey(i,t)])n++});return n});
+  const cp=[],cd=[]; per.reduce((a,b,i)=>(cp[i]=a+b),0); done.reduce((a,b,i)=>(cd[i]=a+b),0);
+  const T=cp[NWEEKS-1]||1, Wd=1000,H=260,L=44,R=12,Tp=12,B=34, x=i=>L+(Wd-L-R)*(i+1)/NWEEKS, y=v=>Tp+(H-Tp-B)*(1-v/T);
+  let lastTick=-1; done.forEach((v,i)=>{if(v)lastTick=i}); const upto=Math.max(Math.min(cur,NWEEKS-1),lastTick);
+  const plan="M"+L+","+y(0)+cp.map((v,i)=>"L"+x(i).toFixed(1)+","+y(v).toFixed(1)).join("");
+  const act=upto>=0?"M"+L+","+y(0)+cd.slice(0,upto+1).map((v,i)=>"L"+x(i).toFixed(1)+","+y(v).toFixed(1)).join(""):"";
+  const area=act?act+"L"+x(upto).toFixed(1)+","+y(0)+"Z":"";
+  const bands=PHASES.map((p,j)=>`<rect x="${(x(p.s-1)).toFixed(1)}" y="${H-B+6}" width="${(x(p.e)-x(p.s-1)).toFixed(1)}" height="7" fill="${PH_COLORS[j%PH_COLORS.length]}"><title>${esc(p.n)}</title></rect>`).join("");
+  const yrs=[2027,2028,2029,2030].map(Y=>{const i=Math.ceil(daysBetween(START,new Date(Y,0,1))/7); return `<line x1="${x(i-1)}" x2="${x(i-1)}" y1="${Tp}" y2="${H-B}" stroke="var(--line)"/><text x="${x(i-1)+4}" y="${H-6}">${Y}</text>`}).join("");
+  const grid=[.25,.5,.75,1].map(f=>`<line x1="${L}" x2="${Wd-R}" y1="${y(T*f)}" y2="${y(T*f)}" stroke="var(--line)" stroke-dasharray="2 4"/><text x="${L-6}" y="${y(T*f)+4}" text-anchor="end">${Math.round(T*f)}</text>`).join("");
+  const now=cur>=0&&cur<NWEEKS?`<line x1="${x(cur)}" x2="${x(cur)}" y1="${Tp}" y2="${H-B}" stroke="var(--ink)" stroke-width="1.5"/><text x="${x(cur)+4}" y="${Tp+10}" style="fill:var(--ink)">today</text>`:"";
+  return `<svg class="chart" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="Tasks planned and done over the whole PhD"><defs><linearGradient id="ag" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#D9480F" stop-opacity=".45"/><stop offset="1" stop-color="#D9480F" stop-opacity=".04"/></linearGradient></defs>
+   ${grid}${yrs}<path d="${plan}" fill="none" stroke="var(--violet)" stroke-width="2" stroke-dasharray="6 4"/>${area?`<path d="${area}" fill="url(#ag)"/><path d="${act}" fill="none" stroke="var(--ember)" stroke-width="2.5"/>`:""}${now}${bands}</svg>`;
+}
+function renderDashboard(){
+  const el=$("#tab-dashboard"), t=realToday();
+  const cur=t>=START?Math.floor(daysBetween(START,t)/7):-1;
+  const tp=totalProgress(), f=tp.t?tp.n/tp.t:0, pct=Math.round(100*f);
+  const plan=plannedBy(t), gap=tp.n-plan;
+  const c=tickDates(), st=streak(c,t);
+  const ms=MILESTONES.map((m,j)=>({...m,j,date:addDays(weekStart(m.w),m.d)}));
+  const msDone=ms.filter(m=>state.done["ms"+m.j]).length, nextMs=ms.find(m=>m.date>=t&&!state.done["ms"+m.j]);
+  const head=W.slice(0,MAIN0).reduce((a,w,i)=>{if(!w.leave){a.t+=w.d.length; w.d.forEach((_,ti)=>{if(state.done[taskKey(i,ti)])a.n++})} return a},{n:0,t:0});
+  const pace=plan===0?`<b>0</b><small>Nothing is due yet; the head start begins ${esc(short(START))}.</small>`:gap>=0?`<b class="pace-ok">${gap===0?"On track":"+"+gap}</b><small>${gap===0?"Done exactly what was planned to today.":gap+" tasks ahead of plan ("+plan+" planned so far)."}</small>`:`<b class="pace-bad">${gap}</b><small>${-gap} tasks behind plan (${plan} planned so far). Catch up a little each day.</small>`;
+  // phases
+  const phases=PHASES.map((p,j)=>{let n=0,tt=0; for(let i=p.s;i<=p.e;i++){if(W[i]&&!W[i].leave){tt+=W[i].d.length; W[i].d.forEach((_,ti)=>{if(state.done[taskKey(i,ti)])n++})}} const q=tt?Math.round(100*n/tt):0;
+    return `<div class="phbar"><span>${esc(p.n)} <span class="muted mono" style="font-size:12px">${n}/${tt}</span></span><span class="mono" style="text-align:right">${q}%</span><div class="prog"><i style="width:${q}%;background:${PH_COLORS[j%PH_COLORS.length]}"></i></div></div>`}).join("");
+  // week map
+  let lastY=null, wm="";
+  W.forEach((w,i)=>{const ws=weekStart(i), Y=ws.getFullYear(); if(Y!==lastY){wm+=`<div class="wm-year">${Y}</div>`; lastY=Y}
+    const p=weekProgress(i), cls=(w.leave?"leave":"")+(i===cur?" now":"");
+    wm+=`<button class="${cls.trim()}" data-wk="${i}" style="${w.leave?"":"background:"+lvl(p||0)}" title="${esc(wLabel(i)+" · "+short(ws)+" "+Y+" · "+w.t+(w.leave?"":" · "+Math.round((p||0)*100)+"% done"))}" aria-label="${esc(wLabel(i)+", "+(w.leave?"leave":Math.round((p||0)*100)+"% done"))}"></button>`});
+  // activity: last 20 weeks, Monday to Friday
+  const mon=addDays(t,-((t.getDay()+6)%7)); const first=addDays(mon,-19*7); let act="", maxC=1;
+  for(let d=first;d<=addDays(mon,4);d=addDays(d,1)) if(c[ymd(d)]>maxC) maxC=c[ymd(d)];
+  for(let k=0;k<20;k++) for(let j=0;j<5;j++){const d=addDays(first,k*7+j), n=c[ymd(d)]||0; act+=`<i style="background:${d>t?"transparent":lvl(n/maxC)}" title="${esc(fmt(d,{weekday:"short",day:"numeric",month:"short"}))}: ${n} task${n===1?"":"s"} ticked"></i>`}
+  const totTicks=Object.values(c).reduce((a,b)=>a+b,0);
+  el.innerHTML=`<h1 style="font-size:34px;font-weight:800">Dashboard</h1><p class="muted" style="margin:6px 0 0">Every box you tick on Today, Plan or Milestones updates these charts.</p>
+  <div class="dash-kpis">
+    <div class="card kpi ring">${ringSvg(f,92)}<div><div class="eyebrow">Whole PhD</div><b>${pct}%</b><small>${tp.n.toLocaleString("en-GB")} of ${tp.t.toLocaleString("en-GB")} tasks</small></div></div>
+    <div class="card kpi"><div class="eyebrow">Pace</div>${pace}</div>
+    <div class="card kpi"><div class="eyebrow">Streak</div><b>${st} day${st===1?"":"s"}</b><small>Working days in a row with at least one tick (weekends don't break it).</small></div>
+    <div class="card kpi"><div class="eyebrow">Milestones</div><b>${msDone} / ${ms.length}</b><small>${nextMs?"Next: "+esc(nextMs.t)+", in "+daysBetween(t,nextMs.date)+" days":"All milestones done."}</small></div>
+  </div>
+  <div class="card dash-card"><h2>Tasks over the whole PhD</h2><div class="legend" style="margin-top:6px"><span><i style="background:var(--violet)"></i>Planned (cumulative)</span><span><i style="background:var(--ember)"></i>Done</span><span><i style="background:var(--ink)"></i>Today</span></div>${burnSvg(cur)}<p class="muted" style="font-size:12.5px;margin:4px 0 0">Coloured strip under the chart: the phases. Keep the orange line on or above the dashed line.</p></div>
+  <div class="dash-two">
+    <div class="card"><h2>Every week at a glance</h2><p class="muted" style="font-size:13px;margin:4px 0 0">One square per week. Darker means more of that week is done; striped squares are leave. Tap a square to open that week.</p><div class="weekmap" id="weekmap">${wm}</div>
+      <div class="scale">Less ${[0,.25,.5,.75,1].map(v=>`<i style="background:${lvl(v)}"></i>`).join("")} More</div></div>
+    <div class="card"><h2>Phases</h2>${phases}
+      <div class="eyebrow" style="margin-top:18px">Head start</div><div class="stat"><b class="mono" style="font-size:22px">${head.t?Math.round(100*head.n/head.t):0}%</b><span class="muted mono">${head.n} / ${head.t} tasks</span></div><div class="prog"><i style="width:${head.t?Math.round(100*head.n/head.t):0}%"></i></div></div>
+  </div>
+  <div class="card dash-card"><h2>Daily activity</h2><p class="muted" style="font-size:13px;margin:4px 0 0">Tasks ticked each working day over the last 20 weeks (${totTicks} ticks recorded). Each column is a week, Monday at the top.</p><div class="heat-scroll"><div class="activity">${act}</div></div>
+    <div class="scale">Less ${[0,.25,.5,.75,1].map(v=>`<i style="background:${lvl(v)}"></i>`).join("")} More</div></div>`;
+  el.querySelector("#weekmap").addEventListener("click",e=>{const b=e.target.closest("button[data-wk]"); if(!b) return; viewDate=clampDate(weekStart(+b.dataset.wk)); show("today")});
+}
+
 function renderProject(){ $("#tab-project").innerHTML=PROJECT_HTML; }
 
-function render(tab){({today:renderToday,plan:renderPlan,milestones:renderMilestones,conferences:renderConferences,lectures:renderLectures,library:renderLibrary,project:renderProject})[tab]()}
+function render(tab){({today:renderToday,dashboard:renderDashboard,plan:renderPlan,milestones:renderMilestones,conferences:renderConferences,lectures:renderLectures,library:renderLibrary,project:renderProject})[tab]()}
 function renderAll(){render(current)}
 
 viewDate=clampDate(realToday());
